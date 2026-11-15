@@ -1,0 +1,36 @@
+---
+# yaml-language-server: $schema=https://www.schemastore.org/dependabot-2.0.json
+# Security updates only. Renovate owns routine version bumps;
+# `open-pull-requests-limit: 0` turns version updates off and leaves
+# security updates on.
+version: 2
+updates:
+  - package-ecosystem: github-actions
+    directory: /
+    schedule:
+      interval: weekly
+    open-pull-requests-limit: 0
+    labels:
+      - security
+      - dependencies
+    assignees:
+      - donaldgifford
+    groups:
+      actions-security:
+        applies-to: security-updates
+        patterns: ["*"]
+
+  - package-ecosystem: bun
+    directory: /
+    schedule:
+      interval: weekly
+    open-pull-requests-limit: 0
+    labels:
+      - security
+      - dependencies
+    assignees:
+      - donaldgifford
+    groups:
+      bun-security:
+        applies-to: security-updates
+        patterns: ["*"]

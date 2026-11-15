@@ -1,0 +1,42 @@
+---
+# yaml-language-server: $schema=https://www.schemastore.org/pull-request-labeler.json
+dependencies:
+  - changed-files:
+      - any-glob-to-any-file: mise.toml
+      - any-glob-to-any-file: renovate.json5
+      - any-glob-to-any-file: package.json
+      - any-glob-to-any-file: bun.lock
+
+documentation:
+  - changed-files:
+      - any-glob-to-any-file: docs/**
+      - any-glob-to-any-file: README.md
+      - any-glob-to-any-file: .docz.yaml
+
+ci:
+  - changed-files:
+      - any-glob-to-any-file: .github/**
+      - any-glob-to-any-file: justfile
+
+repo:
+  - changed-files:
+      - any-glob-to-any-file: biome.json
+      - any-glob-to-any-file: .changeset/config.json
+      - any-glob-to-any-file: .markdownlint.yaml
+      - any-glob-to-any-file: .prettierrc.yaml
+      - any-glob-to-any-file: .yamlfmt.yml
+      - any-glob-to-any-file: .yamllint.yml
+      - any-glob-to-any-file: scripts/**.sh
+
+feature:
+  - head-branch: ["^feat"]
+fix:
+  - head-branch: ["^fix"]
+bug:
+  - head-branch: ["^bug"]
+chore:
+  - head-branch: ["^chore"]
+docs:
+  - head-branch: ["^docs"]
+security:
+  - head-branch: ["^security"]

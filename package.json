@@ -1,0 +1,28 @@
+{
+  "name": "@donaldgifford/design-system",
+  "version": "0.0.0",
+  "private": true,
+  "description": "Design tokens and a React component library shared by repo-guardian, docz and other apps.",
+  "license": "Apache-2.0",
+  "type": "module",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/donaldgifford/design-system.git"
+  },
+  "publishConfig": {
+    "registry": "https://npm.pkg.github.com/",
+    "access": "public"
+  },
+  "scripts": {
+    "lint": "biome check .",
+    "lint:fix": "biome check --write .",
+    "format": "biome format --write .",
+    "changeset": "changeset",
+    "version": "changeset version",
+    "release": "changeset publish"
+  },
+  "devDependencies": {
+    "@biomejs/biome": "^2.6.8",
+    "@changesets/cli": "^3.0.3"
+  }
+}
