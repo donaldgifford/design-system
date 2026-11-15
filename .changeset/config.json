@@ -1,11 +1,17 @@
 {
   "$schema": "https://unpkg.com/@changesets/config@4.0.1/schema.json",
-  "changelog": "@changesets/cli/changelog",
-  "commit": false,
+  "baseBranch": "main",
+  "access": "public",
+  "format": "auto",
+  "changelog": [
+    "@changesets/changelog-github",
+    {
+      "repo": "donaldgifford/design-system"
+    }
+  ],
+  "commit": true,
+  "ignore": [],
   "fixed": [],
   "linked": [],
-  "access": "public",
-  "baseBranch": "main",
-  "updateInternalDependencies": "patch",
-  "ignore": []
+  "updateInternalDependencies": "patch"
 }
