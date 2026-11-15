@@ -1,0 +1,34 @@
+# Tool versions for local development and CI. `mise install` once per checkout.
+
+[env]
+# .env.local is gitignored. Put NPM_TOKEN (GitHub Packages) there.
+_.file = ".env.local"
+
+[tools]
+# Runtime and package manager
+# renovate: datasource=github-releases depName=oven-sh/bun extractVersion=^bun-v(?<version>.+)$
+bun = "1.4.4"
+# changesets publishes through npm, and Storybook expects node on PATH
+node = "24.14.0"
+
+# Formatters and linters for docs, YAML and workflows
+# renovate: datasource=github-releases depName=DavidAnson/markdownlint-cli2
+markdownlint-cli2 = "0.18.1"
+# renovate: datasource=github-releases depName=google/yamlfmt
+yamlfmt = "0.20.0"
+# renovate: datasource=github-tags depName=adrienverge/yamllint
+yamllint = "1.37.1"
+# renovate: datasource=npm depName=prettier
+prettier = "3.7.4"
+# renovate: datasource=github-releases depName=rhysd/actionlint
+actionlint = "latest"
+
+# Repo utilities
+# renovate: datasource=github-releases depName=casey/just
+just = "latest"
+# renovate: datasource=github-releases depName=mikefarah/yq
+yq = "4.48.1"
+# renovate: datasource=github-releases depName=jqlang/jq
+jq = "latest"
+# renovate: datasource=github-releases depName=donaldgifford/docz
+"github:donaldgifford/docz" = "latest"

@@ -5,16 +5,17 @@ kind: Component
 metadata:
   name: design-system
   title: design-system
-  description: A Design System and component library
+  description: Design tokens and a React component library shared across apps
   annotations:
     backstage.io/source-location: url:https://github.com/donaldgifford/design-system
     backstage.io/techdocs-ref: "dir:."
   tags:
-    - node
+    - react
+    - design-system
     - bun
   namespace: default
 spec:
-  lifecycle: production
-  type: service
+  lifecycle: experimental
+  type: library
   owner: donaldgifford
   system: infrastructure

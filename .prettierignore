@@ -1,0 +1,12 @@
+# Prettier formats Markdown only; Biome owns code, JSON and CSS.
+node_modules
+coverage
+storybook-static
+bun.lock
+CHANGELOG.md
+.changeset
+*.ts
+*.tsx
+*.js
+*.json
+*.css
