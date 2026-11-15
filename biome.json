@@ -32,6 +32,6 @@
     }
   },
   "files": {
-    "includes": ["**", "!**/*.md", "!**/*.yml", "!**/*.yaml", "!.forge-lock.hcl", "!.claude"]
+    "includes": ["**", "!**/*.md", "!**/*.yml", "!**/*.yaml", "!.claude"]
   }
 }
