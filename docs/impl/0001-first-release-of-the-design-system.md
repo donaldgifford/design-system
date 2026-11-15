@@ -100,8 +100,8 @@ Turn the service scaffold into a library repo with passing checks.
 - [x] changesets config, `.npmrc` for GitHub Packages, release workflow
 - [x] CI workflow running `just check`
 - [x] INV-0001, RFC-0001, ADR-0001 to ADR-0004 and this plan
-- [ ] Merge the initialization branch
-- [ ] Create the repo labels with `scripts/labels.sh`
+- [x] Merge the initialization branch
+- [x] Create the repo labels with `scripts/labels.sh`
 
 <!--docz:tasks:end-->
 
@@ -121,18 +121,24 @@ Turn the service scaffold into a library repo with passing checks.
 
 Bring in the starting implementation and make it stand on its own in this repo.
 
+Three blocks were left out because they only made sense in the app they came
+from: a status badge with a fixed vocabulary of that app's states, a
+permission matrix, and a cluster topology diagram. Apps map their own states
+onto `Badge` variants instead.
+
 <!--docz:tasks:start-->
 #### Tasks
 
-- [ ] Copy tokens, primitives, blocks, shell parts, `lib`, `hooks`, stories and tests
-- [ ] Rename internal import paths to `@donaldgifford/design-system/*`
-- [ ] Add the `exports` map, `sideEffects`, dependencies and peer dependencies to `package.json`
-- [ ] Add `tsconfig.json`, `bunfig.toml`, the test setup and the Storybook config
-- [ ] Carry over the Biome rules, including the layer import boundaries
-- [ ] Keep the `tokens.json` export; leave out the Figma token files and the code that writes them
-- [ ] Leave out blocks that only make sense in the app they came from
-- [ ] Add CI jobs: typecheck, `bun test`, Storybook build, CodeQL for TypeScript
-- [ ] Add a first changeset
+- [x] Copy tokens, primitives, blocks, shell parts, `lib`, `hooks`, stories and tests
+- [x] Rename internal import paths to `@donaldgifford/design-system/*`
+- [x] Add the `exports` map, `sideEffects`, dependencies and peer dependencies to `package.json`
+- [x] Add `tsconfig.json`, `bunfig.toml`, the test setup and the Storybook config
+- [x] Carry over the Biome rules, including the layer import boundaries
+- [x] Keep the `tokens.json` export; leave out the Figma token files and the code that writes them
+- [x] Leave out blocks that only make sense in the app they came from
+- [x] Add CI jobs: typecheck, `bun test`, Storybook build, CodeQL for TypeScript
+- [x] Add a first changeset
+- [ ] Add a browser check that runs axe, with color contrast on, over every story in the Storybook build
 
 <!--docz:tasks:end-->
 

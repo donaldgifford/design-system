@@ -1,0 +1,21 @@
+{
+  "$schema": "https://ui.shadcn.com/schema.json",
+  "style": "base-vega",
+  "rsc": false,
+  "tsx": true,
+  "tailwind": {
+    "config": "",
+    "css": "src/styles/globals.css",
+    "baseColor": "neutral",
+    "cssVariables": true,
+    "prefix": ""
+  },
+  "iconLibrary": "tabler",
+  "aliases": {
+    "components": "@donaldgifford/design-system/components",
+    "ui": "@donaldgifford/design-system/components",
+    "utils": "@donaldgifford/design-system/lib/utils",
+    "lib": "@donaldgifford/design-system/lib",
+    "hooks": "@donaldgifford/design-system/hooks"
+  }
+}
