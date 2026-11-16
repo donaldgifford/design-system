@@ -1,5 +1,11 @@
 # @donaldgifford/design-system
 
+## 0.1.1
+
+### Patch Changes
+
+- [#9](https://github.com/donaldgifford/design-system/pull/9) [`fd53ed5`](https://github.com/donaldgifford/design-system/commit/fd53ed59e597af27cf3b1a6ec5b083bfbbe4ff8c) Thanks [@donaldgifford](https://github.com/donaldgifford)! - Typecheck in apps that set `exactOptionalPropertyTypes` or have no Node types. The package ships source, so a consumer's compiler checks it under the consumer's flags: every optional prop now accepts an explicit `undefined`, and `lib/deprecation` no longer needs `@types/node`.
+
 ## 0.1.0
 
 ### Minor Changes
