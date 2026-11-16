@@ -35,6 +35,6 @@ docz create rfc "Your RFC Title"
 <!-- markdownlint-disable MD013 -->
 | ID | Title | Status | Date | Author | Link |
 | --- | --- | --- | --- | --- | --- |
-| RFC-0001 | Shared design system and component library for repo-guardian and docz | Proposed | 2026-11-15 | Donald Gifford | [0001-shared-design-system-and-component-library-for-repo-guardian.md](0001-shared-design-system-and-component-library-for-repo-guardian.md) |
+| RFC-0001 | Shared design system and component library for repo-guardian and docz | Accepted | 2026-11-15 | Donald Gifford | [0001-shared-design-system-and-component-library-for-repo-guardian.md](0001-shared-design-system-and-component-library-for-repo-guardian.md) |
 <!-- markdownlint-restore -->
 <!-- END DOCZ AUTO-GENERATED -->
