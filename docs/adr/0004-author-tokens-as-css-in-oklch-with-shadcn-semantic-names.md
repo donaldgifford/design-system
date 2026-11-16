@@ -1,7 +1,7 @@
 ---
 id: ADR-0004
 title: "Author tokens as CSS in oklch with shadcn semantic names"
-status: Proposed
+status: Accepted
 author: Donald Gifford
 created: 2026-11-15
 ---
