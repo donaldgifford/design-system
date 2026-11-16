@@ -9,6 +9,10 @@ The package is `@donaldgifford/design-system`. It has no build step:
 consumers compile its TypeScript and CSS with their own Vite and Tailwind v4.
 React, React DOM and Tailwind are peer dependencies.
 
+The component catalog is the
+[Storybook](https://donaldgifford.github.io/design-system/), deployed from
+`main`.
+
 > **Status:** 0.x, published to GitHub Packages. Expect breaking changes
 > between minor versions until 1.0. See [RFC-0001](docs/rfc/) for the plan
 > and [IMPL-0001](docs/impl/) for progress.

@@ -168,7 +168,8 @@ There is no waiting period and no promotion ceremony.
 1. How docz's Go HTML export picks up `tokens.css`. It embeds CSS files at
    build time, so the file has to be copied or generated into the Go tree
    from the installed package.
-2. Where the Storybook is hosted.
+2. ~~Where the Storybook is hosted.~~ Resolved: GitHub Pages, deployed from
+   `main` at <https://donaldgifford.github.io/design-system/>.
 3. What 1.0 means. Proposed: both apps have adopted the package and gone one
    release cycle without a breaking change.
 

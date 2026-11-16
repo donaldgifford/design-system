@@ -200,7 +200,7 @@ Publish 0.1.0 and prove it installs outside this repo.
 - [x] Merge the "version packages" pull request
 - [x] Confirm the package and the GitHub Release exist
 - [x] Install the package in a scratch Vite and Tailwind v4 project and render a page
-- [ ] Publish the Storybook
+- [x] Publish the Storybook
 
 <!--docz:tasks:end-->
 
