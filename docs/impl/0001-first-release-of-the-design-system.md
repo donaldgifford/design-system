@@ -196,7 +196,7 @@ Publish 0.1.0 and prove it installs outside this repo.
 <!--docz:tasks:start-->
 #### Tasks
 
-- [ ] Remove `"private": true`
+- [x] Remove `"private": true`
 - [ ] Merge the "version packages" pull request
 - [ ] Confirm the package and the GitHub Release exist
 - [ ] Install the package in a scratch Vite and Tailwind v4 project and render a page
