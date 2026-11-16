@@ -14,7 +14,9 @@ interface ErrorStateProps {
 /** A failed load inside a page: the problem's reason, its request id, and a retry. */
 export function ErrorState({ error, title, onRetry, className }: ErrorStateProps) {
   const api = isApiError(error) ? error : undefined;
-  const heading = title ?? (api ? api.reason : "Something went wrong");
+  // A problem reads as its status and title; without a title, its reason code.
+  const problemTitle = api?.problem?.title ? `${api.status} · ${api.problem.title}` : undefined;
+  const heading = title ?? problemTitle ?? api?.reason ?? "Something went wrong";
   const message = error instanceof Error ? error.message : String(error);
   return (
     <div

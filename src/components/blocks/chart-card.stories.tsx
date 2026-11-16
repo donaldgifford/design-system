@@ -1,6 +1,7 @@
 import { BarList, barListTable } from "@donaldgifford/design-system/blocks/bar-list";
 import { ChartCard, ChartTip, DenseTable } from "@donaldgifford/design-system/blocks/chart-card";
 import { StackedBars, stackTable } from "@donaldgifford/design-system/blocks/stacked-bars";
+import { StatStrip } from "@donaldgifford/design-system/blocks/stat-strip";
 import { TrendChart, trendTable } from "@donaldgifford/design-system/blocks/trend-chart";
 import { Badge } from "@donaldgifford/design-system/components/badge";
 import type { Meta, StoryObj } from "@storybook/react-vite";
@@ -40,6 +41,8 @@ const meta = {
     children: { control: false },
     action: { control: false },
     legend: { control: false },
+    strip: { control: false },
+    headingLevel: { control: "inline-radio", options: [2, 3, 4] },
   },
   decorators: [
     (Story) => (
@@ -58,6 +61,21 @@ export const Default: Story = {};
 
 /** `action` sits before the toggle. */
 export const WithAction: Story = { args: { action: <Badge variant="success">+2.1 pts</Badge> } };
+
+/** `strip` is a band under the header; it stays when the plot is swapped for the table. */
+export const WithStrip: Story = {
+  args: {
+    strip: (
+      <StatStrip
+        items={[
+          { label: "Now", value: "97.4%" },
+          { label: "30 days ago", value: "91.0%" },
+          { label: "Change", value: "+6.4", hint: "pts" },
+        ]}
+      />
+    ),
+  },
+};
 
 /** Each chart block exports the helper that builds its table. */
 export const WithBarList: Story = {

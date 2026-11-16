@@ -48,6 +48,12 @@ export const allowlist: readonly Allowed[] = [
   { file: "ui/card.tsx", rule: "arbitrary", match: "grid-cols-[1fr_auto]", reason: layout },
   { file: "ui/alert.tsx", rule: "arbitrary", match: "grid-cols-[auto_1fr]", reason: layout },
   {
+    file: "blocks/details-grid.tsx",
+    rule: "arbitrary",
+    match: "grid-cols-[max-content_minmax(0,1fr)]",
+    reason: layout,
+  },
+  {
     file: "ui/scroll-area.tsx",
     rule: "arbitrary",
     match: "rounded-[inherit]",

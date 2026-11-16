@@ -52,6 +52,35 @@ GitHub Actions pass `NPM_TOKEN: ${{ secrets.GITHUB_TOKEN }}` to the install
 step, and pass it as a build secret to any Docker build that installs
 dependencies.
 
+### Coming from Radix-based shadcn
+
+The primitives sit on Base UI, which differs from Radix in a few places
+that compile and then fail quietly:
+
+- **Menu items take `onClick`, not `onSelect`.** Base UI's `Menu.Item` has
+  no `onSelect`; on `DropdownMenuItem` it type-checks as the native
+  text-selection handler and never fires.
+- **`DropdownMenuLabel` goes inside a `DropdownMenuGroup`.** Outside one,
+  Base UI throws "Menu group parts must be used within <Menu.Group>".
+- **`render`, not `asChild`.** `render={<a href="…" />}`, or the function
+  form `render={(props) => <h2 {...props} />}`, which also satisfies a
+  lint rule that wants heading content.
+- **Naming a dialog yourself.** `aria-label` with
+  `aria-labelledby={undefined}` on `DialogContent` or `SheetContent`
+  replaces the title as the accessible name; a consumer's props merge
+  last. `DetailPanel` has a `label` prop that does this.
+- **Icon props take a component, not a node.** Blocks that show an icon
+  (`EmptyState`, the sidebar's items) take a Tabler icon type:
+  `icon={IconServer}`, not `icon={<IconServer />}`.
+- **Tests under happy-dom or jsdom.** Base UI and cmdk decide when they
+  are first imported whether a document exists, so register the DOM in a
+  preload before anything imports them (this repo's `test/setup.ts` is
+  the pattern). cmdk also needs a `ResizeObserver`, which happy-dom has
+  and jsdom does not.
+- **Reduced motion.** `globals.css` cuts every animation and transition
+  to nothing under `prefers-reduced-motion: reduce`; an app's own rule
+  for that can go.
+
 ## Layout
 
 ```text
@@ -202,6 +231,9 @@ strings differ throughout; the table lists what differs beyond them. The
 | `sonner` | `theme` is a prop, not `next-themes` | the app resolves the color mode itself |
 | `breadcrumb` | the current page drops `role="link"` and `aria-disabled` | it is plain text with `aria-current`; axe flags a link role on non-links |
 | `command` | the hidden dialog title sits inside the content | upstream's header stays in the DOM while closed, outside any landmark |
+| `command` | `CommandDialog` takes `commandProps` for its inner `Command` | a palette backed by a server search needs `shouldFilter={false}` |
+| `card` | `Card` and `CardTitle` take `render` | a card that is a `section`, a title that is a heading |
+| `sheet` | opens and closes in 200ms | upstream's 500ms open reads as lag on a detail panel |
 | `badge` | `success`, `warning`, and `info` variants; `pending`, `approved`, `ignored`, and `running` | the status roles and states |
 | `badge` | a `fill` axis (`tinted`, the default, or `filled`); each variant sets `--tone`, `--tone-fill`, and `--tone-foreground`, and the `badge-tinted` and `badge-filled` utilities draw them; `outline` has no fill | one tone per variant, two treatments, no per-variant color classes |
 | `button` | `success`, `warning`, and `info` variants (filled) | the status roles |

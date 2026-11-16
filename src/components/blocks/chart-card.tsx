@@ -36,6 +36,13 @@ interface ChartCardProps {
   action?: ReactNode | undefined;
   /** The same data the plot draws. Each chart block exports a helper that builds it. */
   table: ChartTable;
+  /**
+   * A full-width band between the header and the body, such as a
+   * StatStrip. It stays when the plot is swapped for the table.
+   */
+  strip?: ReactNode | undefined;
+  /** The title's heading level. */
+  headingLevel?: 2 | 3 | 4 | undefined;
   /** A legend under the plot; hidden with it. */
   legend?: ReactNode | undefined;
   children: ReactNode;
@@ -51,16 +58,19 @@ export function ChartCard({
   title,
   description,
   action,
+  strip,
+  headingLevel = 3,
   table,
   legend,
   children,
   className,
 }: ChartCardProps) {
   const [view, setView] = useState<"plot" | "table">("plot");
+  const Heading = `h${headingLevel}` as const;
   return (
     <Card data-slot="chart-card" data-view={view} className={className}>
       <CardHeader>
-        <CardTitle>{title}</CardTitle>
+        <CardTitle render={<Heading />}>{title}</CardTitle>
         {description !== undefined ? <CardDescription>{description}</CardDescription> : null}
         <CardAction className="flex items-center gap-1.5">
           {action}
@@ -74,6 +84,7 @@ export function ChartCard({
           </Button>
         </CardAction>
       </CardHeader>
+      {strip !== undefined ? <div data-slot="chart-card-strip">{strip}</div> : null}
       <CardContent>
         {view === "plot" ? (
           <>
@@ -89,7 +100,13 @@ export function ChartCard({
 }
 
 /** A chart's table twin: small type, numeric columns right-aligned. */
-export function DenseTable({ table, className }: { table: ChartTable; className?: string }) {
+export function DenseTable({
+  table,
+  className,
+}: {
+  table: ChartTable;
+  className?: string | undefined;
+}) {
   const numeric = new Set(table.numeric ?? []);
   return (
     <div data-slot="dense-table" className={className}>

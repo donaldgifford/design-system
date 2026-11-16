@@ -43,7 +43,7 @@ import {
   tableFeatures,
   useTable,
 } from "@tanstack/react-table";
-import { type ReactNode, useMemo } from "react";
+import { type KeyboardEvent, type MouseEvent, type ReactNode, useMemo, useState } from "react";
 
 declare module "@tanstack/react-table" {
   interface ColumnMeta<
@@ -58,6 +58,8 @@ declare module "@tanstack/react-table" {
      * whenever the table is told it shares its row with something else.
      */
     hideBelow?: "md" | "lg" | "xl" | "compact" | undefined;
+    /** Classes for the column's header and cells: a width, an alignment. */
+    className?: string | undefined;
   }
 }
 
@@ -93,14 +95,28 @@ export function dataTableColumns<TData extends RowData>() {
 export interface DataTableProps<TData extends RowData> {
   columns: ReadonlyArray<DataTableColumn<TData>>;
   data: ReadonlyArray<TData>;
-  /** The URL-bound search; the table reads sort, q, page, and size from it. */
-  search: ListSearch;
-  onSearchChange: (patch: Partial<ListSearch>) => void;
+  /**
+   * The URL-bound search; the table reads sort, q, page, and size from it.
+   * Omitted, the table is a plain one: it shows every row, keeps its own
+   * sort, and has no filter or pager.
+   */
+  search?: ListSearch | undefined;
+  onSearchChange?: ((patch: Partial<ListSearch>) => void) | undefined;
   /**
    * The total row count when the server already filtered, sorted, and
    * paged the data; omitted, the table does all three itself.
    */
   total?: number | undefined;
+  /**
+   * The server filters and sorts, and the table shows `data` as given.
+   * Implied by `total`. Set it without a total for a cursor-paged list:
+   * the pager goes, and the page adds its own "load more" control.
+   */
+  manual?: boolean | undefined;
+  /** The accessible name: what the table lists. */
+  label?: string | undefined;
+  /** Drop the border and the scroll container, for a table inside a card. */
+  bare?: boolean | undefined;
   getRowId?: ((row: TData) => string) | undefined;
   onRowClick?: ((row: TData) => void) | undefined;
   /** The id (as `getRowId` gives it) of the row to mark selected: the one a detail panel shows. */
@@ -127,9 +143,12 @@ const emptyRows: never[] = [];
 export function DataTable<TData extends RowData>({
   columns,
   data,
-  search,
-  onSearchChange,
+  search: searchProp,
+  onSearchChange: onSearchChangeProp,
   total,
+  manual: manualProp,
+  label,
+  bare = false,
   getRowId,
   onRowClick,
   selectedId,
@@ -146,7 +165,20 @@ export function DataTable<TData extends RowData>({
         : columns) as DataTableColumn<TData>[],
     [columns, compact],
   );
-  const manual = total !== undefined;
+  const manual = manualProp ?? total !== undefined;
+  // Without a search the table holds its own sort and shows every row.
+  const [own, setOwn] = useState<Partial<ListSearch>>({});
+  const bound = searchProp !== undefined;
+  const search: ListSearch = searchProp ?? {
+    page: 1,
+    size: Math.max(1, data.length),
+    ...own,
+  };
+  const onSearchChange =
+    onSearchChangeProp ??
+    ((patch: Partial<ListSearch>) => setOwn((now) => ({ ...now, sort: patch.sort })));
+  // A pager needs page numbers: a bound search, and a row count to divide.
+  const paged = bound && !(manual && total === undefined);
   const sorting = useMemo(() => {
     const sort = parseSort(search.sort);
     return sort ? [sort] : [];
@@ -188,7 +220,7 @@ export function DataTable<TData extends RowData>({
 
   return (
     <div data-slot="data-table" className={cn("space-y-3", className)}>
-      {filterPlaceholder ? (
+      {filterPlaceholder && bound ? (
         <div className="relative max-w-sm">
           <IconSearch
             aria-hidden="true"
@@ -203,8 +235,11 @@ export function DataTable<TData extends RowData>({
           />
         </div>
       ) : null}
-      <div className="rounded-md border">
-        <Table containerClassName="max-h-(--table-max-h) overflow-y-auto">
+      <div className={cn(!bare && "rounded-md border")}>
+        <Table
+          aria-label={label}
+          containerClassName={bare ? undefined : "max-h-(--table-max-h) overflow-y-auto"}
+        >
           <TableHeader data-sticky="">
             {table.getHeaderGroups().map((group) => (
               <TableRow key={group.id}>
@@ -218,6 +253,7 @@ export function DataTable<TData extends RowData>({
                       className={cn(
                         header.column.columnDef.meta?.numeric && "text-right",
                         hiddenBelow(header.column.columnDef.meta?.hideBelow),
+                        header.column.columnDef.meta?.className,
                       )}
                     >
                       {header.isPlaceholder ? null : canSort ? (
@@ -269,34 +305,36 @@ export function DataTable<TData extends RowData>({
           </TableBody>
         </Table>
       </div>
-      <div className="flex items-center justify-between text-muted-foreground text-sm">
-        <span data-testid="row-count">
-          {rowCount} {rowCount === 1 ? "row" : "rows"}
-        </span>
-        <div className="flex items-center gap-2">
-          <span data-testid="page-label">
-            Page {pageCount === 0 ? 0 : search.page} of {pageCount}
+      {paged ? (
+        <div className="flex items-center justify-between text-muted-foreground text-sm">
+          <span data-testid="row-count">
+            {rowCount} {rowCount === 1 ? "row" : "rows"}
           </span>
-          <Button
-            variant="outline"
-            size="icon-sm"
-            aria-label="Previous page"
-            disabled={!table.getCanPreviousPage()}
-            onClick={() => table.previousPage()}
-          >
-            <IconChevronLeft aria-hidden="true" />
-          </Button>
-          <Button
-            variant="outline"
-            size="icon-sm"
-            aria-label="Next page"
-            disabled={!table.getCanNextPage()}
-            onClick={() => table.nextPage()}
-          >
-            <IconChevronRight aria-hidden="true" />
-          </Button>
+          <div className="flex items-center gap-2">
+            <span data-testid="page-label">
+              Page {pageCount === 0 ? 0 : search.page} of {pageCount}
+            </span>
+            <Button
+              variant="outline"
+              size="icon-sm"
+              aria-label="Previous page"
+              disabled={!table.getCanPreviousPage()}
+              onClick={() => table.previousPage()}
+            >
+              <IconChevronLeft aria-hidden="true" />
+            </Button>
+            <Button
+              variant="outline"
+              size="icon-sm"
+              aria-label="Next page"
+              disabled={!table.getCanNextPage()}
+              onClick={() => table.nextPage()}
+            >
+              <IconChevronRight aria-hidden="true" />
+            </Button>
+          </div>
         </div>
-      </div>
+      ) : null}
     </div>
   );
 }
@@ -327,11 +365,22 @@ function DataRow<TData extends RowData>({
       data-state={selected ? "selected" : undefined}
       aria-selected={selected ? true : undefined}
       className={cn("h-table-row", clickable && "cursor-pointer")}
-      onClick={clickable ? () => onRowClick(row.original) : undefined}
+      onClick={
+        clickable
+          ? (event: MouseEvent<HTMLTableRowElement>) => {
+              // A link or a button in the row keeps its own click.
+              if (fromControl(event.target, event.currentTarget)) return;
+              onRowClick(row.original);
+            }
+          : undefined
+      }
       onKeyDown={
         clickable
-          ? (event) => {
-              if (event.key === "Enter") {
+          ? (event: KeyboardEvent<HTMLTableRowElement>) => {
+              // Only keys on the row itself, not on something inside it.
+              if (event.target !== event.currentTarget) return;
+              if (event.key === "Enter" || event.key === " ") {
+                event.preventDefault();
                 onRowClick(row.original);
               }
             }
@@ -345,6 +394,7 @@ function DataRow<TData extends RowData>({
           className={cn(
             cell.column.columnDef.meta?.numeric && "text-right tabular-nums",
             hiddenBelow(cell.column.columnDef.meta?.hideBelow),
+            cell.column.columnDef.meta?.className,
           )}
         >
           {flexRender(cell.column.columnDef.cell, cell.getContext())}
@@ -352,6 +402,14 @@ function DataRow<TData extends RowData>({
       ))}
     </TableRow>
   );
+}
+
+const controls = "a, button, input, select, textarea, label, [role=menuitem], [role=checkbox]";
+
+/** Whether an event came from an interactive element inside the row. */
+function fromControl(target: EventTarget, row: HTMLElement): boolean {
+  const control = target instanceof Element ? target.closest(controls) : null;
+  return control !== null && control !== row && row.contains(control);
 }
 
 function hiddenBelow(hideBelow: keyof typeof hideClass | undefined): string | undefined {

@@ -6,6 +6,8 @@ export interface Stat {
   value: ReactNode;
   /** A unit or a comparison after the value, muted. */
   hint?: ReactNode | undefined;
+  /** A line of its own under the value: what the figure counts, a change over time. */
+  sub?: ReactNode | undefined;
 }
 
 interface StatStripProps {
@@ -37,6 +39,14 @@ export function StatStrip({ items, className }: StatStripProps) {
               <small className="ml-1.5 font-normal text-muted-foreground text-xs">
                 {item.hint}
               </small>
+            ) : null}
+            {item.sub !== undefined ? (
+              <span
+                data-slot="stat-sub"
+                className="mt-0.5 block whitespace-normal font-normal text-muted-foreground text-xs"
+              >
+                {item.sub}
+              </span>
             ) : null}
           </dd>
         </div>

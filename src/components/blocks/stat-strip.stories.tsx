@@ -21,6 +21,17 @@ type Story = StoryObj<typeof meta>;
 
 export const Default: Story = {};
 
+/** `sub` is a line of its own under the value. */
+export const WithSub: Story = {
+  args: {
+    items: [
+      { label: "Repositories", value: "1,204", sub: "38 added this week" },
+      { label: "Passing", value: "91%", sub: "up 2 points" },
+      { label: "Waived", value: "17" },
+    ],
+  },
+};
+
 /** Across the top of a card, as a detail page leads with it; a value can be any node. */
 export const InCard: Story = {
   args: {

@@ -34,6 +34,16 @@ interface DetailPanelProps {
    * Omitted, the overlay returns focus to where it was.
    */
   returnFocusTo?: (() => HTMLElement | null | undefined) | undefined;
+  /**
+   * The dialog's accessible name. Omitted, the title names it; give one
+   * when the title is a link or the name should say more than it does.
+   */
+  label?: string | undefined;
+  /**
+   * Identifies what the panel shows. When it changes while an inline
+   * panel stays open (another row picked), focus moves back into the panel.
+   */
+  subject?: string | undefined;
   className?: string | undefined;
 }
 
@@ -52,6 +62,8 @@ export function DetailPanel({
   children,
   inline = false,
   returnFocusTo,
+  label,
+  subject,
   className,
 }: DetailPanelProps) {
   if (inline) {
@@ -62,6 +74,8 @@ export function DetailPanel({
         description={description}
         footer={footer}
         returnFocusTo={returnFocusTo}
+        label={label}
+        subject={subject}
         className={className}
       >
         {children}
@@ -73,6 +87,7 @@ export function DetailPanel({
       <SheetContent
         data-slot="detail-panel"
         data-form="overlay"
+        {...(label !== undefined ? { "aria-label": label, "aria-labelledby": undefined } : {})}
         finalFocus={returnFocusTo ? () => returnFocusTo() ?? true : undefined}
         className={cn("w-full gap-0 sm:max-w-(--sheet-width-wide)", className)}
       >
@@ -116,15 +131,19 @@ function InlinePanel({
   footer,
   children,
   returnFocusTo,
+  label,
+  subject,
   className,
 }: Omit<DetailPanelProps, "open" | "onOpenChange" | "inline"> & { onClose: () => void }) {
   const titleId = useId();
   const descriptionId = useId();
   const closeRef = useRef<HTMLButtonElement>(null);
-  // The panel takes focus when it opens, as the overlay does.
+  // The panel takes focus when it opens, as the overlay does, and again
+  // when it is pointed at something else.
+  // biome-ignore lint/correctness/useExhaustiveDependencies: subject is the trigger, not an input
   useEffect(() => {
     closeRef.current?.focus();
-  }, []);
+  }, [subject]);
   const close = () => {
     const target = returnFocusTo?.();
     onClose();
@@ -140,7 +159,8 @@ function InlinePanel({
     <section
       role="dialog"
       aria-modal="false"
-      aria-labelledby={titleId}
+      aria-label={label}
+      aria-labelledby={label === undefined ? titleId : undefined}
       aria-describedby={description !== undefined ? descriptionId : undefined}
       data-slot="detail-panel"
       data-form="inline"
