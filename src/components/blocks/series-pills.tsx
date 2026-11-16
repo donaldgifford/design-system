@@ -7,7 +7,7 @@ export interface SeriesPill {
   /** A CSS color; the chart tokens as `var(--chart-1)` are the usual choice. */
   color: string;
   /** The series' current value, shown after its label. */
-  value?: ReactNode;
+  value?: ReactNode | undefined;
 }
 
 interface SeriesPillsProps {
@@ -17,7 +17,7 @@ interface SeriesPillsProps {
   onValueChange: (key: string) => void;
   /** The accessible name: what is being picked. */
   label: string;
-  className?: string;
+  className?: string | undefined;
 }
 
 /**

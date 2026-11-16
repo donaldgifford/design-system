@@ -13,7 +13,7 @@ export interface StackRow {
   /** The count for each segment key; a missing key is zero. */
   counts: Readonly<Record<string, number>>;
   /** Replaces the label text, for a link. */
-  render?: (label: string) => ReactNode;
+  render?: ((label: string) => ReactNode) | undefined;
 }
 
 export interface RowShare {
@@ -55,10 +55,10 @@ function describe(rows: readonly StackRow[], segments: readonly StackSegment[]):
 interface StackedBarsProps {
   rows: readonly StackRow[];
   segments: readonly StackSegment[];
-  legend?: boolean;
+  legend?: boolean | undefined;
   /** The accessible name: what the rows and segments are. */
   label: string;
-  className?: string;
+  className?: string | undefined;
 }
 
 /**

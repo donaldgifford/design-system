@@ -6,9 +6,9 @@ import { IconAlertTriangle, IconRotateClockwise } from "@tabler/icons-react";
 interface ErrorStateProps {
   error: unknown;
   /** Shown instead of the error's reason. */
-  title?: string;
-  onRetry?: () => void;
-  className?: string;
+  title?: string | undefined;
+  onRetry?: (() => void) | undefined;
+  className?: string | undefined;
 }
 
 /** A failed load inside a page: the problem's reason, its request id, and a retry. */

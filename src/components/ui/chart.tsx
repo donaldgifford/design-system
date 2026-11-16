@@ -12,8 +12,8 @@ type TooltipNameType = number | string;
 export type ChartConfig = Record<
   string,
   {
-    label?: React.ReactNode;
-    icon?: React.ComponentType;
+    label?: React.ReactNode | undefined;
+    icon?: React.ComponentType | undefined;
   } & (
     | { color?: string; theme?: never }
     | { color?: never; theme: Record<keyof typeof THEMES, string> }
@@ -121,11 +121,11 @@ function ChartTooltipContent({
   labelKey,
 }: React.ComponentProps<typeof RechartsPrimitive.Tooltip> &
   React.ComponentProps<"div"> & {
-    hideLabel?: boolean;
-    hideIndicator?: boolean;
-    indicator?: "line" | "dot" | "dashed";
-    nameKey?: string;
-    labelKey?: string;
+    hideLabel?: boolean | undefined;
+    hideIndicator?: boolean | undefined;
+    indicator?: "line" | "dot" | "dashed" | undefined;
+    nameKey?: string | undefined;
+    labelKey?: string | undefined;
   } & Omit<
     RechartsPrimitive.DefaultTooltipContentProps<TooltipValueType, TooltipNameType>,
     "accessibilityLayer"
@@ -253,8 +253,8 @@ function ChartLegendContent({
   verticalAlign = "bottom",
   nameKey,
 }: React.ComponentProps<"div"> & {
-  hideIcon?: boolean;
-  nameKey?: string;
+  hideIcon?: boolean | undefined;
+  nameKey?: string | undefined;
 } & RechartsPrimitive.DefaultLegendContentProps) {
   const { config } = useChart();
 

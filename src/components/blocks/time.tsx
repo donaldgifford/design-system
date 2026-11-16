@@ -22,9 +22,9 @@ const TimeZoneContext = createContext<TimeZoneContextValue>({ zone: "local", set
 interface TimeZoneProviderProps {
   children: ReactNode;
   /** The zone to start in; omitted, the stored choice, else local. */
-  initial?: Zone;
+  initial?: Zone | undefined;
   /** The localStorage key the choice is kept under. */
-  storageKey?: string;
+  storageKey?: string | undefined;
 }
 
 /**
@@ -56,8 +56,8 @@ export function useTimeZone(): TimeZoneContextValue {
 interface TimeProps {
   /** An RFC 3339 time; one with no zone designator is read as UTC. */
   iso: string | undefined;
-  style?: TimeStyle;
-  className?: string;
+  style?: TimeStyle | undefined;
+  className?: string | undefined;
 }
 
 /**

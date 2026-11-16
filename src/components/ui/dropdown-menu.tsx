@@ -56,8 +56,8 @@ function DropdownMenuItem({
   variant = "default",
   ...props
 }: MenuPrimitive.Item.Props & {
-  inset?: boolean;
-  variant?: "default" | "destructive";
+  inset?: boolean | undefined;
+  variant?: "default" | "destructive" | undefined;
 }) {
   return (
     <MenuPrimitive.Item
@@ -128,7 +128,7 @@ function DropdownMenuLabel({
   inset,
   ...props
 }: MenuPrimitive.GroupLabel.Props & {
-  inset?: boolean;
+  inset?: boolean | undefined;
 }) {
   return (
     <MenuPrimitive.GroupLabel
@@ -173,7 +173,7 @@ function DropdownMenuSubTrigger({
   children,
   ...props
 }: MenuPrimitive.SubmenuTrigger.Props & {
-  inset?: boolean;
+  inset?: boolean | undefined;
 }) {
   return (
     <MenuPrimitive.SubmenuTrigger

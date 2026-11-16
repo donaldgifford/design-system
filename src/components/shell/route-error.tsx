@@ -6,8 +6,8 @@ interface RouteErrorLayoutProps {
   title: string;
   message: string;
   /** The HTTP status, shown beside the title when the error came from an API. */
-  status?: number;
-  requestId?: string;
+  status?: number | undefined;
+  requestId?: string | undefined;
   onRetry: () => void;
 }
 

@@ -3,11 +3,11 @@ import { cn } from "@donaldgifford/design-system/lib/utils";
 interface SparklineProps {
   /** The series, oldest first; a null is an unmeasured point and leaves a gap. */
   values: readonly (number | null)[];
-  width?: number;
-  height?: number;
+  width?: number | undefined;
+  height?: number | undefined;
   /** A CSS color; the chart tokens as `var(--chart-1)` are the usual choice. */
-  color?: string;
-  className?: string;
+  color?: string | undefined;
+  className?: string | undefined;
 }
 
 /**

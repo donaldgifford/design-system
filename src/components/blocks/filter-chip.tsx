@@ -3,9 +3,9 @@ import type { ComponentProps, ReactNode } from "react";
 
 interface FilterChipProps extends Omit<ComponentProps<"button">, "name" | "value"> {
   /** The filter's key. Without one, the chip is the dashed "add a filter" chip. */
-  name?: string;
+  name?: string | undefined;
   /** The filter's value, shown after the key. */
-  value?: ReactNode;
+  value?: ReactNode | undefined;
 }
 
 /**

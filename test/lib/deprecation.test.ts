@@ -17,7 +17,8 @@ const size: Deprecation = { component: "Button", what: 'size="xs"', instead: 'si
 describe("deprecation", () => {
   const nodeEnv = process.env.NODE_ENV;
   afterEach(() => {
-    process.env.NODE_ENV = nodeEnv;
+    if (nodeEnv === undefined) delete process.env.NODE_ENV;
+    else process.env.NODE_ENV = nodeEnv;
   });
 
   test("nothing is deprecated yet", () => {

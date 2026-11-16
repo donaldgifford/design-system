@@ -52,12 +52,12 @@ declare module "@tanstack/react-table" {
     TValue extends CellData,
   > {
     /** A numeric column: right-aligned, in tabular figures. */
-    numeric?: boolean;
+    numeric?: boolean | undefined;
     /**
      * Drops the column below a viewport breakpoint, or, as "compact",
      * whenever the table is told it shares its row with something else.
      */
-    hideBelow?: "md" | "lg" | "xl" | "compact";
+    hideBelow?: "md" | "lg" | "xl" | "compact" | undefined;
   }
 }
 
@@ -100,22 +100,22 @@ export interface DataTableProps<TData extends RowData> {
    * The total row count when the server already filtered, sorted, and
    * paged the data; omitted, the table does all three itself.
    */
-  total?: number;
-  getRowId?: (row: TData) => string;
-  onRowClick?: (row: TData) => void;
+  total?: number | undefined;
+  getRowId?: ((row: TData) => string) | undefined;
+  onRowClick?: ((row: TData) => void) | undefined;
   /** The id (as `getRowId` gives it) of the row to mark selected: the one a detail panel shows. */
-  selectedId?: string;
+  selectedId?: string | undefined;
   /** Placeholder for the filter input; omit it to hide the input. */
-  filterPlaceholder?: string;
-  isLoading?: boolean;
+  filterPlaceholder?: string | undefined;
+  isLoading?: boolean | undefined;
   /**
    * The table shares its row (a detail panel is open beside it): columns
    * marked `hideBelow: "compact"` are dropped whatever the viewport.
    */
-  compact?: boolean;
+  compact?: boolean | undefined;
   /** Rendered when there are no rows after filtering. */
-  empty?: ReactNode;
-  className?: string;
+  empty?: ReactNode | undefined;
+  className?: string | undefined;
 }
 
 const emptyRows: never[] = [];
@@ -159,7 +159,7 @@ export function DataTable<TData extends RowData>({
     features: dataTableFeatures,
     columns: shown,
     data: (data.length === 0 ? emptyRows : data) as TData[],
-    getRowId: getRowId ? (row) => getRowId(row) : undefined,
+    ...(getRowId ? { getRowId: (row: TData) => getRowId(row) } : {}),
     state: { sorting, pagination, globalFilter: search.q ?? "" },
     onSortingChange: (updater) => {
       const next = typeof updater === "function" ? updater(sorting) : updater;
@@ -178,7 +178,7 @@ export function DataTable<TData extends RowData>({
     manualSorting: manual,
     manualFiltering: manual,
     manualPagination: manual,
-    rowCount: total,
+    ...(total !== undefined ? { rowCount: total } : {}),
     enableSortingRemoval: true,
   });
 
@@ -317,7 +317,7 @@ function DataRow<TData extends RowData>({
   selected,
 }: {
   row: Row<DataTableFeatures, TData>;
-  onRowClick?: (row: TData) => void;
+  onRowClick?: ((row: TData) => void) | undefined;
   selected: boolean;
 }) {
   const clickable = onRowClick !== undefined;

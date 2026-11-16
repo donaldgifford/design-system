@@ -8,8 +8,8 @@ export interface DiffLine {
   op: DiffOp;
   text: string;
   /** Line numbers in the old and new text; absent on the side that lacks the line. */
-  oldNumber?: number;
-  newNumber?: number;
+  oldNumber?: number | undefined;
+  newNumber?: number | undefined;
 }
 
 /**
@@ -73,10 +73,10 @@ export function diffLines(before: string, after: string): DiffLine[] {
 interface DiffViewProps {
   before: string;
   after: string;
-  language?: Language;
+  language?: Language | undefined;
   /** The file name in the header. */
-  file?: string;
-  className?: string;
+  file?: string | undefined;
+  className?: string | undefined;
 }
 
 const opClass: Record<DiffOp, string> = {

@@ -18,11 +18,11 @@ interface ShellSidebarProps {
   /** The nav landmark's name, such as "Home navigation". */
   label: string;
   /** Above the nav: the app switcher, a `ShellSidebarIdentity` in a menu. */
-  header?: ReactNode;
+  header?: ReactNode | undefined;
   /** Below the nav: the user menu, a `ShellSidebarIdentity` in a menu. */
-  footer?: ReactNode;
+  footer?: ReactNode | undefined;
   /** `ShellSidebarGroup`s. */
-  children?: ReactNode;
+  children?: ReactNode | undefined;
 }
 
 /**
@@ -61,7 +61,7 @@ export function ShellSidebar({ label, header, footer, children }: ShellSidebarPr
 
 interface ShellSidebarGroupProps {
   /** The group label; none for an ungrouped list. */
-  label?: string;
+  label?: string | undefined;
   /** `SidebarMenuItem`s. */
   children: ReactNode;
 }
@@ -82,7 +82,7 @@ interface ShellSidebarIdentityProps {
   /** The square on the left: an `AppMark` or an `AvatarMark`. */
   mark: ReactNode;
   title: string;
-  subtitle?: string;
+  subtitle?: string | undefined;
 }
 
 /**

@@ -22,7 +22,7 @@ function SelectTrigger({
   children,
   ...props
 }: SelectPrimitive.Trigger.Props & {
-  size?: "sm" | "default";
+  size?: "sm" | "default" | undefined;
 }) {
   return (
     <SelectPrimitive.Trigger

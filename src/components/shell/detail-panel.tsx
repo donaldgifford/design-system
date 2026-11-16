@@ -20,21 +20,21 @@ interface DetailPanelProps {
   open: boolean;
   onOpenChange: (open: boolean) => void;
   title: ReactNode;
-  description?: ReactNode;
+  description?: ReactNode | undefined;
   /** Actions pinned under the body. */
-  footer?: ReactNode;
+  footer?: ReactNode | undefined;
   children: ReactNode;
   /**
    * Render in the page flow, beside the list, instead of over it. The
    * page gives the panel a grid column.
    */
-  inline?: boolean;
+  inline?: boolean | undefined;
   /**
    * The element to focus on close: the row that opened the panel.
    * Omitted, the overlay returns focus to where it was.
    */
-  returnFocusTo?: () => HTMLElement | null | undefined;
-  className?: string;
+  returnFocusTo?: (() => HTMLElement | null | undefined) | undefined;
+  className?: string | undefined;
 }
 
 /**
@@ -179,7 +179,7 @@ export function DetailSection({
 }: {
   title: ReactNode;
   children: ReactNode;
-  className?: string;
+  className?: string | undefined;
 }) {
   return (
     <section data-slot="detail-section" className={className}>
@@ -198,8 +198,8 @@ export function DetailInset({
   ...props
 }: {
   children: ReactNode;
-  className?: string;
-  "aria-label"?: string;
+  className?: string | undefined;
+  "aria-label"?: string | undefined;
 }) {
   return (
     <div

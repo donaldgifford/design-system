@@ -11,11 +11,11 @@ export interface Bounds {
 
 export interface BoundsOptions {
   /** A percent axis never leaves 0 to 100. */
-  percent?: boolean;
+  percent?: boolean | undefined;
   /** The floor and ceiling land on a multiple of this. */
-  step?: number;
+  step?: number | undefined;
   /** Room left above the largest and below the smallest value. */
-  pad?: number;
+  pad?: number | undefined;
 }
 
 /**

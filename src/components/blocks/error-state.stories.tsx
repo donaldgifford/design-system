@@ -43,4 +43,5 @@ export const CustomTitle: Story = {
   args: { error: errors.string, title: "Couldn't load deploys" },
 };
 
-export const WithoutRetry: Story = { args: { onRetry: undefined } };
+// Storybook types an arg from the meta's value, which leaves no room for "unset".
+export const WithoutRetry: Story = { args: { onRetry: undefined as never } };

@@ -24,22 +24,22 @@ export interface ChartTable {
   head: readonly string[];
   rows: readonly (readonly ReactNode[])[];
   /** The columns to right-align in tabular figures, by index. */
-  numeric?: readonly number[];
+  numeric?: readonly number[] | undefined;
   /** A muted line under the table: "latest 30 of 90 points". */
-  note?: ReactNode;
+  note?: ReactNode | undefined;
 }
 
 interface ChartCardProps {
   title: ReactNode;
-  description?: ReactNode;
+  description?: ReactNode | undefined;
   /** Controls in the header, before the table toggle: a range picker, an export. */
-  action?: ReactNode;
+  action?: ReactNode | undefined;
   /** The same data the plot draws. Each chart block exports a helper that builds it. */
   table: ChartTable;
   /** A legend under the plot; hidden with it. */
-  legend?: ReactNode;
+  legend?: ReactNode | undefined;
   children: ReactNode;
-  className?: string;
+  className?: string | undefined;
 }
 
 /**
@@ -139,7 +139,7 @@ export function SeriesLegend({
   className,
 }: {
   items: readonly LegendItem[];
-  className?: string;
+  className?: string | undefined;
 }) {
   return (
     <ul
@@ -163,7 +163,7 @@ export function SeriesLegend({
 export interface ChartTipRow {
   label: string;
   value: ReactNode;
-  color?: string;
+  color?: string | undefined;
 }
 
 /** The hover card the chart blocks share: a heading, then a row per series. */
@@ -200,7 +200,7 @@ interface ChartPlotProps {
   height: number;
   /** One Recharts chart. */
   children: ComponentProps<typeof ChartContainer>["children"];
-  className?: string;
+  className?: string | undefined;
 }
 
 /**

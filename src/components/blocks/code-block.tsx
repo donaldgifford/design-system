@@ -11,12 +11,12 @@ import { useState } from "react";
 
 interface CodeBlockProps {
   code: string;
-  language?: Language;
+  language?: Language | undefined;
   /** A caption above the code, for example a file name. */
-  title?: string;
+  title?: string | undefined;
   /** Numbers each line down the left; for policy documents and long files. */
-  lineNumbers?: boolean;
-  className?: string;
+  lineNumbers?: boolean | undefined;
+  className?: string | undefined;
 }
 
 /** The highlighter's token kinds as text colors; shared with the diff viewer. */

@@ -5,12 +5,12 @@ export interface Stat {
   label: string;
   value: ReactNode;
   /** A unit or a comparison after the value, muted. */
-  hint?: ReactNode;
+  hint?: ReactNode | undefined;
 }
 
 interface StatStripProps {
   items: readonly Stat[];
-  className?: string;
+  className?: string | undefined;
 }
 
 /** A row of small labelled figures across the top of a card: a detail page's vitals. */

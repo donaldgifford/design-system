@@ -6,7 +6,7 @@ const separatorClass =
 
 interface SeparatorProps extends SeparatorPrimitive.Props {
   /** Purely visual: hidden from assistive tech. A real separator when false. */
-  decorative?: boolean;
+  decorative?: boolean | undefined;
 }
 
 function Separator({
