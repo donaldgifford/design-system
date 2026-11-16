@@ -163,16 +163,17 @@ Add what repo-guardian has and the import lacks, rebuilt on the package's primit
 <!--docz:tasks:start-->
 #### Tasks
 
-- [ ] Charts: trend, bar buckets, pair bars, bar list, stacked bars, sparkline, tooltip, scale helpers
-- [ ] Chart card with a plot / table toggle
-- [ ] Filter chip
-- [ ] Group grid with expandable rows and heat-shaded cells
-- [ ] Meter with threshold tones
-- [ ] Data-table columns that hide below a breakpoint
-- [ ] Detail panel that is inline on wide screens and a drawer below (confirm it is missing first)
-- [ ] Time display with a local / UTC toggle
-- [ ] CSV export button and "load more" control
-- [ ] A story and tests for each
+- [x] Charts: trend, bar buckets, pair bars, bar list, stacked bars, sparkline, tooltip, scale helpers
+- [x] Chart card with a plot / table toggle
+- [x] Filter chip
+- [x] Group grid with expandable rows and heat-shaded cells
+- [x] Meter with threshold tones
+- [x] Data-table columns that hide below a breakpoint, and a selected row
+- [x] Detail panel that is inline on wide screens and a drawer below (it was missing: `detail-sheet` is overlay-only)
+- [x] Time display with a local / UTC toggle
+- [x] CSV export button and "load more" control
+- [x] Series pills, the legend that picks a chart's series (found while checking the success criteria)
+- [x] A story and tests for each
 
 <!--docz:tasks:end-->
 

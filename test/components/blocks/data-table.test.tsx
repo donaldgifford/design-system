@@ -107,3 +107,65 @@ describe("DataTable", () => {
     expect(screen.getByTestId("page-label")).toHaveTextContent("Page 0 of 0");
   });
 });
+
+describe("DataTable columns", () => {
+  const responsive = helper.columns([
+    helper.accessor("name", { header: "Name" }),
+    helper.accessor("id", { header: "ID", meta: { hideBelow: "compact" } }),
+    helper.accessor("cpu", { header: "vCPU", meta: { numeric: true, hideBelow: "lg" } }),
+  ]);
+  const table = (props: { compact?: boolean; isLoading?: boolean; data?: Sandbox[] }) => (
+    <main>
+      <DataTable
+        columns={responsive}
+        data={props.data ?? rows.slice(0, 2)}
+        search={{ ...listSearchDefaults }}
+        onSearchChange={() => {}}
+        compact={props.compact}
+        isLoading={props.isLoading}
+      />
+    </main>
+  );
+
+  test("hideBelow hides a column's header and cells under its breakpoint", async () => {
+    const { container } = render(table({}));
+    const headers = screen.getAllByRole("columnheader");
+    expect(headers.map((h) => h.textContent)).toEqual(["Name", "ID", "vCPU"]);
+    expect(headers[2]).toHaveClass("hidden", "lg:table-cell", "text-right");
+    expect(headers[0]).not.toHaveClass("hidden");
+    expect(headers[1]).not.toHaveClass("hidden");
+    const cells = screen.getAllByRole("row")[1]?.querySelectorAll("td");
+    expect(cells?.[2]).toHaveClass("hidden", "lg:table-cell", "tabular-nums");
+    expect(cells?.[0]).not.toHaveClass("hidden");
+    await expectNoA11yViolations(container);
+  });
+
+  test("selectedId marks one row selected", () => {
+    render(
+      <DataTable
+        columns={responsive}
+        data={rows.slice(0, 3)}
+        search={{ ...listSearchDefaults }}
+        onSearchChange={() => {}}
+        getRowId={(row) => row.id}
+        selectedId="sbx_2"
+      />,
+    );
+    const body = screen.getAllByRole("row").slice(1);
+    expect(body.map((row) => row.getAttribute("data-state"))).toEqual([null, "selected", null]);
+    expect(body[1]).toHaveAttribute("aria-selected", "true");
+    expect(body[0]).not.toHaveAttribute("aria-selected");
+  });
+
+  test("compact drops the columns marked for it, whatever the viewport", () => {
+    const { rerender } = render(table({ compact: true }));
+    expect(screen.getAllByRole("columnheader").map((h) => h.textContent)).toEqual(["Name", "vCPU"]);
+    expect(screen.getAllByRole("row")[1]?.querySelectorAll("td")).toHaveLength(2);
+    rerender(table({ compact: true, data: [] }));
+    expect(screen.getByText("No results.").closest("td")).toHaveAttribute("colspan", "2");
+    rerender(table({ compact: true, isLoading: true }));
+    const placeholder = screen.getAllByRole("row")[1]?.querySelectorAll("td");
+    expect(placeholder).toHaveLength(2);
+    expect(placeholder?.[1]).toHaveClass("hidden", "lg:table-cell");
+  });
+});

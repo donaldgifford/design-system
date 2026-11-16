@@ -22,10 +22,10 @@ Import subpaths, never a barrel:
 | `@donaldgifford/design-system/tokens.json` | the same tokens as W3C Design Tokens (DTCG) |
 | `@donaldgifford/design-system/globals.css` | Tailwind, the tokens and both themes, the `@theme inline` map, the base layer, the fonts, and an `@source` over the package |
 | `@donaldgifford/design-system/components/<name>` | a primitive (`button`, `dialog`, `sidebar`, ...) |
-| `@donaldgifford/design-system/blocks/<name>` | a block (`data-table`, `kpi`, `page-header`, ...) |
-| `@donaldgifford/design-system/shell/<name>` | presentational chrome (`top-bar`, `sidebar`, `detail-sheet`, `route-error`, `page-skeleton`) |
-| `@donaldgifford/design-system/lib/<name>` | `utils` (`cn()`), `errors`, `problem`, `highlight`, `list-search` |
-| `@donaldgifford/design-system/hooks/<name>` | shared hooks (`use-mobile`) |
+| `@donaldgifford/design-system/blocks/<name>` | a block (`data-table`, `kpi`, `page-header`, `trend-chart`, `group-grid`, ...) |
+| `@donaldgifford/design-system/shell/<name>` | presentational chrome (`top-bar`, `sidebar`, `detail-sheet`, `detail-panel`, `route-error`, `page-skeleton`) |
+| `@donaldgifford/design-system/lib/<name>` | `utils` (`cn()`), `errors`, `problem`, `highlight`, `list-search`, `chart-scale`, `csv`, `time`, `percent` |
+| `@donaldgifford/design-system/hooks/<name>` | shared hooks (`use-mobile`, `use-media-query`) |
 
 Import `globals.css` once, from the app's entry. Its `@source` is what
 generates the package's classes, since a consumer's Tailwind scans only its
@@ -59,10 +59,10 @@ src/
   styles/           # tokens.css and globals.css
   components/       # each <name>.tsx with its <name>.stories.tsx beside it
     ui/             # shadcn-origin primitives, owned here
-    blocks/         # composites: DataTable, Kpi, Timeline, ...
+    blocks/         # composites: DataTable, Kpi, Timeline, the charts, ...
     shell/          # presentational chrome; takes what it renders as props or slots
-  lib/              # cn(), ApiError and problem details, the highlighter, list search
-  hooks/            # use-mobile
+  lib/              # cn(), ApiError and problem details, the highlighter, list search, chart scales, CSV, time
+  hooks/            # use-mobile, use-media-query
 test/               # a test per primitive, block, shell part, and lib module
 docs/               # design decisions, managed with docz
 ```
