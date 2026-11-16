@@ -9,8 +9,9 @@ The package is `@donaldgifford/design-system`. It has no build step:
 consumers compile its TypeScript and CSS with their own Vite and Tailwind v4.
 React, React DOM and Tailwind are peer dependencies.
 
-> **Status:** pre-release. The package is not published yet. See
-> [RFC-0001](docs/rfc/) for the plan and [IMPL-0001](docs/impl/) for progress.
+> **Status:** 0.x, published to GitHub Packages. Expect breaking changes
+> between minor versions until 1.0. See [RFC-0001](docs/rfc/) for the plan
+> and [IMPL-0001](docs/impl/) for progress.
 
 ## Using it
 

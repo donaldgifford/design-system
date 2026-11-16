@@ -197,9 +197,9 @@ Publish 0.1.0 and prove it installs outside this repo.
 #### Tasks
 
 - [x] Remove `"private": true`
-- [ ] Merge the "version packages" pull request
-- [ ] Confirm the package and the GitHub Release exist
-- [ ] Install the package in a scratch Vite and Tailwind v4 project and render a page
+- [x] Merge the "version packages" pull request
+- [x] Confirm the package and the GitHub Release exist
+- [x] Install the package in a scratch Vite and Tailwind v4 project and render a page
 - [ ] Publish the Storybook
 
 <!--docz:tasks:end-->
