@@ -5,13 +5,13 @@ interface LoadMoreProps {
   /** How many rows the page holds. */
   loaded: number;
   /** The size of the whole set, when the server says. */
-  total?: number;
+  total?: number | undefined;
   hasMore: boolean;
-  loading?: boolean;
+  loading?: boolean | undefined;
   onMore: () => void;
   /** What a row is, plural: "rows", "findings". */
-  noun?: string;
-  className?: string;
+  noun?: string | undefined;
+  className?: string | undefined;
 }
 
 /**

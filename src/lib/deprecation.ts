@@ -29,6 +29,10 @@ export function deprecationMessage({ component, what, instead }: Deprecation): s
   return `@donaldgifford/design-system: ${component} ${what} is deprecated and goes in the next major; use ${instead}.`;
 }
 
+// Declared here so the module typechecks in an app with no Node types;
+// the bundler replaces the expression either way.
+declare const process: { env: { NODE_ENV?: string | undefined } };
+
 const warned = new Set<string>();
 
 /**

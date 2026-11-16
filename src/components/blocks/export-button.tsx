@@ -21,15 +21,15 @@ interface ExportButtonProps<T> {
   /** Names the file and the button: "findings" saves `findings-<date>.csv`. */
   name: string;
   /** The filters in force; each set one joins the filename. */
-  filter?: Record<string, CsvValue>;
+  filter?: Record<string, CsvValue> | undefined;
   columns: CsvColumns<T>;
   /** The rows the page holds; undefined while they load. */
   rows: readonly T[] | undefined;
   /** Export the whole set, not only the loaded rows. */
-  all?: ExportFetch<T>;
+  all?: ExportFetch<T> | undefined;
   /** The file sink; a test replaces it. */
-  download?: (name: string, text: string) => void;
-  className?: string;
+  download?: ((name: string, text: string) => void) | undefined;
+  className?: string | undefined;
 }
 
 /**

@@ -14,8 +14,8 @@ export interface FlowIconNode {
   y: number;
   icon: TablerIcon;
   title: string;
-  detail?: string;
-  status?: Exclude<FlowStatus, "dim">;
+  detail?: string | undefined;
+  status?: Exclude<FlowStatus, "dim"> | undefined;
 }
 
 /** A node that asks for a decision. */
@@ -26,9 +26,9 @@ export interface FlowApproveNode {
   y: number;
   icon: TablerIcon;
   title: string;
-  detail?: string;
-  actionLabel?: string;
-  onAction?: () => void;
+  detail?: string | undefined;
+  actionLabel?: string | undefined;
+  onAction?: (() => void) | undefined;
 }
 
 /** A card-shaped node with a footer line. */
@@ -39,10 +39,10 @@ export interface FlowCardNode {
   y: number;
   icon: TablerIcon;
   title: string;
-  detail?: string;
-  footer?: ReactNode;
-  status?: Exclude<FlowStatus, "dim">;
-  width?: number;
+  detail?: string | undefined;
+  footer?: ReactNode | undefined;
+  status?: Exclude<FlowStatus, "dim"> | undefined;
+  width?: number | undefined;
 }
 
 export type FlowNode = FlowIconNode | FlowApproveNode | FlowCardNode;
@@ -50,12 +50,12 @@ export type FlowNode = FlowIconNode | FlowApproveNode | FlowCardNode;
 export interface FlowEdge {
   from: string;
   to: string;
-  status?: FlowStatus;
-  label?: string;
+  status?: FlowStatus | undefined;
+  label?: string | undefined;
   /** Horizontal (right to left anchors) or vertical (bottom to top); inferred from positions. */
-  direction?: "h" | "v";
+  direction?: "h" | "v" | undefined;
   /** Where along the run the bend sits, 0 to 1. */
-  at?: number;
+  at?: number | undefined;
 }
 
 interface FlowProps {
@@ -64,8 +64,8 @@ interface FlowProps {
   nodes: readonly FlowNode[];
   edges: readonly FlowEdge[];
   /** A bar above the canvas: crumbs, counts, a status line. */
-  bar?: ReactNode;
-  className?: string;
+  bar?: ReactNode | undefined;
+  className?: string | undefined;
 }
 
 const iconSize = { w: 100, h: 66 };

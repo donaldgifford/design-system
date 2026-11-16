@@ -38,5 +38,11 @@ export const NoResults: Story = {
 };
 
 export const TitleOnly: Story = {
-  args: { title: "No workflows yet", description: undefined, icon: undefined, action: undefined },
+  // Storybook types an arg from the meta's value, which leaves no room for "unset".
+  args: {
+    title: "No workflows yet",
+    description: undefined,
+    icon: undefined as never,
+    action: undefined,
+  },
 };

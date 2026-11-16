@@ -4,11 +4,11 @@ import type { ReactNode } from "react";
 
 interface EmptyStateProps {
   title: string;
-  description?: ReactNode;
-  icon?: TablerIcon;
+  description?: ReactNode | undefined;
+  icon?: TablerIcon | undefined;
   /** The call to action. */
-  action?: ReactNode;
-  className?: string;
+  action?: ReactNode | undefined;
+  className?: string | undefined;
 }
 
 /** Nothing here yet, and what to do about it. */

@@ -19,11 +19,11 @@ interface PairBarsProps {
   /** The names of the `a` and `b` series. */
   series: readonly [string, string];
   /** CSS colors for `a` and `b`. */
-  colors?: readonly [string, string];
-  height?: number;
+  colors?: readonly [string, string] | undefined;
+  height?: number | undefined;
   /** The accessible name: what the chart shows. */
   label: string;
-  className?: string;
+  className?: string | undefined;
 }
 
 /**

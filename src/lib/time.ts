@@ -82,8 +82,8 @@ export function relativeTime(date: Date, now: Date = new Date()): string {
 
 export interface FormatTimeOptions {
   zone: Zone;
-  style?: TimeStyle;
-  now?: Date;
+  style?: TimeStyle | undefined;
+  now?: Date | undefined;
 }
 
 /**

@@ -6,9 +6,9 @@ export interface BarListItem {
   label: string;
   value: number;
   /** Muted text after the label: a kind, a family. */
-  sub?: string;
+  sub?: string | undefined;
   /** Replaces the label text, for a link. */
-  render?: (label: string) => ReactNode;
+  render?: ((label: string) => ReactNode) | undefined;
 }
 
 /** The most rows a bar list ranks before it folds the rest. */
@@ -31,13 +31,13 @@ export function foldBarList(items: readonly BarListItem[], max = BAR_LIST_MAX): 
 interface BarListProps {
   items: readonly BarListItem[];
   /** A CSS color; the chart tokens as `var(--chart-1)` are the usual choice. */
-  color?: string;
+  color?: string | undefined;
   /** Print each row's share of the total after its count. */
-  share?: boolean;
-  max?: number;
+  share?: boolean | undefined;
+  max?: number | undefined;
   /** The accessible name: what is being ranked. */
   label: string;
-  className?: string;
+  className?: string | undefined;
 }
 
 /**

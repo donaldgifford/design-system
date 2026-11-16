@@ -5,7 +5,15 @@ import type { ReactNode } from "react";
 
 export interface TimelineTag {
   label: string;
-  variant?: "default" | "secondary" | "outline" | "destructive" | "success" | "warning" | "info";
+  variant?:
+    | "default"
+    | "secondary"
+    | "outline"
+    | "destructive"
+    | "success"
+    | "warning"
+    | "info"
+    | undefined;
 }
 
 export interface TimelineItem {
@@ -14,22 +22,22 @@ export interface TimelineItem {
   actor: string;
   /** "requested", "approved", "rotated": the verb between actor and object. */
   verb: string;
-  object?: ReactNode;
+  object?: ReactNode | undefined;
   /** A line under the headline. */
-  detail?: ReactNode;
+  detail?: ReactNode | undefined;
   when: string;
-  tags?: readonly TimelineTag[];
-  icon?: TablerIcon;
+  tags?: readonly TimelineTag[] | undefined;
+  icon?: TablerIcon | undefined;
   /** Tints the avatar: a decision, a failure, a system actor. */
-  tone?: "neutral" | "success" | "destructive" | "info";
+  tone?: "neutral" | "success" | "destructive" | "info" | undefined;
 }
 
 export interface ChangelogItem {
   id: string;
   date: string;
   title: string;
-  detail?: ReactNode;
-  tags?: readonly TimelineTag[];
+  detail?: ReactNode | undefined;
+  tags?: readonly TimelineTag[] | undefined;
 }
 
 const toneClass: Record<NonNullable<TimelineItem["tone"]>, string> = {
@@ -49,7 +57,7 @@ function initials(actor: string): string {
     .toUpperCase();
 }
 
-function Tags({ tags }: { tags?: readonly TimelineTag[] }) {
+function Tags({ tags }: { tags?: readonly TimelineTag[] | undefined }) {
   if (!tags || tags.length === 0) {
     return null;
   }
@@ -66,7 +74,7 @@ function Tags({ tags }: { tags?: readonly TimelineTag[] }) {
 
 interface TimelineProps {
   items: readonly TimelineItem[];
-  className?: string;
+  className?: string | undefined;
 }
 
 /** An activity feed: who did what, when, with the evidence as tags. */
@@ -115,7 +123,7 @@ export function Timeline({ items, className }: TimelineProps) {
 
 interface ChangelogProps {
   items: readonly ChangelogItem[];
-  className?: string;
+  className?: string | undefined;
 }
 
 /** A dated list with markers on a rail: releases, product updates. */

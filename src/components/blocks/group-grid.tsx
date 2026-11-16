@@ -17,9 +17,9 @@ export interface GridColumn {
   key: string;
   header: string;
   /** The color a measured cell is shaded in while the column is in `heat`. */
-  tone?: GridTone;
+  tone?: GridTone | undefined;
   /** Right for numbers (the default), left for text cells. */
-  align?: "left" | "right";
+  align?: "left" | "right" | undefined;
 }
 
 /** A count with the denominator its share and its shade divide by. */
@@ -29,7 +29,7 @@ export interface GridCount {
    * What `n` is a share of. Zero or null is "no data"; omitted, the cell
    * is a plain count with no share.
    */
-  of?: number | null;
+  of?: number | null | undefined;
 }
 
 /** A count, a bare number, or anything else rendered as given. */
@@ -39,10 +39,10 @@ export interface GridRow {
   key: string;
   label: ReactNode;
   /** The name the row's expand button reads; omitted, the key. */
-  name?: string;
+  name?: string | undefined;
   /** A muted line under the label. */
-  sub?: ReactNode;
-  badge?: ReactNode;
+  sub?: ReactNode | undefined;
+  badge?: ReactNode | undefined;
   cells: Readonly<Record<string, GridCell>>;
 }
 
@@ -145,7 +145,7 @@ interface GroupGridProps {
   columns: readonly GridColumn[];
   rows: readonly GridRow[];
   /** The keys of the columns currently shaded. */
-  heat?: readonly string[];
+  heat?: readonly string[] | undefined;
   /** The keys of the expanded rows. The state is the page's, so it can live in the URL. */
   open: readonly string[];
   onToggle: (key: string) => void;
@@ -155,10 +155,10 @@ interface GroupGridProps {
    */
   children: (row: GridRow) => ReactNode;
   /** The closing row: a label and a cell per column key. */
-  footer?: { label: ReactNode; cells: Readonly<Record<string, GridCell>> };
+  footer?: { label: ReactNode; cells: Readonly<Record<string, GridCell>> } | undefined;
   /** The accessible name: what the grid lists. */
   label: string;
-  className?: string;
+  className?: string | undefined;
 }
 
 /**
@@ -259,11 +259,11 @@ interface GridChildRowsProps {
   /** The key of the row these sit under. */
   parent: string;
   rows: readonly GridRow[];
-  loading?: boolean;
+  loading?: boolean | undefined;
   /** Rendered when the group has no children. */
-  empty?: ReactNode;
+  empty?: ReactNode | undefined;
   /** A closing line: "showing 20 of 134", a load-more control. */
-  footer?: ReactNode;
+  footer?: ReactNode | undefined;
 }
 
 /**

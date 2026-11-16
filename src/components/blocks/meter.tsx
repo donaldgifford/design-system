@@ -41,15 +41,15 @@ interface MeterProps {
   /** 0 to 100; clamped. A null is unmeasured: an empty track and "no data". */
   percent: number | null | undefined;
   /** Fixes the tone; omitted, it follows the thresholds. */
-  tone?: MeterTone;
-  thresholds?: MeterThresholds;
+  tone?: MeterTone | undefined;
+  thresholds?: MeterThresholds | undefined;
   /** Print the percentage after the bar. */
-  showValue?: boolean;
+  showValue?: boolean | undefined;
   /** `sm` is a table cell's bar, `md` a page's. */
-  size?: "sm" | "md";
+  size?: "sm" | "md" | undefined;
   /** The accessible name: what is measured. */
   label: string;
-  className?: string;
+  className?: string | undefined;
 }
 
 /**

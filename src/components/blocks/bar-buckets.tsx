@@ -14,13 +14,13 @@ export interface Bucket {
 interface BarBucketsProps {
   buckets: readonly Bucket[];
   /** A CSS color; the chart tokens as `var(--chart-1)` are the usual choice. */
-  color?: string;
+  color?: string | undefined;
   /** What a bar counts, for the tooltip. */
-  series?: string;
-  height?: number;
+  series?: string | undefined;
+  height?: number | undefined;
   /** The accessible name: what the chart shows. */
   label: string;
-  className?: string;
+  className?: string | undefined;
 }
 
 /**

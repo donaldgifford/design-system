@@ -31,11 +31,11 @@ function CommandDialog({
   showCloseButton = true,
   ...props
 }: Omit<React.ComponentProps<typeof Dialog>, "children"> & {
-  children?: React.ReactNode;
-  title?: string;
-  description?: string;
-  className?: string;
-  showCloseButton?: boolean;
+  children?: React.ReactNode | undefined;
+  title?: string | undefined;
+  description?: string | undefined;
+  className?: string | undefined;
+  showCloseButton?: boolean | undefined;
 }) {
   return (
     <Dialog {...props}>

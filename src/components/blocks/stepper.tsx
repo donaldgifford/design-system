@@ -6,13 +6,13 @@ export type StepStatus = "done" | "current" | "upcoming" | "failed";
 export interface Step {
   id: string;
   label: string;
-  description?: string;
+  description?: string | undefined;
   status: StepStatus;
 }
 
 interface StepperProps {
   steps: Step[];
-  className?: string;
+  className?: string | undefined;
 }
 
 const markerClass: Record<StepStatus, string> = {

@@ -14,8 +14,8 @@ const dotClass: Record<DotTone, string> = {
 interface DotProps {
   tone: DotTone;
   /** Pulses, for something happening right now. */
-  live?: boolean;
-  className?: string;
+  live?: boolean | undefined;
+  className?: string | undefined;
 }
 
 /** An 8px status dot. */
@@ -37,14 +37,14 @@ export function Dot({ tone, live = false, className }: DotProps) {
 
 interface ListRowProps {
   /** The leading element: a Dot, a badge, an avatar. */
-  leading?: ReactNode;
+  leading?: ReactNode | undefined;
   title: ReactNode;
-  subtitle?: ReactNode;
+  subtitle?: ReactNode | undefined;
   /** Badges and buttons on the right. */
-  trailing?: ReactNode;
+  trailing?: ReactNode | undefined;
   /** Makes the row one control: the title button stretched over the row. */
-  onClick?: () => void;
-  className?: string;
+  onClick?: (() => void) | undefined;
+  className?: string | undefined;
 }
 
 /**

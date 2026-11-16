@@ -58,9 +58,9 @@ function SidebarProvider({
   children,
   ...props
 }: React.ComponentProps<"div"> & {
-  defaultOpen?: boolean;
-  open?: boolean;
-  onOpenChange?: (open: boolean) => void;
+  defaultOpen?: boolean | undefined;
+  open?: boolean | undefined;
+  onOpenChange?: ((open: boolean) => void) | undefined;
 }) {
   const isMobile = useIsMobile();
   const [openMobile, setOpenMobile] = React.useState(false);
@@ -151,9 +151,9 @@ function Sidebar({
   children,
   ...props
 }: React.ComponentProps<"div"> & {
-  side?: "left" | "right";
-  variant?: "sidebar" | "floating" | "inset";
-  collapsible?: "offcanvas" | "icon" | "none";
+  side?: "left" | "right" | undefined;
+  variant?: "sidebar" | "floating" | "inset" | undefined;
+  collapsible?: "offcanvas" | "icon" | "none" | undefined;
 }) {
   const { isMobile, state, openMobile, setOpenMobile } = useSidebar();
 
@@ -475,8 +475,8 @@ function SidebarMenuButton({
   className,
   ...props
 }: useRender.ComponentProps<"button"> & {
-  isActive?: boolean;
-  tooltip?: string | React.ComponentProps<typeof TooltipContent>;
+  isActive?: boolean | undefined;
+  tooltip?: string | React.ComponentProps<typeof TooltipContent> | undefined;
 } & VariantProps<typeof sidebarMenuButtonVariants>) {
   const { isMobile, state } = useSidebar();
 
@@ -522,7 +522,7 @@ function SidebarMenuAction({
   showOnHover = false,
   ...props
 }: useRender.ComponentProps<"button"> & {
-  showOnHover?: boolean;
+  showOnHover?: boolean | undefined;
 }) {
   const own = {
     "data-slot": "sidebar-menu-action",
@@ -570,7 +570,7 @@ function SidebarMenuSkeleton({
   showIcon = false,
   ...props
 }: React.ComponentProps<"div"> & {
-  showIcon?: boolean;
+  showIcon?: boolean | undefined;
 }) {
   // Random width between 50 to 90%.
   const width = React.useMemo(() => {
@@ -631,8 +631,8 @@ function SidebarMenuSubButton({
   isActive = false,
   ...props
 }: useRender.ComponentProps<"a"> & {
-  size?: "sm" | "md";
-  isActive?: boolean;
+  size?: "sm" | "md" | undefined;
+  isActive?: boolean | undefined;
 }) {
   const own = {
     "data-slot": "sidebar-menu-sub-button",

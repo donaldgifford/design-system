@@ -5,10 +5,10 @@ export type ProgressTone = "default" | "success" | "warning" | "destructive";
 interface ProgressBarProps {
   /** 0 to 100; clamped. */
   value: number;
-  tone?: ProgressTone;
+  tone?: ProgressTone | undefined;
   /** The accessible name: what is progressing. */
   label: string;
-  className?: string;
+  className?: string | undefined;
 }
 
 const toneClass: Record<ProgressTone, string> = {

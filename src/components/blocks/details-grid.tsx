@@ -9,8 +9,8 @@ export interface Detail {
 interface DetailsGridProps {
   items: readonly Detail[];
   /** Columns at the `sm` breakpoint and up; one below it. */
-  columns?: 1 | 2 | 3;
-  className?: string;
+  columns?: 1 | 2 | 3 | undefined;
+  className?: string | undefined;
 }
 
 /** Explicit tracks throughout: an implicit `auto` track is content-sized and overflows its column. */

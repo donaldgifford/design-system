@@ -3,12 +3,12 @@ import type { ReactNode } from "react";
 
 interface PageHeaderProps {
   title: ReactNode;
-  description?: ReactNode;
+  description?: ReactNode | undefined;
   /** Buttons on the right. */
-  actions?: ReactNode;
+  actions?: ReactNode | undefined;
   /** Badges beside the title. */
-  meta?: ReactNode;
-  className?: string;
+  meta?: ReactNode | undefined;
+  className?: string | undefined;
 }
 
 /** The page's title row: title, optional badges and description, actions on the right. */

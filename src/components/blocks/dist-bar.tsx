@@ -9,7 +9,7 @@ export interface Segment {
 
 interface DistBarProps {
   segments: readonly Segment[];
-  className?: string;
+  className?: string | undefined;
 }
 
 /** One stacked horizontal bar with a legend: how a total splits. */
@@ -58,7 +58,7 @@ function describe(segments: readonly Segment[], total: number): string {
 
 interface OutcomesProps {
   items: readonly Segment[];
-  className?: string;
+  className?: string | undefined;
 }
 
 /** Labelled counts with a proportional bar under each: workflow outcomes, request states. */

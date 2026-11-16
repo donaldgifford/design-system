@@ -7,10 +7,10 @@ interface KpiProps {
   label: string;
   value: ReactNode;
   /** A short line under the value: a delta, a bound, a hint. */
-  hint?: ReactNode;
-  icon?: TablerIcon;
-  tone?: "default" | "success" | "warning" | "destructive";
-  className?: string;
+  hint?: ReactNode | undefined;
+  icon?: TablerIcon | undefined;
+  tone?: "default" | "success" | "warning" | "destructive" | undefined;
+  className?: string | undefined;
 }
 
 const toneClass: Record<NonNullable<KpiProps["tone"]>, string> = {

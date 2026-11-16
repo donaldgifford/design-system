@@ -24,27 +24,27 @@ export interface TrendPoint {
 
 interface TrendChartProps {
   points: readonly TrendPoint[];
-  unit?: ValueUnit;
+  unit?: ValueUnit | undefined;
   /** A CSS color; the chart tokens as `var(--chart-1)` are the usual choice. */
-  color?: string;
+  color?: string | undefined;
   /** Fits the x ticks: a day gets clock times, a longer range dates. */
-  rangeDays?: number;
-  height?: number;
+  rangeDays?: number | undefined;
+  height?: number | undefined;
   /** What the line measures, for the tooltip. */
   series: string;
   /** The accessible name: what the chart shows. */
   label: string;
   /** Rendered in place of the plot when there are no points. */
-  empty?: ReactNode;
-  className?: string;
+  empty?: ReactNode | undefined;
+  className?: string | undefined;
 }
 
 // Recharts hands an area's dot its value as a [baseline, value] pair, so
 // the dot reads its point from the series by index.
 interface DotProps {
-  cx?: number;
-  cy?: number;
-  index?: number;
+  cx?: number | undefined;
+  cy?: number | undefined;
+  index?: number | undefined;
 }
 
 /**
