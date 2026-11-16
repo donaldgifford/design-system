@@ -53,8 +53,20 @@ declare module "@tanstack/react-table" {
   > {
     /** A numeric column: right-aligned, in tabular figures. */
     numeric?: boolean;
+    /**
+     * Drops the column below a viewport breakpoint, or, as "compact",
+     * whenever the table is told it shares its row with something else.
+     */
+    hideBelow?: "md" | "lg" | "xl" | "compact";
   }
 }
+
+const hideClass = {
+  md: "hidden md:table-cell",
+  lg: "hidden lg:table-cell",
+  xl: "hidden xl:table-cell",
+  compact: "",
+} as const;
 
 /** The table features every DataTable carries: sorting, a text filter, pages. */
 export const dataTableFeatures = tableFeatures({
@@ -91,9 +103,16 @@ export interface DataTableProps<TData extends RowData> {
   total?: number;
   getRowId?: (row: TData) => string;
   onRowClick?: (row: TData) => void;
+  /** The id (as `getRowId` gives it) of the row to mark selected: the one a detail panel shows. */
+  selectedId?: string;
   /** Placeholder for the filter input; omit it to hide the input. */
   filterPlaceholder?: string;
   isLoading?: boolean;
+  /**
+   * The table shares its row (a detail panel is open beside it): columns
+   * marked `hideBelow: "compact"` are dropped whatever the viewport.
+   */
+  compact?: boolean;
   /** Rendered when there are no rows after filtering. */
   empty?: ReactNode;
   className?: string;
@@ -113,11 +132,20 @@ export function DataTable<TData extends RowData>({
   total,
   getRowId,
   onRowClick,
+  selectedId,
   filterPlaceholder,
   isLoading = false,
+  compact = false,
   empty,
   className,
 }: DataTableProps<TData>) {
+  const shown = useMemo(
+    () =>
+      (compact
+        ? columns.filter((column) => column.meta?.hideBelow !== "compact")
+        : columns) as DataTableColumn<TData>[],
+    [columns, compact],
+  );
   const manual = total !== undefined;
   const sorting = useMemo(() => {
     const sort = parseSort(search.sort);
@@ -129,7 +157,7 @@ export function DataTable<TData extends RowData>({
   );
   const table = useTable({
     features: dataTableFeatures,
-    columns: columns as DataTableColumn<TData>[],
+    columns: shown,
     data: (data.length === 0 ? emptyRows : data) as TData[],
     getRowId: getRowId ? (row) => getRowId(row) : undefined,
     state: { sorting, pagination, globalFilter: search.q ?? "" },
@@ -187,7 +215,10 @@ export function DataTable<TData extends RowData>({
                     <TableHead
                       key={header.id}
                       aria-sort={ariaSort(sorted)}
-                      className={cn(header.column.columnDef.meta?.numeric && "text-right")}
+                      className={cn(
+                        header.column.columnDef.meta?.numeric && "text-right",
+                        hiddenBelow(header.column.columnDef.meta?.hideBelow),
+                      )}
                     >
                       {header.isPlaceholder ? null : canSort ? (
                         <button
@@ -215,18 +246,25 @@ export function DataTable<TData extends RowData>({
           </TableHeader>
           <TableBody>
             {isLoading ? (
-              <LoadingRows columns={columns.length} />
+              <LoadingRows columns={shown} />
             ) : rows.length === 0 ? (
               <TableRow>
                 <TableCell
-                  colSpan={columns.length}
+                  colSpan={shown.length}
                   className="h-24 text-center text-muted-foreground"
                 >
                   {empty ?? "No results."}
                 </TableCell>
               </TableRow>
             ) : (
-              rows.map((row) => <DataRow key={row.id} row={row} onRowClick={onRowClick} />)
+              rows.map((row) => (
+                <DataRow
+                  key={row.id}
+                  row={row}
+                  onRowClick={onRowClick}
+                  selected={selectedId !== undefined && row.id === selectedId}
+                />
+              ))
             )}
           </TableBody>
         </Table>
@@ -276,14 +314,18 @@ function ariaSort(sorted: false | "asc" | "desc"): "ascending" | "descending" | 
 function DataRow<TData extends RowData>({
   row,
   onRowClick,
+  selected,
 }: {
   row: Row<DataTableFeatures, TData>;
   onRowClick?: (row: TData) => void;
+  selected: boolean;
 }) {
   const clickable = onRowClick !== undefined;
   return (
     <TableRow
       data-row-id={row.id}
+      data-state={selected ? "selected" : undefined}
+      aria-selected={selected ? true : undefined}
       className={cn("h-table-row", clickable && "cursor-pointer")}
       onClick={clickable ? () => onRowClick(row.original) : undefined}
       onKeyDown={
@@ -300,7 +342,10 @@ function DataRow<TData extends RowData>({
       {row.getAllCells().map((cell) => (
         <TableCell
           key={cell.id}
-          className={cn(cell.column.columnDef.meta?.numeric && "text-right tabular-nums")}
+          className={cn(
+            cell.column.columnDef.meta?.numeric && "text-right tabular-nums",
+            hiddenBelow(cell.column.columnDef.meta?.hideBelow),
+          )}
         >
           {flexRender(cell.column.columnDef.cell, cell.getContext())}
         </TableCell>
@@ -309,14 +354,22 @@ function DataRow<TData extends RowData>({
   );
 }
 
-function LoadingRows({ columns }: { columns: number }) {
+function hiddenBelow(hideBelow: keyof typeof hideClass | undefined): string | undefined {
+  return hideBelow ? hideClass[hideBelow] : undefined;
+}
+
+function LoadingRows<TData extends RowData>({
+  columns,
+}: {
+  columns: ReadonlyArray<DataTableColumn<TData>>;
+}) {
   return (
     <>
       {[0, 1, 2].map((i) => (
         <TableRow key={i} aria-busy="true">
-          {Array.from({ length: columns }, (_, j) => (
+          {columns.map((column, j) => (
             // biome-ignore lint/suspicious/noArrayIndexKey: placeholder cells have no identity
-            <TableCell key={j}>
+            <TableCell key={j} className={hiddenBelow(column.meta?.hideBelow)}>
               <Skeleton className="h-4 w-3/4" />
             </TableCell>
           ))}

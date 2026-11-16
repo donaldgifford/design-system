@@ -131,6 +131,9 @@ export const Filtered: Story = { args: { search: { page: 1, size: 10, q: "paymen
 /** Rows are focusable and open on click or Enter. */
 export const ClickableRows: Story = { args: { onRowClick: fn() } };
 
+/** `selectedId` tints the row a detail panel is showing. */
+export const SelectedRow: Story = { args: { onRowClick: fn(), selectedId: "payments-dev-usw2" } };
+
 export const Loading: Story = { args: { isLoading: true, data: [] } };
 
 export const Empty: Story = {
@@ -157,3 +160,35 @@ export const EmptyDefault: Story = { args: { data: [], filterPlaceholder: undefi
 export const ServerPaged: Story = {
   args: { data: clusters.slice(0, 5), total: 42, search: { page: 1, size: 5 } },
 };
+
+const responsiveColumns = helper.columns([
+  helper.accessor("name", {
+    header: "Cluster",
+    cell: ({ getValue }) => <code className="font-mono text-xs">{getValue()}</code>,
+  }),
+  helper.accessor("account", { header: "Account", meta: { hideBelow: "compact" } }),
+  helper.accessor("region", { header: "Region", meta: { hideBelow: "lg" } }),
+  helper.accessor("status", {
+    header: "Status",
+    cell: ({ getValue }) => <Badge variant={statusVariant[getValue()]}>{getValue()}</Badge>,
+    enableSorting: false,
+  }),
+  helper.accessor("nodes", { header: "Nodes", meta: { numeric: true, hideBelow: "md" } }),
+]);
+
+/**
+ * `meta.hideBelow` drops a column under a viewport breakpoint: Nodes
+ * below `md`, Region below `lg`. Narrow the window to see them go.
+ */
+export const ResponsiveColumns: Story = {
+  render: (args) => (
+    <StatefulTable key={JSON.stringify(args.search)} {...args} columns={responsiveColumns} />
+  ),
+};
+
+/**
+ * `compact` says the table shares its row, with a detail panel beside it
+ * say, and drops the columns marked `hideBelow: "compact"` (Account here)
+ * whatever the viewport.
+ */
+export const Compact: Story = { ...ResponsiveColumns, args: { compact: true } };
