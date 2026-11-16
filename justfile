@@ -35,8 +35,32 @@ docs-validate:
 docs-update:
     docz update
 
+# Type-check
+typecheck:
+    bun run typecheck
+
+# Unit, accessibility, token and discipline tests
+test *args:
+    bun test {{ args }}
+
+# Storybook dev server on :6006
+storybook:
+    bun --bun run storybook
+
+# Storybook's static build into storybook-static/
+storybook-build:
+    bun --bun run storybook:build --quiet
+
+# Regenerate tokens.json from tokens.css
+tokens:
+    bun run tokens
+
+# Copy a shadcn primitive into src/components/ui: just add button
+add component:
+    bunx --bun shadcn@4.22.1 add {{ component }}
+
 # Everything CI runs
-check: lint lint-md lint-yaml lint-actions docs-validate
+check: lint typecheck test lint-md lint-yaml lint-actions docs-validate
 
 # Record a change for the next release
 changeset:

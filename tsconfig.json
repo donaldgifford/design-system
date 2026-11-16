@@ -1,0 +1,32 @@
+{
+  "$schema": "https://json.schemastore.org/tsconfig",
+  "compilerOptions": {
+    "target": "ES2023",
+    "lib": ["ES2023", "DOM", "DOM.Iterable"],
+    "module": "ESNext",
+    "moduleResolution": "bundler",
+    "jsx": "react-jsx",
+    "strict": true,
+    "noUncheckedIndexedAccess": true,
+    "noImplicitOverride": true,
+    "noFallthroughCasesInSwitch": true,
+    "noUnusedLocals": true,
+    "noUnusedParameters": true,
+    "verbatimModuleSyntax": true,
+    "isolatedModules": true,
+    "resolveJsonModule": true,
+    "allowImportingTsExtensions": true,
+    "skipLibCheck": true,
+    "noEmit": true,
+    "types": ["bun"],
+    "paths": {
+      "@donaldgifford/design-system/components/*": ["./src/components/ui/*"],
+      "@donaldgifford/design-system/blocks/*": ["./src/components/blocks/*"],
+      "@donaldgifford/design-system/shell/*": ["./src/components/shell/*"],
+      "@donaldgifford/design-system/lib/*": ["./src/lib/*"],
+      "@donaldgifford/design-system/hooks/*": ["./src/hooks/*"],
+      "@test/*": ["./test/*"]
+    }
+  },
+  "include": ["src", "test", "scripts", ".storybook"]
+}

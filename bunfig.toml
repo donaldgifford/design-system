@@ -1,0 +1,4 @@
+# bun test: happy-dom as the DOM, Testing Library matchers, cleanup between
+# tests. See test/setup.ts.
+[test]
+preload = ["./test/setup.ts"]

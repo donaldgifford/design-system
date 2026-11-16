@@ -1,0 +1,10 @@
+import { Markdown, Meta } from "@storybook/addon-docs/blocks";
+import { readmeIntro, readmeSection } from "./readme";
+
+<Meta title="Docs/Introduction" />
+
+<Markdown>{readmeIntro()}</Markdown>
+
+<Markdown>{readmeSection("Layers")}</Markdown>
+
+<Markdown>{readmeSection("Adding a component")}</Markdown>

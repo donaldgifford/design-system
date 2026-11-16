@@ -1,0 +1,159 @@
+import {
+  DataTable,
+  type DataTableProps,
+  dataTableColumns,
+} from "@donaldgifford/design-system/blocks/data-table";
+import { EmptyState } from "@donaldgifford/design-system/blocks/empty-state";
+import { Badge } from "@donaldgifford/design-system/components/badge";
+import type { ListSearch } from "@donaldgifford/design-system/lib/list-search";
+import type { Meta, StoryObj } from "@storybook/react-vite";
+import { IconServer } from "@tabler/icons-react";
+import { useState } from "react";
+import { fn } from "storybook/test";
+
+interface Cluster {
+  name: string;
+  account: string;
+  region: string;
+  status: "ready" | "degraded" | "upgrading";
+  nodes: number;
+}
+
+const clusters: Cluster[] = [
+  {
+    name: "payments-prod-usw2",
+    account: "payments-prod",
+    region: "us-west-2",
+    status: "ready",
+    nodes: 24,
+  },
+  {
+    name: "payments-prod-use1",
+    account: "payments-prod",
+    region: "us-east-1",
+    status: "ready",
+    nodes: 18,
+  },
+  {
+    name: "payments-dev-usw2",
+    account: "payments-dev",
+    region: "us-west-2",
+    status: "upgrading",
+    nodes: 6,
+  },
+  {
+    name: "web-stage-usw2",
+    account: "web-stage",
+    region: "us-west-2",
+    status: "degraded",
+    nodes: 9,
+  },
+  { name: "web-prod-euw1", account: "web-prod", region: "eu-west-1", status: "ready", nodes: 31 },
+  { name: "data-prod-usw2", account: "data-prod", region: "us-west-2", status: "ready", nodes: 12 },
+  { name: "mgmt-hub", account: "shared", region: "us-west-2", status: "ready", nodes: 3 },
+];
+
+const statusVariant = {
+  ready: "success",
+  degraded: "destructive",
+  upgrading: "info",
+} as const;
+
+const helper = dataTableColumns<Cluster>();
+const columns = helper.columns([
+  helper.accessor("name", {
+    header: "Cluster",
+    cell: ({ getValue }) => <code className="font-mono text-xs">{getValue()}</code>,
+  }),
+  helper.accessor("account", { header: "Account" }),
+  helper.accessor("region", { header: "Region" }),
+  helper.accessor("status", {
+    header: "Status",
+    cell: ({ getValue }) => <Badge variant={statusVariant[getValue()]}>{getValue()}</Badge>,
+    enableSorting: false,
+  }),
+  helper.accessor("nodes", { header: "Nodes", meta: { numeric: true } }),
+]);
+
+/**
+ * The table's search is the list page's URL state; here a local state
+ * stands in for the router, and every patch is logged as an action.
+ */
+function StatefulTable(props: DataTableProps<Cluster>) {
+  const [search, setSearch] = useState<ListSearch>(props.search);
+  return (
+    <DataTable
+      {...props}
+      search={search}
+      onSearchChange={(patch) => {
+        props.onSearchChange(patch);
+        setSearch((current) => ({ ...current, ...patch }));
+      }}
+    />
+  );
+}
+
+const meta = {
+  title: "Blocks/DataTable",
+  component: DataTable,
+  args: {
+    columns,
+    data: clusters,
+    search: { page: 1, size: 5 },
+    onSearchChange: fn(),
+    onRowClick: undefined,
+    getRowId: (row) => row.name,
+    filterPlaceholder: "Filter clusters",
+    isLoading: false,
+  },
+  argTypes: {
+    columns: { control: false },
+    data: { control: false },
+    search: { control: "object" },
+    empty: { control: false },
+  },
+  // Keyed on the search arg, so editing it in the controls restarts the state.
+  render: (args) => <StatefulTable key={JSON.stringify(args.search)} {...args} />,
+} satisfies Meta<typeof DataTable<Cluster>>;
+
+export default meta;
+type Story = StoryObj<typeof meta>;
+
+/** Click a header to sort; Status opts out. The pager splits seven clusters into pages of five. */
+export const Default: Story = {};
+
+/** Sorted by node count, descending, through the `sort` search param. */
+export const Sorted: Story = { args: { search: { page: 1, size: 10, sort: "-nodes" } } };
+
+/** Filtered through the `q` search param. */
+export const Filtered: Story = { args: { search: { page: 1, size: 10, q: "payments" } } };
+
+/** Rows are focusable and open on click or Enter. */
+export const ClickableRows: Story = { args: { onRowClick: fn() } };
+
+export const Loading: Story = { args: { isLoading: true, data: [] } };
+
+export const Empty: Story = {
+  args: {
+    data: [],
+    empty: (
+      <EmptyState
+        className="border-0 p-6"
+        title="No clusters"
+        description="Clusters this account owns appear here."
+        icon={IconServer}
+      />
+    ),
+  },
+};
+
+/** Without `empty` the table falls back to "No results.". */
+export const EmptyDefault: Story = { args: { data: [], filterPlaceholder: undefined } };
+
+/**
+ * Server-paged: `total` says the server already filtered, sorted, and
+ * paged, so the table shows `data` as is and pages against the total.
+ */
+export const ServerPaged: Story = {
+  args: { data: clusters.slice(0, 5), total: 42, search: { page: 1, size: 5 } },
+};

@@ -28,10 +28,112 @@
   "linter": {
     "enabled": true,
     "rules": {
-      "preset": "recommended"
+      "preset": "recommended",
+      "correctness": {
+        "noUnusedImports": "error",
+        "noUnusedVariables": "error",
+        "useExhaustiveDependencies": "error"
+      },
+      "style": {
+        "noDefaultExport": "error",
+        "useImportType": "error",
+        "useExportType": "error",
+        "noParameterAssign": "error",
+        "useConst": "error"
+      },
+      "suspicious": {
+        "noExplicitAny": "error",
+        "noConsole": {
+          "level": "error",
+          "options": {
+            "allow": ["warn", "error"]
+          }
+        }
+      }
     }
   },
   "files": {
-    "includes": ["**", "!**/*.md", "!**/*.yml", "!**/*.yaml", "!.claude"]
+    "includes": [
+      "**",
+      "!**/*.md",
+      "!**/*.yml",
+      "!**/*.yaml",
+      "!.claude",
+      "!tokens.json",
+      "!storybook-static"
+    ]
+  },
+  "overrides": [
+    {
+      "includes": [".storybook/*", "src/**/*.stories.tsx"],
+      "linter": {
+        "rules": {
+          "style": {
+            "noDefaultExport": "off"
+          }
+        }
+      }
+    },
+    {
+      "includes": ["src/components/ui/chart.tsx"],
+      "linter": {
+        "rules": {
+          "security": {
+            "noDangerouslySetInnerHtml": "off"
+          },
+          "suspicious": {
+            "noArrayIndexKey": "off"
+          }
+        }
+      }
+    },
+    {
+      "includes": ["src/components/ui/**"],
+      "linter": {
+        "rules": {
+          "style": {
+            "noRestrictedImports": {
+              "level": "error",
+              "options": {
+                "patterns": [
+                  {
+                    "group": [
+                      "@donaldgifford/design-system/blocks/*",
+                      "@donaldgifford/design-system/shell/*"
+                    ],
+                    "message": "Primitives import only other primitives, lib and hooks. Blocks and shell parts build on primitives, never the reverse."
+                  }
+                ]
+              }
+            }
+          }
+        }
+      }
+    },
+    {
+      "includes": ["src/components/blocks/**"],
+      "linter": {
+        "rules": {
+          "style": {
+            "noRestrictedImports": {
+              "level": "error",
+              "options": {
+                "patterns": [
+                  {
+                    "group": ["@donaldgifford/design-system/shell/*"],
+                    "message": "Blocks import primitives, other blocks, lib and hooks. Shell parts build on blocks, never the reverse."
+                  }
+                ]
+              }
+            }
+          }
+        }
+      }
+    }
+  ],
+  "css": {
+    "parser": {
+      "tailwindDirectives": true
+    }
   }
 }
