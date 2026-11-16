@@ -1,7 +1,7 @@
 ---
 id: ADR-0003
 title: "Build components on Tailwind v4, shadcn and Base UI"
-status: Proposed
+status: Accepted
 author: Donald Gifford
 created: 2026-11-15
 ---

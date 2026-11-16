@@ -35,7 +35,7 @@ docz create adr "Your ADR Title"
 | --- | --- | --- | --- | --- | --- |
 | ADR-0001 | Release with changesets to GitHub Packages | Accepted | 2026-11-15 | Donald Gifford | [0001-release-with-changesets-to-github-packages.md](0001-release-with-changesets-to-github-packages.md) |
 | ADR-0002 | Use Storybook as the only component catalog | Accepted | 2026-11-15 | Donald Gifford | [0002-use-storybook-as-the-only-component-catalog.md](0002-use-storybook-as-the-only-component-catalog.md) |
-| ADR-0003 | Build components on Tailwind v4, shadcn and Base UI | Proposed | 2026-11-15 | Donald Gifford | [0003-build-components-on-tailwind-v4-shadcn-and-base-ui.md](0003-build-components-on-tailwind-v4-shadcn-and-base-ui.md) |
-| ADR-0004 | Author tokens as CSS in oklch with shadcn semantic names | Proposed | 2026-11-15 | Donald Gifford | [0004-author-tokens-as-css-in-oklch-with-shadcn-semantic-names.md](0004-author-tokens-as-css-in-oklch-with-shadcn-semantic-names.md) |
+| ADR-0003 | Build components on Tailwind v4, shadcn and Base UI | Accepted | 2026-11-15 | Donald Gifford | [0003-build-components-on-tailwind-v4-shadcn-and-base-ui.md](0003-build-components-on-tailwind-v4-shadcn-and-base-ui.md) |
+| ADR-0004 | Author tokens as CSS in oklch with shadcn semantic names | Accepted | 2026-11-15 | Donald Gifford | [0004-author-tokens-as-css-in-oklch-with-shadcn-semantic-names.md](0004-author-tokens-as-css-in-oklch-with-shadcn-semantic-names.md) |
 <!-- markdownlint-restore -->
 <!-- END DOCZ AUTO-GENERATED -->
