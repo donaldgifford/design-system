@@ -18,8 +18,10 @@ export interface ExportFetch<T> {
 }
 
 interface ExportButtonProps<T> {
-  /** Names the file and the button: "findings" saves `findings-<date>.csv`. */
+  /** Names the button and, unless `filename` is set, the file: "findings" saves `findings-<date>.csv`. */
   name: string;
+  /** The file's base name when it differs from `name`: an app prefix, say. */
+  filename?: string | undefined;
   /** The filters in force; each set one joins the filename. */
   filter?: Record<string, CsvValue> | undefined;
   columns: CsvColumns<T>;
@@ -39,6 +41,7 @@ interface ExportButtonProps<T> {
  */
 export function ExportButton<T>({
   name,
+  filename,
   filter,
   columns,
   rows,
@@ -50,7 +53,7 @@ export function ExportButton<T>({
   const [notice, setNotice] = useState<string | undefined>(undefined);
   const ready = rows !== undefined && rows.length > 0;
   const save = (items: readonly T[]) =>
-    download(exportFilename(name, filter), csvTable(columns, items));
+    download(exportFilename(filename ?? name, filter), csvTable(columns, items));
   const onClick = async () => {
     if (!rows) return;
     if (!all) {

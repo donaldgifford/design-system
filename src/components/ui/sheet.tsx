@@ -48,7 +48,7 @@ function SheetContent({
       <SheetPrimitive.Popup
         data-slot="sheet-content"
         className={cn(
-          "fixed z-50 flex flex-col gap-4 rounded-lg border shadow-overlay bg-card text-base transition ease-in-out data-closed:animate-out data-closed:duration-300 data-open:animate-in data-open:duration-500",
+          "fixed z-50 flex flex-col gap-4 rounded-lg border shadow-overlay bg-card text-base transition ease-in-out data-closed:animate-out data-closed:duration-200 data-open:animate-in data-open:duration-200",
           side === "right" &&
             "inset-y-0 right-0 h-full w-3/4 border-l data-closed:slide-out-to-right data-open:slide-in-from-right sm:max-w-(--sheet-width)",
           side === "left" &&

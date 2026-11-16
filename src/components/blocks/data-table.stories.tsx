@@ -80,13 +80,13 @@ const columns = helper.columns([
  * stands in for the router, and every patch is logged as an action.
  */
 function StatefulTable(props: DataTableProps<Cluster>) {
-  const [search, setSearch] = useState<ListSearch>(props.search);
+  const [search, setSearch] = useState<ListSearch>(props.search ?? { page: 1, size: 10 });
   return (
     <DataTable
       {...props}
       search={search}
       onSearchChange={(patch) => {
-        props.onSearchChange(patch);
+        props.onSearchChange?.(patch);
         setSearch((current) => ({ ...current, ...patch }));
       }}
     />
@@ -159,6 +159,22 @@ export const EmptyDefault: Story = { args: { data: [], filterPlaceholder: undefi
  */
 export const ServerPaged: Story = {
   args: { data: clusters.slice(0, 5), total: 42, search: { page: 1, size: 5 } },
+};
+
+/**
+ * Cursor-paged: `manual` without a `total`. The table shows the rows as
+ * given and has no pager; the page puts a LoadMore under it.
+ */
+export const Manual: Story = {
+  args: { manual: true, filterPlaceholder: undefined, label: "Clusters" },
+};
+
+/**
+ * No `search`: a plain table that shows every row and keeps its own sort,
+ * with no filter or pager. `bare` drops the border, for a table in a card.
+ */
+export const Plain: Story = {
+  render: () => <DataTable columns={columns} data={clusters} label="Clusters" bare />,
 };
 
 const responsiveColumns = helper.columns([

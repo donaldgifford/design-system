@@ -57,3 +57,34 @@ export const Resource: Story = {
 export const TitleOnly: Story = {
   args: { description: undefined, meta: undefined, actions: undefined },
 };
+
+/** More actions than fit beside the title wrap onto their own lines. */
+export const ManyActions: Story = {
+  args: {
+    actions: (
+      <>
+        <Button variant="outline" size="sm">
+          Export
+        </Button>
+        <Button variant="outline" size="sm">
+          <IconRefresh aria-hidden="true" />
+          Refresh
+        </Button>
+        <Button variant="outline" size="sm">
+          Compare
+        </Button>
+        <Button size="sm">
+          <IconPlus aria-hidden="true" />
+          New cluster
+        </Button>
+      </>
+    ),
+  },
+  decorators: [
+    (Story) => (
+      <div className="max-w-md">
+        <Story />
+      </div>
+    ),
+  ],
+};

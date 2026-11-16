@@ -169,18 +169,27 @@ export function TrendChart({
   );
 }
 
+export interface TrendTableOptions {
+  unit?: ValueUnit | undefined;
+  /** The most rows the table shows. */
+  cap?: number | undefined;
+  /** The first column's header. */
+  head?: string | undefined;
+  /** What a point is, plural, for the note under a capped table. */
+  noun?: string | undefined;
+}
+
 /** The series as a ChartCard table: newest first, capped at `cap` rows. */
 export function trendTable(
   points: readonly TrendPoint[],
   series: string,
-  unit: ValueUnit = "%",
-  cap = 30,
+  { unit = "%", cap = 30, head = "Sampled", noun = "points" }: TrendTableOptions = {},
 ): ChartTable {
   const rows = [...points].reverse().slice(0, cap);
   return {
-    head: ["Sampled", series],
+    head: [head, series],
     numeric: [1],
     rows: rows.map((p) => [p.at.slice(0, 10), formatValue(p.value, unit)]),
-    note: points.length > cap ? `latest ${cap} of ${points.length} points` : undefined,
+    note: points.length > cap ? `latest ${cap} of ${points.length} ${noun}` : undefined,
   };
 }

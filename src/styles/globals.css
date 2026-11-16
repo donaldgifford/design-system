@@ -137,3 +137,19 @@
     outline-offset: 2px;
   }
 }
+
+/* Reduced motion reaches every animation and transition, the components'
+   fixed durations and the animation utilities included, not only the
+   duration tokens. Unlayered, so no utility outranks it. */
+@media (prefers-reduced-motion: reduce) {
+  /* biome-ignore-start lint/complexity/noImportantStyles: a reader's motion preference must outrank every utility and inline duration */
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+  /* biome-ignore-end lint/complexity/noImportantStyles: as above */
+}

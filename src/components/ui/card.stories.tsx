@@ -78,3 +78,18 @@ export const Bordered: Story = {
     </Card>
   ),
 };
+
+/**
+ * `render` changes the element: a card that is a labelled `section`, with
+ * its title as a heading.
+ */
+export const AsSection: Story = {
+  render: (args) => (
+    <Card {...args} render={<section aria-label="Coverage" />}>
+      <CardHeader>
+        <CardTitle render={(props) => <h3 {...props} />}>Coverage</CardTitle>
+        <CardDescription>412 of 450 repositories pass.</CardDescription>
+      </CardHeader>
+    </Card>
+  ),
+};

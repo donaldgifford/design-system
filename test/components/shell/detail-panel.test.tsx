@@ -5,7 +5,7 @@ import {
   DetailSection,
 } from "@donaldgifford/design-system/shell/detail-panel";
 import { expectNoA11yViolations } from "@test/axe";
-import { render, screen, waitFor } from "@testing-library/react";
+import { render, screen, waitFor, within } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { useRef, useState } from "react";
 
@@ -104,5 +104,55 @@ describe("DetailPanel", () => {
     await user.click(screen.getByRole("button", { name: "payments/api" }));
     const dialog = await screen.findByRole("dialog");
     expect(container.contains(dialog)).toBe(false);
+  });
+});
+
+describe.each([
+  ["inline", true],
+  ["overlay", false],
+] as const)("DetailPanel label (%s)", (_form, inline) => {
+  test("a label names the dialog in place of the title", async () => {
+    render(
+      <DetailPanel
+        open
+        onOpenChange={() => {}}
+        inline={inline}
+        title={<a href="/repos/payments/api">payments/api</a>}
+        label="Finding: payments/api, codeowners"
+      >
+        body
+      </DetailPanel>,
+    );
+    const dialog = await screen.findByRole("dialog", { name: "Finding: payments/api, codeowners" });
+    expect(dialog).not.toHaveAttribute("aria-labelledby");
+  });
+});
+
+function Rows() {
+  const [subject, setSubject] = useState("a");
+  return (
+    <main>
+      <button type="button" onClick={() => setSubject("b")}>
+        row b
+      </button>
+      <DetailPanel open onOpenChange={() => {}} inline title={subject} subject={subject}>
+        body
+      </DetailPanel>
+    </main>
+  );
+}
+
+describe("DetailPanel subject", () => {
+  test("an inline panel takes focus again when it is pointed at another subject", async () => {
+    const user = userEvent.setup();
+    render(<Rows />);
+    const close = within(screen.getByRole("dialog")).getByRole("button", { name: /close/i });
+    await waitFor(() => expect(close).toHaveFocus());
+    await user.click(screen.getByRole("button", { name: "row b" }));
+    await waitFor(() =>
+      expect(
+        within(screen.getByRole("dialog", { name: "b" })).getByRole("button", { name: /close/i }),
+      ).toHaveFocus(),
+    );
   });
 });

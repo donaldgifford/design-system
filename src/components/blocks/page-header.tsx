@@ -27,7 +27,11 @@ export function PageHeader({ title, description, actions, meta, className }: Pag
           <p className="mt-0.75 text-base/compact text-muted-foreground">{description}</p>
         ) : null}
       </div>
-      {actions ? <div className="flex shrink-0 items-center gap-2">{actions}</div> : null}
+      {actions ? (
+        <div data-slot="page-header-actions" className="flex flex-wrap items-center gap-2">
+          {actions}
+        </div>
+      ) : null}
     </div>
   );
 }

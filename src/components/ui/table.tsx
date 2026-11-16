@@ -5,7 +5,7 @@ function Table({
   className,
   containerClassName,
   ...props
-}: React.ComponentProps<"table"> & { containerClassName?: string }) {
+}: React.ComponentProps<"table"> & { containerClassName?: string | undefined }) {
   return (
     <div
       data-slot="table-container"

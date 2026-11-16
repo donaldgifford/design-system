@@ -61,7 +61,8 @@ type Story = StoryObj<typeof meta>;
 /**
  * A list with its detail panel. `inline` puts the panel in the page, in
  * a grid column the page gives it; Escape or the close button returns
- * focus to the row that opened it.
+ * focus to the row that opened it. `subject` is the selected row, so
+ * picking another one moves focus into the panel again.
  */
 export const Inline: Story = {
   render: function Render(args) {
@@ -91,6 +92,7 @@ export const Inline: Story = {
           {...args}
           open={open}
           title={selected ?? ""}
+          subject={selected}
           onOpenChange={(next) => {
             args.onOpenChange(next);
             if (!next) setSelected(undefined);

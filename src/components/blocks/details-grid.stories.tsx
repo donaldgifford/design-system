@@ -47,3 +47,37 @@ export const LongValue: Story = {
     ],
   },
 };
+
+/**
+ * `layout="list"`: one pair per row, the labels in a column of their own,
+ * and values that wrap. For a detail panel, where a value is a sentence,
+ * a link, or a row of badges.
+ */
+export const List: Story = {
+  args: {
+    layout: "list",
+    items: [
+      { label: "Rule", value: "codeowners" },
+      {
+        label: "Detail",
+        value: "No CODEOWNERS file was found at the repository root, in docs/, or in .github/.",
+      },
+      { label: "Role ARN", value: "arn:aws:iam::123456789012:role/cluster-controller" },
+      {
+        label: "State",
+        value: (
+          <Badge variant="destructive" fill="tinted">
+            failing
+          </Badge>
+        ),
+      },
+    ],
+  },
+  decorators: [
+    (Story) => (
+      <div className="max-w-sm">
+        <Story />
+      </div>
+    ),
+  ],
+};

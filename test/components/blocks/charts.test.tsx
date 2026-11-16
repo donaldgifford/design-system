@@ -243,7 +243,7 @@ describe("the Recharts blocks", () => {
       ],
       note: undefined,
     });
-    const capped = trendTable(points, "Tracked", "count", 2);
+    const capped = trendTable(points, "Tracked", { unit: "count", cap: 2 });
     expect(capped.rows).toHaveLength(2);
     expect(capped.note).toBe("latest 2 of 3 points");
   });
@@ -293,7 +293,7 @@ describe("ChartCard", () => {
   test("shows the table's note under it", async () => {
     const user = userEvent.setup();
     render(
-      <ChartCard title="Trend" table={trendTable(points, "Passing", "%", 1)}>
+      <ChartCard title="Trend" table={trendTable(points, "Passing", { cap: 1 })}>
         <p>plot</p>
       </ChartCard>,
     );

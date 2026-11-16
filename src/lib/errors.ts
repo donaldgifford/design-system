@@ -1,4 +1,4 @@
-import { type Problem, problemContentType, problemSchema } from "./problem";
+import { type Problem, problemContentType, problemRequestId, problemSchema } from "./problem";
 
 /**
  * A failed call to an API: the HTTP status,
@@ -30,7 +30,7 @@ export class ApiError extends Error {
           p.status,
           p.reason,
           p.detail ?? p.title ?? `HTTP ${p.status}`,
-          p.requestId,
+          problemRequestId(p) ?? response.headers.get("x-request-id") ?? undefined,
           p,
         );
       }

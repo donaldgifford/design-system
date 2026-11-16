@@ -1,17 +1,24 @@
+import { mergeProps } from "@base-ui/react/merge-props";
+import { useRender } from "@base-ui/react/use-render";
 import { cn } from "@donaldgifford/design-system/lib/utils";
 import type * as React from "react";
 
-function Card({ className, ...props }: React.ComponentProps<"div">) {
-  return (
-    <div
-      data-slot="card"
-      className={cn(
-        "flex flex-col gap-2.5 rounded-lg border bg-card py-2.5 text-card-foreground",
-        className,
-      )}
-      {...props}
-    />
-  );
+/** A card is a `div`; `render={<section />}` makes it an element that can be a landmark. */
+function Card({ className, render, ...props }: useRender.ComponentProps<"div">) {
+  return useRender({
+    defaultTagName: "div",
+    props: mergeProps<"div">(
+      {
+        "data-slot": "card",
+        className: cn(
+          "flex flex-col gap-2.5 rounded-lg border bg-card py-2.5 text-card-foreground",
+          className,
+        ),
+      } as React.ComponentProps<"div">,
+      props,
+    ),
+    render,
+  });
 }
 
 function CardHeader({ className, ...props }: React.ComponentProps<"div">) {
@@ -27,14 +34,19 @@ function CardHeader({ className, ...props }: React.ComponentProps<"div">) {
   );
 }
 
-function CardTitle({ className, ...props }: React.ComponentProps<"div">) {
-  return (
-    <div
-      data-slot="card-title"
-      className={cn("text-base/none font-semibold", className)}
-      {...props}
-    />
-  );
+/** A card's title is a `div`; `render={<h3 />}` makes it a heading. */
+function CardTitle({ className, render, ...props }: useRender.ComponentProps<"div">) {
+  return useRender({
+    defaultTagName: "div",
+    props: mergeProps<"div">(
+      {
+        "data-slot": "card-title",
+        className: cn("text-base/none font-semibold", className),
+      } as React.ComponentProps<"div">,
+      props,
+    ),
+    render,
+  });
 }
 
 function CardDescription({ className, ...props }: React.ComponentProps<"div">) {
