@@ -1,5 +1,11 @@
 # @donaldgifford/design-system
 
+## 0.2.1
+
+### Patch Changes
+
+- [#15](https://github.com/donaldgifford/design-system/pull/15) [`91d5d29`](https://github.com/donaldgifford/design-system/commit/91d5d29a375cae7ed9d863f0fe2cdc60215e41b8) Thanks [@donaldgifford](https://github.com/donaldgifford)! - `DataTable`: a `manual` table with no `onSearchChange` no longer renders sort buttons. Before, a header click flipped the arrow and `aria-sort` while the rows, which the server orders, stayed where they were.
+
 ## 0.2.0
 
 ### Minor Changes
