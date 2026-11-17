@@ -111,6 +111,7 @@ export interface DataTableProps<TData extends RowData> {
    * The server filters and sorts, and the table shows `data` as given.
    * Implied by `total`. Set it without a total for a cursor-paged list:
    * the pager goes, and the page adds its own "load more" control.
+   * Headers sort only when `onSearchChange` is there to hear the request.
    */
   manual?: boolean | undefined;
   /** The accessible name: what the table lists. */
@@ -208,6 +209,9 @@ export function DataTable<TData extends RowData>({
     },
     globalFilterFn: "includesString",
     manualSorting: manual,
+    // The server owns the order; with nobody to ask for another one, a
+    // header must not offer a sort it cannot perform.
+    enableSorting: !(manual && onSearchChangeProp === undefined),
     manualFiltering: manual,
     manualPagination: manual,
     ...(total !== undefined ? { rowCount: total } : {}),
