@@ -1,5 +1,11 @@
 # @donaldgifford/design-system
 
+## 0.3.0
+
+### Minor Changes
+
+- [#17](https://github.com/donaldgifford/design-system/pull/17) [`9cd904f`](https://github.com/donaldgifford/design-system/commit/9cd904fc9133bc8f45d780f91b6e1f62037c5315) Thanks [@donaldgifford](https://github.com/donaldgifford)! - `DataTable`: a `sortable` prop. `sortable={false}` turns sorting off for every column, so the headers render as plain text; unset, nothing changes. A column's own `enableSorting: false` still applies, and `sortable` does not force sorting on for a `manual` table with no `onSearchChange`.
+
 ## 0.2.1
 
 ### Patch Changes
