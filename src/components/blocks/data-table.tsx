@@ -114,6 +114,12 @@ export interface DataTableProps<TData extends RowData> {
    * Headers sort only when `onSearchChange` is there to hear the request.
    */
   manual?: boolean | undefined;
+  /**
+   * `false` turns sorting off for every column, so the headers are plain
+   * text: for a short table of reference data. A column's own
+   * `enableSorting: false` does the same for that column alone.
+   */
+  sortable?: boolean | undefined;
   /** The accessible name: what the table lists. */
   label?: string | undefined;
   /** Drop the border and the scroll container, for a table inside a card. */
@@ -148,6 +154,7 @@ export function DataTable<TData extends RowData>({
   onSearchChange: onSearchChangeProp,
   total,
   manual: manualProp,
+  sortable = true,
   label,
   bare = false,
   getRowId,
@@ -211,7 +218,7 @@ export function DataTable<TData extends RowData>({
     manualSorting: manual,
     // The server owns the order; with nobody to ask for another one, a
     // header must not offer a sort it cannot perform.
-    enableSorting: !(manual && onSearchChangeProp === undefined),
+    enableSorting: sortable && !(manual && onSearchChangeProp === undefined),
     manualFiltering: manual,
     manualPagination: manual,
     ...(total !== undefined ? { rowCount: total } : {}),

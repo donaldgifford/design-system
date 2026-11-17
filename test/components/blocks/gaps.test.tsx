@@ -102,6 +102,32 @@ describe("DataTable without a search", () => {
     expect(names()).toEqual(["payments/api", "auth/gateway", "web/console"]);
   });
 
+  test("sortable={false} makes every header plain text, in any mode", () => {
+    const { rerender } = render(<DataTable columns={columns} data={repos} sortable={false} />);
+    const plain = () => {
+      expect(screen.queryByRole("button", { name: /Repository|Open/ })).toBeNull();
+      for (const header of screen.getAllByRole("columnheader")) {
+        expect(header).not.toHaveAttribute("aria-sort");
+      }
+    };
+    plain();
+    rerender(
+      <DataTable
+        columns={columns}
+        data={repos}
+        sortable={false}
+        search={listSearchDefaults}
+        onSearchChange={() => {}}
+      />,
+    );
+    plain();
+  });
+
+  test("sortable cannot force a sort nothing would perform", () => {
+    render(<DataTable columns={columns} data={repos} manual sortable />);
+    expect(screen.queryByRole("button", { name: /Repository/ })).toBeNull();
+  });
+
   test("meta.className lands on the column's header and cells", () => {
     render(<DataTable columns={columns} data={repos} />);
     expect(screen.getByRole("columnheader", { name: /Repository/ })).toHaveClass("w-64");

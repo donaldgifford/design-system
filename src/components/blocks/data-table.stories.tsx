@@ -177,6 +177,22 @@ export const Plain: Story = {
   render: () => <DataTable columns={columns} data={clusters} label="Clusters" bare />,
 };
 
+/**
+ * `sortable={false}`: plain headers, for a short table of reference data
+ * inside a card.
+ */
+export const NotSortable: Story = {
+  render: () => (
+    <DataTable
+      columns={columns}
+      data={clusters.slice(0, 4)}
+      label="Clusters"
+      sortable={false}
+      bare
+    />
+  ),
+};
+
 const responsiveColumns = helper.columns([
   helper.accessor("name", {
     header: "Cluster",
