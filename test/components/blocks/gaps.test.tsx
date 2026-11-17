@@ -87,6 +87,21 @@ describe("DataTable without a search", () => {
     expect(screen.queryByRole("button", { name: /page/i })).toBeNull();
   });
 
+  test("manual with nothing listening offers no sort", async () => {
+    const user = userEvent.setup();
+    const onSearchChange = mock(() => {});
+    const { rerender } = render(<DataTable columns={columns} data={repos} manual />);
+    expect(screen.queryByRole("button", { name: /Repository/ })).toBeNull();
+    expect(screen.getByRole("columnheader", { name: "Repository" })).not.toHaveAttribute(
+      "aria-sort",
+    );
+    // With a listener the header asks, and the page answers with new rows.
+    rerender(<DataTable columns={columns} data={repos} manual onSearchChange={onSearchChange} />);
+    await user.click(screen.getByRole("button", { name: /Repository/ }));
+    expect(onSearchChange).toHaveBeenCalledWith({ sort: "name" });
+    expect(names()).toEqual(["payments/api", "auth/gateway", "web/console"]);
+  });
+
   test("meta.className lands on the column's header and cells", () => {
     render(<DataTable columns={columns} data={repos} />);
     expect(screen.getByRole("columnheader", { name: /Repository/ })).toHaveClass("w-64");
