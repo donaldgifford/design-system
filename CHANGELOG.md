@@ -1,5 +1,12 @@
 # @donaldgifford/design-system
 
+## 0.3.1
+
+### Patch Changes
+
+- [#19](https://github.com/donaldgifford/design-system/pull/19) [`38ea5c0`](https://github.com/donaldgifford/design-system/commit/38ea5c0f6164bd83b190b20ca5fe2051ad5bb394) Thanks [@donaldgifford](https://github.com/donaldgifford)! - - `TabsTrigger` no longer narrows its focus outline to 1px; it takes the 2px outline every other focusable element gets from `globals.css`.
+  - `lib/errors` no longer imports zod, so an app that renders an `ErrorState` or uses `ApiError` does not bundle it. `ApiError.from` reads the problem body with a new `parseProblem`, which accepts what `problemSchema` accepts. `lib/problem` still exports `problemSchema` and re-exports the rest.
+
 ## 0.3.0
 
 ### Minor Changes
