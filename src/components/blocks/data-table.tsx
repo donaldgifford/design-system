@@ -13,7 +13,7 @@ import {
   formatSort,
   type ListSearch,
   parseSort,
-} from "@donaldgifford/design-system/lib/list-search";
+} from "@donaldgifford/design-system/lib/list-params";
 import { cn } from "@donaldgifford/design-system/lib/utils";
 import {
   IconArrowDown,

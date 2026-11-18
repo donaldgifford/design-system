@@ -29,7 +29,7 @@ Import subpaths, never a barrel:
 | `@donaldgifford/design-system/components/<name>` | a primitive (`button`, `dialog`, `sidebar`, ...) |
 | `@donaldgifford/design-system/blocks/<name>` | a block (`data-table`, `kpi`, `page-header`, `trend-chart`, `group-grid`, ...) |
 | `@donaldgifford/design-system/shell/<name>` | presentational chrome (`top-bar`, `sidebar`, `detail-sheet`, `detail-panel`, `route-error`, `page-skeleton`) |
-| `@donaldgifford/design-system/lib/<name>` | `utils` (`cn()`), `errors`, `problem`, `highlight`, `list-search`, `chart-scale`, `csv`, `time`, `percent` |
+| `@donaldgifford/design-system/lib/<name>` | `utils` (`cn()`), `errors`, `problem`, `highlight`, `list-search`, `list-params`, `chart-scale`, `csv`, `time`, `percent` |
 | `@donaldgifford/design-system/hooks/<name>` | shared hooks (`use-mobile`, `use-media-query`) |
 
 Import `globals.css` once, from the app's entry. Its `@source` is what

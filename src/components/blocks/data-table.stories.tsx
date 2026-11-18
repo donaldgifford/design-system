@@ -5,7 +5,7 @@ import {
 } from "@donaldgifford/design-system/blocks/data-table";
 import { EmptyState } from "@donaldgifford/design-system/blocks/empty-state";
 import { Badge } from "@donaldgifford/design-system/components/badge";
-import type { ListSearch } from "@donaldgifford/design-system/lib/list-search";
+import type { ListSearch } from "@donaldgifford/design-system/lib/list-params";
 import type { Meta, StoryObj } from "@storybook/react-vite";
 import { IconServer } from "@tabler/icons-react";
 import { useState } from "react";
