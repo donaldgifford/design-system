@@ -1,6 +1,6 @@
 {
   "name": "@donaldgifford/design-system",
-  "version": "0.3.1",
+  "version": "0.3.2",
   "description": "Design tokens and a React component library shared by repo-guardian, docz and other apps.",
   "license": "Apache-2.0",
   "type": "module",

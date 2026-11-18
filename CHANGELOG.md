@@ -1,5 +1,11 @@
 # @donaldgifford/design-system
 
+## 0.3.2
+
+### Patch Changes
+
+- [#21](https://github.com/donaldgifford/design-system/pull/21) [`3147cc0`](https://github.com/donaldgifford/design-system/commit/3147cc0d826ad8402ff2c8a4f8857064b6d1ef4e) Thanks [@donaldgifford](https://github.com/donaldgifford)! - `DataTable` no longer brings zod into an app's bundle. The zod-free part of the list convention (`ListSearch`, `listSearchDefaults`, `parseSort`, `formatSort`, `compactSearch`) moved to a new `lib/list-params`, which the table imports. `lib/list-search` re-exports all of it beside `listSearchSchema`, so existing imports keep working; only an app that imports `lib/list-search` or `lib/problem` gets zod.
+
 ## 0.3.1
 
 ### Patch Changes
