@@ -107,14 +107,31 @@ export function ShellSidebarIdentity({ mark, title, subtitle }: ShellSidebarIden
 
 const markClass = "flex aspect-square size-8 shrink-0 items-center justify-center rounded-lg";
 
-/** An app's mark: its icon on the primary color. */
-export function AppMark({ icon: Icon, className }: { icon: TablerIcon; className?: string }) {
+interface AppMarkProps {
+  icon: TablerIcon;
+  /** `sm` is the mark in a menu row. */
+  size?: "default" | "sm" | undefined;
+  className?: string | undefined;
+}
+
+/**
+ * An app's mark: its icon on the primary color. The icon takes the mark's
+ * text color and, at `sm`, its own size, so a menu item that tints and
+ * sizes the icons inside it leaves the mark alone.
+ */
+export function AppMark({ icon: Icon, size = "default", className }: AppMarkProps) {
   return (
     <span
       data-slot="app-mark"
-      className={cn(markClass, "bg-primary text-primary-foreground", className)}
+      data-size={size}
+      className={cn(
+        markClass,
+        "bg-primary text-primary-foreground",
+        size === "sm" && "size-6",
+        className,
+      )}
     >
-      <Icon aria-hidden="true" />
+      <Icon aria-hidden="true" className={cn("text-current", size === "sm" && "size-3.5")} />
     </span>
   );
 }
