@@ -148,8 +148,11 @@ repo that installs the package and removes the local copies.
 
 ### How a component gets in
 
-- It is already used by a running app. Nothing is built from a mockup.
-- It is needed for an app to delete a local copy.
+- It is already used by a running app, or an app being built on the
+  package needs it and it is generic. Such a component is drafted and
+  seen working in that app first; nothing is built from a mockup alone
+  (amended 2026-11-21, boop INV-0005 OQ7).
+- It is needed for an app to delete a local copy, or to not start one.
 - It is not named after, or shaped around, one app's domain.
 
 There is no waiting period and no promotion ceremony.
