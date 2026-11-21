@@ -36,5 +36,6 @@ docz create rfc "Your RFC Title"
 | ID | Title | Status | Date | Author | Link |
 | --- | --- | --- | --- | --- | --- |
 | RFC-0001 | Shared design system and component library for repo-guardian and docz | Accepted | 2026-11-15 | Donald Gifford | [0001-shared-design-system-and-component-library-for-repo-guardian.md](0001-shared-design-system-and-component-library-for-repo-guardian.md) |
+| RFC-0002 | App switcher: a shell part listing a deployment's apps as plain links | Draft | 2026-11-21 | Donald Gifford | [0002-app-switcher-a-shell-part-listing-a-deployments-apps-as-plain.md](0002-app-switcher-a-shell-part-listing-a-deployments-apps-as-plain.md) |
 <!-- markdownlint-restore -->
 <!-- END DOCZ AUTO-GENERATED -->
