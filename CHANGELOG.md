@@ -1,5 +1,44 @@
 # @donaldgifford/design-system
 
+## 0.4.0
+
+### Minor Changes
+
+- [#26](https://github.com/donaldgifford/design-system/pull/26) [`86c5516`](https://github.com/donaldgifford/design-system/commit/86c551680316328f34110b494f0717173bb5ec9c) Thanks [@donaldgifford](https://github.com/donaldgifford)! - `shell/app-switcher`: `AppSwitcher`, the sidebar header as a menu of the
+  apps a deployment runs, each a plain link to another origin (RFC-0002).
+  With one app it is the identity as a link home.
+  
+  `AppMark` takes `size="sm"` for a menu row, and its icon now carries the
+  mark's color, so a `DropdownMenuItem` no longer tints it muted.
+
+- [#23](https://github.com/donaldgifford/design-system/pull/23) [`8272057`](https://github.com/donaldgifford/design-system/commit/82720571b4022701a51fbd42df76f08d889c4e1a) Thanks [@donaldgifford](https://github.com/donaldgifford)! - Four small blocks that apps were keeping local copies of:
+  
+  - `blocks/segmented-control`: `SegmentedControl`, the `Tabs` list with no
+    panels, as a controlled choice between a few views.
+  - `blocks/option-rows`: `OptionHeading`, `OptionItem` and `OptionSeparator`,
+    the rows of a picker inside a `Popover`, with a current row and a mono
+    detail.
+  - `blocks/filter-bar`: `FilterBar`, the named group around `FilterChip`s,
+    with "Clear" and a result count.
+  - `blocks/inline-state`: `InlineLoading` and `InlineEmpty`, one line of
+    loading or empty text inside a panel or under a table head.
+
+- [#24](https://github.com/donaldgifford/design-system/pull/24) [`57c8e60`](https://github.com/donaldgifford/design-system/commit/57c8e600619dcfb811d7de1eaeba50e06bdea522) Thanks [@donaldgifford](https://github.com/donaldgifford)! - `blocks/stacked-bars-over-time`: `StackedBarsOverTime`, counts over time
+  split by category as one stacked bar per bucket, with `stackTimeTable` for
+  the `ChartCard` table and `stackTotal`. `TrendChart` draws one series and
+  `StackedBars` has no time axis; this is the block for "runs by outcome over
+  the range".
+
+- [#27](https://github.com/donaldgifford/design-system/pull/27) [`efa7dc4`](https://github.com/donaldgifford/design-system/commit/efa7dc47ff3e9c2874515e5ae9bfe21e6ff3a890) Thanks [@donaldgifford](https://github.com/donaldgifford)! - A public status page's parts, after repo-guardian's page and built from
+  the package's own `Alert`, `Dot`, `ListRow`, `Badge` and `PageHeader`:
+  
+  - `blocks/status`: `StatusBanner` (the overall state as a headline in its
+    tone), `StatusComponents` (a row per part of the service), `StatusBadge`,
+    and `statusTone` / `statusHeadline`. A state that is not known reads as a
+    disruption.
+  - `shell/status-page`: `StatusPageLayout`, the narrow column outside the
+    app shell, under a `PageHeader`, with a footer.
+
 ## 0.3.2
 
 ### Patch Changes
