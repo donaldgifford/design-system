@@ -373,7 +373,7 @@ RFC-0003, with its seven questions already answered there. It needs
 - [x] On the icon rail: a top-level row with children opens a `Popover`
       with its subtree fully expanded, under a height cap in a
       `ScrollArea`. Opening it calls the row's `onOpenChange(true)`.
-- [ ] `hooks/use-tree-open`: `useTreeOpen(activeKey)`. The active branch is
+- [x] `hooks/use-tree-open`: `useTreeOpen(activeKey)`. The active branch is
       open, a manual toggle overrides it, and overrides reset when
       `activeKey` changes.
 - [ ] Stories: each form; open, closed, loading, disabled and active;

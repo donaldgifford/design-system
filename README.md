@@ -30,9 +30,9 @@ Import subpaths, never a barrel:
 | `@donaldgifford/design-system/fonts.css` | IBM Plex Sans and JetBrains Mono, self-hosted (latin, five static files) |
 | `@donaldgifford/design-system/components/<name>` | a primitive (`button`, `dialog`, `sidebar`, ...) |
 | `@donaldgifford/design-system/blocks/<name>` | a block (`data-table`, `kpi`, `page-header`, `trend-chart`, `group-grid`, ...) |
-| `@donaldgifford/design-system/shell/<name>` | presentational chrome (`top-bar`, `search-trigger`, `mode-toggle`, `sidebar`, `detail-sheet`, `detail-panel`, `route-error`, `page-skeleton`) |
+| `@donaldgifford/design-system/shell/<name>` | presentational chrome (`top-bar`, `search-trigger`, `mode-toggle`, `sidebar`, `sidebar-tree`, `detail-sheet`, `detail-panel`, `route-error`, `page-skeleton`) |
 | `@donaldgifford/design-system/lib/<name>` | `utils` (`cn()`), `errors`, `problem`, `highlight`, `list-search`, `list-params`, `chart-scale`, `csv`, `time`, `percent`, `mark` |
-| `@donaldgifford/design-system/hooks/<name>` | shared hooks (`use-mobile`, `use-media-query`, `use-active-heading`) |
+| `@donaldgifford/design-system/hooks/<name>` | shared hooks (`use-mobile`, `use-media-query`, `use-active-heading`, `use-tree-open`) |
 
 Import `globals.css` once, from the app's entry. Its `@source` is what
 generates the package's classes, since a consumer's Tailwind scans only its
