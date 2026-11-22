@@ -305,14 +305,14 @@ documents and does not ship.
 <!--docz:tasks:start-->
 #### Tasks
 
-- [ ] `CommandFilters` and `CommandFooter`: new parts the app places
+- [x] `CommandFilters` and `CommandFooter`: new parts the app places
       among `CommandDialog`'s children, as it places `CommandInput` and
       `CommandList`. A row of filters under the input, and a row of key
       hints along the foot. (A4)
-- [ ] `CommandDialog`: a `preview` prop, a pane beside the list (A4)
-- [ ] `CommandDialog` is wider when it has a preview, and the preview is
+- [x] `CommandDialog`: a `preview` prop, a pane beside the list (A4)
+- [x] `CommandDialog` is wider when it has a preview, and the preview is
       hidden below a breakpoint, where the list takes the full width (A4)
-- [ ] Arrow keys and Enter still drive the list while focus is in the
+- [x] Arrow keys and Enter still drive the list while focus is in the
       input, with filters and a preview present. Test it. (A4)
 - [ ] `shell/search-trigger`: `SearchTrigger`, a button shaped like a
       field, with a `label`, a `shortcut` shown as `Kbd`, and an icon-only

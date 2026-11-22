@@ -3,6 +3,8 @@ import {
   Command,
   CommandDialog,
   CommandEmpty,
+  CommandFilters,
+  CommandFooter,
   CommandGroup,
   CommandInput,
   CommandItem,
@@ -155,4 +157,68 @@ export const DialogOpen: Story = {
       <PaletteItems />
     </CommandDialog>
   ),
+};
+
+const pages = [
+  { value: "clusters", label: "Clusters", about: "Every cluster in the fleet, by region." },
+  { value: "sandboxes", label: "Sandboxes", about: "Short-lived environments and who owns them." },
+  { value: "networks", label: "Networks", about: "VPCs, peering and the routes between them." },
+];
+
+function PaletteWithSlots() {
+  const [value, setValue] = useState("clusters");
+  const [mine, setMine] = useState(false);
+  const current = pages.find((page) => page.value === value);
+  return (
+    <CommandDialog
+      defaultOpen
+      commandProps={{ value, onValueChange: setValue }}
+      preview={
+        current ? (
+          <div className="grid gap-1">
+            <div className="font-medium">{current.label}</div>
+            <p className="text-muted-foreground">{current.about}</p>
+          </div>
+        ) : null
+      }
+    >
+      <CommandInput aria-label="Search" placeholder="Go to a page…" />
+      <CommandFilters>
+        <Button
+          variant="outline"
+          size="sm"
+          aria-pressed={mine}
+          onClick={() => setMine((on) => !on)}
+        >
+          Mine only
+        </Button>
+      </CommandFilters>
+      <CommandList>
+        <CommandEmpty>No results.</CommandEmpty>
+        <CommandGroup heading="Pages">
+          {pages.map((page) => (
+            <CommandItem key={page.value} value={page.value}>
+              {page.label}
+            </CommandItem>
+          ))}
+        </CommandGroup>
+      </CommandList>
+      <CommandFooter>
+        <span>↑ ↓ to move</span>
+        <span>↵ to open</span>
+        <span>esc to close</span>
+      </CommandFooter>
+    </CommandDialog>
+  );
+}
+
+/**
+ * The three optional parts: `CommandFilters` under the input,
+ * `CommandFooter` along the foot, and `preview` on the dialog, a pane
+ * beside the list for the highlighted item. A palette that uses none of
+ * them is the one above. Shell/SearchTrigger has a fuller example.
+ */
+export const DialogWithSlots: Story = {
+  tags: ["!autodocs"],
+  render: () => <PaletteWithSlots />,
 };
