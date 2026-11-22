@@ -146,10 +146,10 @@ README. Nothing here changes a component's API.
       themes
 - [x] Map all ten in the `@theme inline` block (`--color-category-1`,
       `--color-border-strong`, ...)
-- [ ] Use `--border-strong` on the hover border of `Input`, `Textarea`
+- [x] Use `--border-strong` on the hover border of `Input`, `Textarea`
       and the `Select` trigger, and on the edge of `Popover` and
       `DropdownMenu`
-- [ ] Use `--surface-pressed` on the pressed state of sidebar rows,
+- [x] Use `--surface-pressed` on the pressed state of sidebar rows,
       `OptionItem` and the clickable `ListRow`
 - [x] Extend `test/styles/tokens.test.ts`: each category colour is at least
       4.5:1 as text on `--background`, `--card` and `--sidebar`, in both

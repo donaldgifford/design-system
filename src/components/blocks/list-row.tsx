@@ -57,13 +57,17 @@ export function ListRow({ leading, title, subtitle, trailing, onClick, className
   return (
     <div
       data-slot="list-row"
-      className={cn("relative flex w-full items-center gap-3 text-left", className)}
+      className={cn(
+        "relative flex w-full items-center gap-3 rounded-md text-left has-[[data-slot=list-row-control]:active]:bg-surface-pressed",
+        className,
+      )}
     >
       {leading}
       <div className="min-w-0 flex-1">
         {onClick ? (
           <button
             type="button"
+            data-slot="list-row-control"
             onClick={onClick}
             className="block w-full truncate text-left font-medium text-sm outline-none after:absolute after:inset-0 after:rounded-md after:content-[''] focus-visible:after:ring-2 focus-visible:after:ring-ring"
           >
