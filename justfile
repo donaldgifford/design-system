@@ -17,7 +17,7 @@ lint-fix:
 
 # Lint Markdown
 lint-md:
-    markdownlint-cli2 "**/*.md" "#node_modules" "#.changeset"
+    markdownlint-cli2 "**/*.md" "#node_modules" "#.changeset" "#.claude"
 
 # Lint YAML
 lint-yaml:

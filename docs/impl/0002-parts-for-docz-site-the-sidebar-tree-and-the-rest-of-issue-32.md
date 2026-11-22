@@ -165,13 +165,13 @@ README. Nothing here changes a component's API.
 - [x] Add a test that builds `globals.css` before and after the split and
       requires the same CSS, apart from the new tokens
       Done as: the two builds were compared once at the split (the same lines, with only the `@font-face` blocks moved), and `test/styles/entries.test.ts` builds both entries on every run.
-- [ ] README, "Using it": the `core.css` route, with an `@source` line per
+- [x] README, "Using it": the `core.css` route, with an `@source` line per
       part the app uses and the app's own fonts (C1, C2)
-- [ ] README: following `prefers-color-scheme`, with the script that sets
+- [x] README: following `prefers-color-scheme`, with the script that sets
       `.dark` before first paint (C3)
-- [ ] README: a note that `accent` is a hover surface here and the brand
+- [x] README: a note that `accent` is a hover surface here and the brand
       colour is `primary` (B3)
-- [ ] Changeset
+- [x] Changeset
 
 <!--docz:tasks:end-->
 

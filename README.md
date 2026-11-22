@@ -25,7 +25,9 @@ Import subpaths, never a barrel:
 | --- | --- |
 | `@donaldgifford/design-system/tokens.css` | every token as a CSS custom property; imports nothing, so it works on a plain HTML page |
 | `@donaldgifford/design-system/tokens.json` | the same tokens as W3C Design Tokens (DTCG) |
-| `@donaldgifford/design-system/globals.css` | Tailwind, the tokens and both themes, the `@theme inline` map, the base layer, the fonts, and an `@source` over the package |
+| `@donaldgifford/design-system/globals.css` | everything: `fonts.css`, `core.css`, and an `@source` over the package |
+| `@donaldgifford/design-system/core.css` | Tailwind, the tokens and both themes, the `@theme inline` map and the base layer; no fonts and no `@source` |
+| `@donaldgifford/design-system/fonts.css` | IBM Plex Sans and JetBrains Mono, self-hosted (latin, five static files) |
 | `@donaldgifford/design-system/components/<name>` | a primitive (`button`, `dialog`, `sidebar`, ...) |
 | `@donaldgifford/design-system/blocks/<name>` | a block (`data-table`, `kpi`, `page-header`, `trend-chart`, `group-grid`, ...) |
 | `@donaldgifford/design-system/shell/<name>` | presentational chrome (`top-bar`, `sidebar`, `detail-sheet`, `detail-panel`, `route-error`, `page-skeleton`) |
@@ -36,6 +38,51 @@ Import `globals.css` once, from the app's entry. Its `@source` is what
 generates the package's classes, since a consumer's Tailwind scans only its
 own project. Dark is switched with a `.dark` class on `<html>`; storing the
 user's choice is the app's job.
+
+### Only the parts you use
+
+`globals.css` scans the whole package, so an app gets the classes of every
+component, used or not, and the package's font files. An app that wants
+neither imports `core.css` and names the parts it uses:
+
+```css
+@import "@donaldgifford/design-system/core.css";
+/* One line per part the app imports, relative to this file. */
+@source "../node_modules/@donaldgifford/design-system/src/components/ui/button.tsx";
+@source "../node_modules/@donaldgifford/design-system/src/components/blocks/list-row.tsx";
+```
+
+A part that renders another part needs that one's line too (`data-table`
+uses `table`); a missing line shows as an unstyled component, not an
+error. A directory is a valid `@source`, so
+`.../src/components/ui` takes every primitive.
+
+`core.css` loads no fonts. The tokens name `"IBM Plex Sans"` and
+`"JetBrains Mono"`, so either add
+`@import "@donaldgifford/design-system/fonts.css";` or load those
+families yourself, as variable fonts for example.
+
+### Following the system's color scheme
+
+The tokens have no `prefers-color-scheme` block: the theme is the `.dark`
+class and nothing else, so that a user's choice can override the system.
+To follow the system, set the class before the first paint, in a script
+in `<head>` ahead of the stylesheet:
+
+```html
+<script>
+  (() => {
+    const stored = localStorage.getItem("mode");
+    const dark = stored ? stored === "dark" : matchMedia("(prefers-color-scheme: dark)").matches;
+    document.documentElement.classList.toggle("dark", dark);
+  })();
+</script>
+```
+
+The storage key is the app's. Under a content security policy with no
+inline scripts, serve the same lines as a small blocking script file.
+`ModeToggle` (`shell/mode-toggle`) is the control; it is given the mode
+and stores nothing.
 
 ### Installing from GitHub Packages
 
@@ -77,9 +124,17 @@ that compile and then fail quietly:
   preload before anything imports them (this repo's `test/setup.ts` is
   the pattern). cmdk also needs a `ResizeObserver`, which happy-dom has
   and jsdom does not.
-- **Reduced motion.** `globals.css` cuts every animation and transition
+- **Reduced motion.** `core.css` (and so `globals.css`) cuts every animation and transition
   to nothing under `prefers-reduced-motion: reduce`; an app's own rule
   for that can go.
+
+### Coming from another token set
+
+- **`accent` is a hover surface, not the brand color.** Here, as in
+  shadcn, `bg-accent` is the neutral fill under a hovered row and
+  `--primary` is the brand color. An app whose own `--accent` or
+  `--color-accent` means the brand color should rename it before
+  importing the package's stylesheet, or its links and buttons turn gray.
 
 ## Layout
 
@@ -90,7 +145,7 @@ components.json     # where the shadcn CLI lands a new primitive
 tokens.json         # the DTCG export of tokens.css (just tokens)
 scripts/            # tokens-export.ts
 src/
-  styles/           # tokens.css and globals.css
+  styles/           # tokens.css, core.css, fonts.css and globals.css
   components/       # each <name>.tsx with its <name>.stories.tsx beside it
     ui/             # shadcn-origin primitives, owned here
     blocks/         # composites: DataTable, Kpi, Timeline, the charts, ...
@@ -118,13 +173,13 @@ values are the tokens and its rules are in the components' classes and
 ## Tokens
 
 `src/styles/tokens.css` holds every value, in three tiers;
-`globals.css` maps them into Tailwind with `@theme inline`, so
+`core.css` maps them into Tailwind with `@theme inline`, so
 `bg-background`, `text-running`, and `h-control` read them.
 
 | Tier | Names | Read by |
 | --- | --- | --- |
 | Raw | `--gray-*`, `--slate-*`, and the hues (`--blue-50` is a blue at 50% oklch lightness), `--font-family-sans`, `--font-family-mono`, `--radius-base`, `--space-1` to `--space-8` | the semantic and component tiers only |
-| Semantic | the surfaces, actions, roles, and states below; `--chart-1` to `--chart-5`; `--code-bg`, `--diff-add`, `--diff-remove`; `--radius`, `--pill-radius`; `--control-h`, `--row-h`; `--text-xs` to `--text-xl`; `--label-size`, `--label-size-sm`, `--label-size-xs`, `--label-tracking`; `--line-height-compact`, `--line-height-dense`; `--duration-fast`, `--duration-normal`, `--ease-standard` | components, through the theme map |
+| Semantic | the surfaces, actions, roles, and states below; `--chart-1` to `--chart-5`; `--category-1` to `--category-8`; `--code-bg`, `--diff-add`, `--diff-remove`; `--radius`, `--pill-radius`; `--control-h`, `--row-h`; `--text-xs` to `--text-xl`; `--label-size`, `--label-size-sm`, `--label-size-xs`, `--label-tracking`; `--line-height-compact`, `--line-height-dense`; `--duration-fast`, `--duration-normal`, `--ease-standard` | components, through the theme map |
 | Component | `--sidebar`, `--sidebar-*`, `--header-height`, `--badge-radius`, `--badge-mix`, `--badge-tint`, `--badge-tint-text`, `--badge-px`, `--badge-py`, `--avatar`, `--table-row-h`, `--table-head-h`, `--table-max-h`, `--kpi-value-size`, `--sheet-width`, `--sheet-width-wide`, `--sheet-padding`, `--elevation-overlay`, `--elevation-tooltip` | that component, sparingly |
 
 - **Colors** are full oklch values, defined on `:root` (light) and
@@ -133,7 +188,15 @@ values are the tokens and its rules are in the components' classes and
 - **Surfaces and actions**: `background`, `card`, `popover`, `muted`,
   `accent`, `secondary`, `primary`, and `destructive`, each with
   `-foreground` (`background`'s is `--foreground`); `border`, `input`,
-  and `ring`.
+  and `ring`. Two steps past those: `border-strong`, a field's hover
+  border and an overlay's edge, and `surface-pressed`, a row or control
+  while it is pressed.
+- **Categories**: `--category-1` to `--category-8` are eight hues for a
+  tone the app supplies, such as a document type or a team. The app
+  decides which category is which; `Badge` and `Dot` take one as `tone`.
+  Each holds 4.5:1 as text on the page, a card and the sidebar in both
+  themes, plain and in a tinted badge. `--chart-*` is tuned for bars and
+  is not checked as text.
 - **Status roles** `success`, `warning`, `info`, and `destructive`, each
   with `-foreground` for text on the filled color; tinted badges use the
   role itself as text. **States** `pending`, `approved`, `ignored`, and
@@ -166,7 +229,10 @@ values are the tokens and its rules are in the components' classes and
 - **Tests.** `test/styles/tokens.test.ts` parses the CSS and checks
   every schema token in both themes, that `.dark` sets every color
   `:root` sets, each foreground on its surface, role, or state at
-  4.5:1, and the focus ring at 3:1 against the background and card.
+  4.5:1, the category colors as text and as tinted badges, and the
+  focus ring at 3:1 against the background and card.
+  `test/styles/entries.test.ts` compiles `globals.css` and `core.css`
+  as an app's build would.
 - **Export.** `tokens.json` is the tokens as W3C Design Tokens (DTCG),
   with `light` and `dark` as modes, each holding every token. A token
   that names another is an alias (`{slate-21}`), and `$type` comes from
@@ -201,7 +267,7 @@ values are the tokens and its rules are in the components' classes and
   shrinks. `transition-[...]` property lists pass anywhere. Utilities
   that resolve to tokens are fine: `rounded-pill`, `text-label`,
   `h-(--control-h)`, `bg-muted`, and the spacing scale (`size-5.5`).
-  A new value is a token in `tokens.css`, mapped in `globals.css`'s
+  A new value is a token in `tokens.css`, mapped in `core.css`'s
   `@theme`. A new text, radius, tracking, or leading step also goes in
   `cn()`'s tailwind-merge theme, or it gets merged away beside a color.
 - Every component has a `bun test` file that renders each variant and
