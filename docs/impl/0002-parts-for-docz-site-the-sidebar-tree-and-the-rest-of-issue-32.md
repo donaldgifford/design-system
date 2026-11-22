@@ -248,13 +248,14 @@ What a search result and a long document need.
 <!--docz:tasks:start-->
 #### Tasks
 
-- [ ] `ListRow`: `eyebrow`, a mono line over the title (A3)
-- [ ] `ListRow`: `detail`, text under the title that wraps to two lines
+- [x] `ListRow`: `eyebrow`, a mono line over the title (A3)
+- [x] `ListRow`: `detail`, text under the title that wraps to two lines
       and is then cut (A3)
-- [ ] `ListRow`: `render`, so the title is the app's link stretched over
+- [x] `ListRow`: `render`, so the title is the app's link stretched over
       the row, as the `onClick` form's button is today. `render` and
       `onClick` together is a type error. (A3)
-- [ ] `lib/time`: a `"time"` style for `formatTime`. `Time`:
+      Done differently: a union of the two forms collapses Storybook's arg types to `never`, so both stay optional and with `render` the row ignores `onClick`, which a test holds.
+- [x] `lib/time`: a `"time"` style for `formatTime`. `Time`:
       `style="stacked"`, the date over the time, still one `<time>` with
       the other zone in its title. (A3)
 - [ ] `lib/mark`: `markSegments(text)`, which splits a string on literal

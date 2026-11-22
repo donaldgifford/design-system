@@ -15,6 +15,7 @@ describe("formatTime", () => {
   test("renders UTC as a fixed, sortable stamp", () => {
     expect(formatTime("2026-03-04T09:05:59Z", { zone: "utc" })).toBe("2026-03-04 09:05");
     expect(formatTime("2026-03-04T09:05:59Z", { zone: "utc", style: "date" })).toBe("2026-03-04");
+    expect(formatTime("2026-03-04T09:05:59Z", { zone: "utc", style: "time" })).toBe("09:05");
     expect(formatTime("2026-03-04T23:30:00-05:00", { zone: "utc" })).toBe("2026-03-05 04:30");
   });
 
