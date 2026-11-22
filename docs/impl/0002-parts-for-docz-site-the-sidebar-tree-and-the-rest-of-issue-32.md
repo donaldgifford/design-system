@@ -202,7 +202,7 @@ tree in phase 5 opens and closes with it.
 - [x] `components/collapsible`: `Collapsible`, `CollapsibleTrigger` and
       `CollapsiblePanel` on Base UI's `Collapsible`, restyled with tokens.
       A closed panel is not in the DOM. (A7)
-- [ ] `blocks/disclosure`: `Disclosure`, a bordered block over
+- [x] `blocks/disclosure`: `Disclosure`, a bordered block over
       `Collapsible` with a `label`, a `value` shown while closed, and
       `open` / `defaultOpen` / `onOpenChange` (A7)
 - [ ] `Badge`: a `tone` prop that takes a CSS colour and overrides the
