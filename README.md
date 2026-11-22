@@ -309,6 +309,7 @@ strings differ throughout; the table lists what differs beyond them. The
 | `input`, `textarea`, `select` | the border takes `border-strong` on hover | a field that answers the pointer |
 | `popover`, `dropdown-menu` | the edge is `border-strong` | an overlay that separates from the page in both themes |
 | `sidebar` | a pressed row takes `surface-pressed` | a press reads as one, past the hover fill |
+| `sidebar` | `SidebarMenuBadge` moves left of a `SidebarMenuAction` in the same row | the two were drawn on top of each other |
 | `input`, `textarea` | `text-[1rem]` instead of `text-base` below `md` | `text-base` is the 14px body size; 16px keeps iOS from zooming on focus |
 | `table` | `containerClassName` reaches the scroll container; `TableHeader` sticks with `data-sticky`; heads take `--table-head-h` and the label type; a selected row is tinted `primary` at 12% | DataTable's sticky header and `--table-max-h` scroll |
 | `label`, `textarea`, `checkbox`, `radio-group`, `switch`, `popover`, `toggle`, `toggle-group`, `alert`, `avatar` | no control shadows, the token control heights; `alert` gains `success`, `warning`, and `info`; the avatar fallback sits on `bg-avatar` | flat controls, the status roles, and a tokenized avatar color |

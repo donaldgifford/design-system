@@ -353,7 +353,7 @@ RFC-0003, with its seven questions already answered there. It needs
 <!--docz:tasks:start-->
 #### Tasks
 
-- [ ] `components/sidebar`: a row with both a badge and an action shows
+- [x] `components/sidebar`: a row with both a badge and an action shows
       the badge left of the action. Record the edit in the README's
       local-edits table.
 - [ ] `shell/sidebar-tree`: `ShellSidebarTreeItem` in its three forms: a

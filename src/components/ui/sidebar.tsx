@@ -554,6 +554,8 @@ function SidebarMenuBadge({ className, ...props }: React.ComponentProps<"div">) 
       data-sidebar="menu-badge"
       className={cn(
         "pointer-events-none absolute right-1 flex h-5 min-w-5 items-center justify-center rounded-md bg-transparent px-1 font-mono text-label leading-dense font-medium text-muted-foreground tabular-nums select-none",
+        // Beside a `SidebarMenuAction` in the same row, the badge sits left of it.
+        "has-[~[data-sidebar=menu-action]]:right-7 [[data-sidebar=menu-action]~&]:right-7",
         "peer-data-[size=sm]/menu-button:top-1",
         "peer-data-[size=default]/menu-button:top-1.5",
         "peer-data-[size=lg]/menu-button:top-2.5",
