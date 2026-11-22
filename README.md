@@ -302,7 +302,12 @@ strings differ throughout; the table lists what differs beyond them. The
 | `sheet` | opens and closes in 200ms | upstream's 500ms open reads as lag on a detail panel |
 | `badge` | `success`, `warning`, and `info` variants; `pending`, `approved`, `ignored`, and `running` | the status roles and states |
 | `badge` | a `fill` axis (`tinted`, the default, or `filled`); each variant sets `--tone`, `--tone-fill`, and `--tone-foreground`, and the `badge-tinted` and `badge-filled` utilities draw them; `outline` has no fill | one tone per variant, two treatments, no per-variant color classes |
+| `badge` | a `tone` prop takes a CSS color and sets `--tone` inline, for the tinted form only | a category the package has no variant for, such as a document type |
 | `button` | `success`, `warning`, and `info` variants (filled) | the status roles |
+| `collapsible` | the panel animates its height on the motion tokens; closed, it is not in the DOM | one disclosure for `Disclosure` and the sidebar tree |
+| `input`, `textarea`, `select` | the border takes `border-strong` on hover | a field that answers the pointer |
+| `popover`, `dropdown-menu` | the edge is `border-strong` | an overlay that separates from the page in both themes |
+| `sidebar` | a pressed row takes `surface-pressed` | a press reads as one, past the hover fill |
 | `input`, `textarea` | `text-[1rem]` instead of `text-base` below `md` | `text-base` is the 14px body size; 16px keeps iOS from zooming on focus |
 | `table` | `containerClassName` reaches the scroll container; `TableHeader` sticks with `data-sticky`; heads take `--table-head-h` and the label type; a selected row is tinted `primary` at 12% | DataTable's sticky header and `--table-max-h` scroll |
 | `label`, `textarea`, `checkbox`, `radio-group`, `switch`, `popover`, `toggle`, `toggle-group`, `alert`, `avatar` | no control shadows, the token control heights; `alert` gains `success`, `warning`, and `info`; the avatar fallback sits on `bg-avatar` | flat controls, the status roles, and a tokenized avatar color |

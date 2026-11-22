@@ -213,14 +213,14 @@ tree in phase 5 opens and closes with it.
 - [x] `Stepper`: `orientation="vertical"` with a line joining the markers,
       and `size="sm"`, whose marker is a dot with no number. The two props
       are independent. The default stays horizontal and numbered. (A6)
-- [ ] `FilterChip`: `pressed` and `onPressedChange`. A pressed chip is a
+- [x] `FilterChip`: `pressed` and `onPressedChange`. A pressed chip is a
       toggle with `aria-pressed`, labelled by its children, with no
       `key = value` and no editor. It sits in `FilterBar` unchanged. (B2)
-- [ ] Stories: each new form, and `Badge` and `Dot` on all eight category
+- [x] Stories: each new form, and `Badge` and `Dot` on all eight category
       colours in both themes
-- [ ] Tests with axe for each; keyboard tests for `Collapsible`,
+- [x] Tests with axe for each; keyboard tests for `Collapsible`,
       `Disclosure` and the pressed chip
-- [ ] Changeset
+- [x] Changeset
 
 <!--docz:tasks:end-->
 
