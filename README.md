@@ -46,16 +46,29 @@ component, used or not, and the package's font files. An app that wants
 neither imports `core.css` and names the parts it uses:
 
 ```css
-@import "@donaldgifford/design-system/core.css";
-/* One line per part the app imports, relative to this file. */
+@import "@donaldgifford/design-system/core.css" source(none);
+/* The app's own files, relative to this file. */
+@source "./";
+/* One line per part the app imports. */
 @source "../node_modules/@donaldgifford/design-system/src/components/ui/button.tsx";
 @source "../node_modules/@donaldgifford/design-system/src/components/blocks/list-row.tsx";
 ```
+
+`source(none)` is what makes a line mean the file it names. Without it
+Tailwind scans the app's root by itself, and a line that names one file
+under `node_modules` then takes that file's whole directory (seen on
+Tailwind 4.3.3): the build still works and gets every primitive. With
+it nothing is scanned unasked, which is why the app's own directory
+needs its line.
 
 A part that renders another part needs that one's line too (`data-table`
 uses `table`); a missing line shows as an unstyled component, not an
 error. A directory is a valid `@source`, so
 `.../src/components/ui` takes every primitive.
+
+For scale, an app that uses `Badge` and `Button` compiles to about 26 kB
+of CSS this way (6 kB gzipped) and no font files, against 107 kB (18 kB
+gzipped) and ten font files through `globals.css`.
 
 `core.css` loads no fonts. The tokens name `"IBM Plex Sans"` and
 `"JetBrains Mono"`, so either add

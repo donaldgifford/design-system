@@ -5,8 +5,9 @@
 Tokens and stylesheet entries for apps that take part of the package.
 
 - `core.css`: Tailwind, the tokens, the theme map and the base layer, with
-  no `@source` and no fonts. An app that imports it names the parts it
-  uses with its own `@source` lines and gets no classes for the rest.
+  no `@source` and no fonts. An app that imports it with `source(none)`
+  names its own directory and the parts it uses in `@source` lines, and
+  gets no classes for the rest. The README has the lines.
   `fonts.css` is the five font imports on their own. `globals.css` is the
   two plus the package's sources and compiles to the CSS it did.
 - `--category-1` to `--category-8`: eight hues for a tone the app

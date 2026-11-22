@@ -6,7 +6,15 @@
  * an app's Vite build compiles them.
  */
 import { afterAll, beforeAll, describe, expect, test } from "bun:test";
-import { mkdtempSync, rmSync, writeFileSync } from "node:fs";
+import {
+  cpSync,
+  mkdirSync,
+  mkdtempSync,
+  realpathSync,
+  rmSync,
+  symlinkSync,
+  writeFileSync,
+} from "node:fs";
 import { tmpdir } from "node:os";
 import { join } from "node:path";
 import packageJson from "../../package.json";
@@ -76,21 +84,48 @@ describe("an app that imports globals.css", () => {
   });
 });
 
+/**
+ * A scratch app with the package where an install puts it: a real copy
+ * under the app's own `node_modules`, imported by name. The place matters.
+ * Tailwind ignores `node_modules`, and when the app's root is scanned by
+ * itself, a line that names one file in there opens that file's whole
+ * directory. With `source(none)` on the import nothing is scanned unasked,
+ * and each line means the file it names.
+ */
+function scratchApp(appCss: string[]): string {
+  // The real path: through a symlinked temp directory the package would not
+  // look like it is inside the app, and the scan would not be the app's.
+  const app = realpathSync(mkdtempSync(join(tmpdir(), "design-system-core-")));
+  const installed = join(app, "node_modules/@donaldgifford/design-system");
+  cpSync(join(repo, "src"), join(installed, "src"), { recursive: true });
+  cpSync(join(repo, "package.json"), join(installed, "package.json"));
+  // What core.css imports by name, resolved from the app as an install would.
+  for (const dependency of ["tailwindcss", "tw-animate-css"]) {
+    symlinkSync(join(repo, "node_modules", dependency), join(app, "node_modules", dependency));
+  }
+  mkdirSync(join(app, "src"));
+  writeFileSync(
+    join(app, "src/page.tsx"),
+    'export const page = <p className="underline-offset-8" />;\n',
+  );
+  writeFileSync(join(app, "src/app.css"), appCss.join("\n"));
+  return app;
+}
+
+const installedUi = "../node_modules/@donaldgifford/design-system/src/components/ui";
+
 describe("an app that imports core.css and names two components", () => {
   let app: string;
   let built: BuiltCss;
   beforeAll(async () => {
-    app = mkdtempSync(join(tmpdir(), "design-system-core-"));
-    const ui = join(repo, "src/components/ui");
-    writeFileSync(
-      join(app, "app.css"),
-      [
-        `@import "${join(styles, "core.css")}";`,
-        `@source "${join(ui, "button.tsx")}";`,
-        `@source "${join(ui, "badge.tsx")}";`,
-      ].join("\n"),
-    );
-    built = await buildCss(join(app, "app.css"), app);
+    // The README's lines, "Only the parts you use".
+    app = scratchApp([
+      '@import "@donaldgifford/design-system/core.css" source(none);',
+      '@source "./";',
+      `@source "${installedUi}/button.tsx";`,
+      `@source "${installedUi}/badge.tsx";`,
+    ]);
+    built = await buildCss(join(app, "src/app.css"), app);
   });
   afterAll(() => {
     rmSync(app, { recursive: true, force: true });
@@ -99,6 +134,10 @@ describe("an app that imports core.css and names two components", () => {
   test("gets the tokens and those components' classes", () => {
     expect(built.css).toContain("--category-1");
     expect(built.css).toContain(".badge-tinted");
+  });
+
+  test("gets its own classes", () => {
+    expect(built.css).toContain(".underline-offset-8");
   });
 
   test("gets no classes for the others", () => {
