@@ -184,8 +184,9 @@ export function ShellSidebarTreeItem({
     <DepthContext.Provider value={depth + 1}>
       <SidebarMenuSub
         data-depth={depth + 1}
-        // Past the first level a list gives up its right margin and steps in less.
-        className={cn(nested && "mr-0 ml-2 pr-0 pl-2")}
+        // Rows run to the sidebar's right edge, so a long label keeps its room.
+        // Past the first level a list steps in less.
+        className={cn("mr-0 pr-0", nested && "ml-2 pl-2")}
       >
         {children}
       </SidebarMenuSub>

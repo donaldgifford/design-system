@@ -376,7 +376,7 @@ RFC-0003, with its seven questions already answered there. It needs
 - [x] `hooks/use-tree-open`: `useTreeOpen(activeKey)`. The active branch is
       open, a manual toggle overrides it, and overrides reset when
       `activeKey` changes.
-- [ ] Stories: each form; open, closed, loading, disabled and active;
+- [x] Stories: each form; open, closed, loading, disabled and active;
       depth five; the icon rail; mobile; docz's shape (type rows with
       counts that load on open, and a pages tree)
 - [ ] Tests: the three forms, `aria-expanded`, `aria-current`, keyboard
