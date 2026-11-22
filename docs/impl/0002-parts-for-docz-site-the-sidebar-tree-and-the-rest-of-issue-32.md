@@ -265,18 +265,18 @@ What a search result and a long document need.
 - [x] `blocks/marked`: `Marked`, which renders the segments with `<mark>`
       as a tint of `--primary` behind the matched words, in the text's
       own colour and weight (A3)
-- [ ] `blocks/outline`: `Outline` with `items` (`{ id, text, depth }`),
+- [x] `blocks/outline`: `Outline` with `items` (`{ id, text, depth }`),
       `activeId` and `label` (default "On this page"). A `nav` of links to
       `#id` on a hairline, the active one marked on its own segment. (A2)
-- [ ] `hooks/use-active-heading`: `useActiveHeading(ids)`, the id of the
+- [x] `hooks/use-active-heading`: `useActiveHeading(ids)`, the id of the
       heading being read, from an `IntersectionObserver`. Safe to call on
       the server. (A2)
-- [ ] Stories: a search results list built from `ListRow`, `Marked` and the
+- [x] Stories: a search results list built from `ListRow`, `Marked` and the
       stacked `Time`; an `Outline` beside a long page using the hook
-- [ ] Tests with axe; `markSegments` against docz's cases (attributes on
+- [x] Tests with axe; `markSegments` against docz's cases (attributes on
       the marker, nested and unbalanced markers, script tags as text);
       `useActiveHeading` with a mocked observer
-- [ ] Changeset
+- [x] Changeset
 
 <!--docz:tasks:end-->
 
