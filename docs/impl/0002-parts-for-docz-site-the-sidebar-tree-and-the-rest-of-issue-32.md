@@ -258,11 +258,11 @@ What a search result and a long document need.
 - [x] `lib/time`: a `"time"` style for `formatTime`. `Time`:
       `style="stacked"`, the date over the time, still one `<time>` with
       the other zone in its title. (A3)
-- [ ] `lib/mark`: `markSegments(text)`, which splits a string on literal
+- [x] `lib/mark`: `markSegments(text)`, which splits a string on literal
       `<em>` and `</em>` into marked and unmarked text. Only those exact
       markers count, an unbalanced closer is ignored, and everything else
       stays text. It never produces HTML. (A3)
-- [ ] `blocks/marked`: `Marked`, which renders the segments with `<mark>`
+- [x] `blocks/marked`: `Marked`, which renders the segments with `<mark>`
       as a tint of `--primary` behind the matched words, in the text's
       own colour and weight (A3)
 - [ ] `blocks/outline`: `Outline` with `items` (`{ id, text, depth }`),
