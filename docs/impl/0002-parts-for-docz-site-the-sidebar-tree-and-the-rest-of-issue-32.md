@@ -314,18 +314,18 @@ documents and does not ship.
       hidden below a breakpoint, where the list takes the full width (A4)
 - [x] Arrow keys and Enter still drive the list while focus is in the
       input, with filters and a preview present. Test it. (A4)
-- [ ] `shell/search-trigger`: `SearchTrigger`, a button shaped like a
+- [x] `shell/search-trigger`: `SearchTrigger`, a button shaped like a
       field, with a `label`, a `shortcut` shown as `Kbd`, and an icon-only
       form below a breakpoint (A5)
-- [ ] `shell/mode-toggle`: `ModeToggle`, controlled, with two states:
+- [x] `shell/mode-toggle`: `ModeToggle`, controlled, with two states:
       `mode` (`light` or `dark`) and `onToggle`. It stores nothing; where
       the mode is kept, and following the system, are the app's. (A5)
-- [ ] `TopBarLayout`'s story shows `SearchTrigger`, `TimeZoneToggle` and
+- [x] `TopBarLayout`'s story shows `SearchTrigger`, `TimeZoneToggle` and
       `ModeToggle` in `end`, so the documented slot matches what ships
-- [ ] Stories: a palette with none of the slots (repo-guardian's), and one
+- [x] Stories: a palette with none of the slots (repo-guardian's), and one
       with all three (docz's)
-- [ ] Tests with axe; the accessible names of both top-bar controls
-- [ ] Changeset
+- [x] Tests with axe; the accessible names of both top-bar controls
+- [x] Changeset
 
 <!--docz:tasks:end-->
 

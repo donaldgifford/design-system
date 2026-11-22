@@ -30,7 +30,7 @@ Import subpaths, never a barrel:
 | `@donaldgifford/design-system/fonts.css` | IBM Plex Sans and JetBrains Mono, self-hosted (latin, five static files) |
 | `@donaldgifford/design-system/components/<name>` | a primitive (`button`, `dialog`, `sidebar`, ...) |
 | `@donaldgifford/design-system/blocks/<name>` | a block (`data-table`, `kpi`, `page-header`, `trend-chart`, `group-grid`, ...) |
-| `@donaldgifford/design-system/shell/<name>` | presentational chrome (`top-bar`, `sidebar`, `detail-sheet`, `detail-panel`, `route-error`, `page-skeleton`) |
+| `@donaldgifford/design-system/shell/<name>` | presentational chrome (`top-bar`, `search-trigger`, `mode-toggle`, `sidebar`, `detail-sheet`, `detail-panel`, `route-error`, `page-skeleton`) |
 | `@donaldgifford/design-system/lib/<name>` | `utils` (`cn()`), `errors`, `problem`, `highlight`, `list-search`, `list-params`, `chart-scale`, `csv`, `time`, `percent`, `mark` |
 | `@donaldgifford/design-system/hooks/<name>` | shared hooks (`use-mobile`, `use-media-query`, `use-active-heading`) |
 
@@ -298,6 +298,7 @@ strings differ throughout; the table lists what differs beyond them. The
 | `breadcrumb` | the current page drops `role="link"` and `aria-disabled` | it is plain text with `aria-current`; axe flags a link role on non-links |
 | `command` | the hidden dialog title sits inside the content | upstream's header stays in the DOM while closed, outside any landmark |
 | `command` | `CommandDialog` takes `commandProps` for its inner `Command` | a palette backed by a server search needs `shouldFilter={false}` |
+| `command` | `CommandFilters` and `CommandFooter` parts, and a `preview` prop on `CommandDialog` that widens it and splits its body; controls inside them keep Enter and Space | a search palette with filters, a preview of the highlighted hit and key hints |
 | `card` | `Card` and `CardTitle` take `render` | a card that is a `section`, a title that is a heading |
 | `sheet` | opens and closes in 200ms | upstream's 500ms open reads as lag on a detail panel |
 | `badge` | `success`, `warning`, and `info` variants; `pending`, `approved`, `ignored`, and `running` | the status roles and states |
