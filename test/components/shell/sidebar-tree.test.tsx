@@ -1,6 +1,15 @@
 import { describe, expect, mock, test } from "bun:test";
 import { Dot } from "@donaldgifford/design-system/blocks/list-row";
-import { SidebarProvider } from "@donaldgifford/design-system/components/sidebar";
+import {
+  SidebarMenu,
+  SidebarMenuAction,
+  SidebarMenuBadge,
+  SidebarMenuButton,
+  SidebarMenuItem,
+  SidebarProvider,
+  SidebarTrigger,
+} from "@donaldgifford/design-system/components/sidebar";
+import { useTreeOpen } from "@donaldgifford/design-system/hooks/use-tree-open";
 import { ShellSidebar, ShellSidebarGroup } from "@donaldgifford/design-system/shell/sidebar";
 import {
   ShellSidebarTreeItem,
@@ -414,5 +423,103 @@ describe("ShellSidebarTreeItem, on the icon rail", () => {
     const popover = await screen.findByRole("dialog", { name: "Guides" });
     expect(popover.querySelector("[data-slot=sidebar-tree-heading]")).toHaveTextContent("Guides");
     expect(within(popover).getAllByRole("link")).toHaveLength(1);
+  });
+});
+
+describe("ShellSidebarTreeItem, on mobile", () => {
+  test("the sheet draws the tree as it is expanded, whatever the rail's state", async () => {
+    const width = window.innerWidth;
+    Object.defineProperty(window, "innerWidth", { configurable: true, value: 400 });
+    try {
+      const user = userEvent.setup();
+      render(
+        <SidebarProvider open={false}>
+          <ShellSidebar label="Repository navigation">
+            <ShellSidebarGroup label="Documents">
+              <ShellSidebarTreeItem label="design" render={<a href="#design" />} defaultOpen>
+                <ShellSidebarTreeItem label="DESIGN-0026" render={<a href="#design-0026" />} />
+              </ShellSidebarTreeItem>
+            </ShellSidebarGroup>
+          </ShellSidebar>
+          <SidebarTrigger />
+        </SidebarProvider>,
+      );
+      await user.click(screen.getByRole("button", { name: "Toggle Sidebar" }));
+      const sheet = await screen.findByRole("dialog");
+      // The row is its link and a caret, not the rail's popover button.
+      const design = within(sheet).getByRole("link", { name: "design" });
+      const caret = within(sheet).getByRole("button", { name: "design, show contents" });
+      expect(caret).toHaveAttribute("aria-expanded", "true");
+      expect(caret).not.toHaveAttribute("aria-haspopup");
+      expect(design.querySelector("[data-slot=sidebar-tree-mark]")).toBeNull();
+      const leaf = within(sheet).getByRole("link", { name: "DESIGN-0026" });
+      for (const control of [design, caret, leaf]) expect(control.tabIndex).toBe(0);
+    } finally {
+      Object.defineProperty(window, "innerWidth", { configurable: true, value: width });
+    }
+  });
+});
+
+function TypesNav({ current }: { current: string }) {
+  const tree = useTreeOpen(current);
+  return (
+    <Nav>
+      {["adr", "design"].map((type) => (
+        <ShellSidebarTreeItem
+          key={type}
+          label={type}
+          render={<a href={`#${type}`} />}
+          active={type === current}
+          {...tree.item(type)}
+        >
+          <ShellSidebarTreeItem label={`${type}-0001`} render={<a href={`#${type}-0001`} />} />
+        </ShellSidebarTreeItem>
+      ))}
+    </Nav>
+  );
+}
+
+describe("ShellSidebarTreeItem with useTreeOpen", () => {
+  test("the current branch is open, a caret overrides it, and a move resets it", async () => {
+    const user = userEvent.setup();
+    const { rerender } = render(<TypesNav current="design" />);
+    const caret = (type: string) => screen.getByRole("button", { name: `${type}, show contents` });
+    expect(caret("design")).toHaveAttribute("aria-expanded", "true");
+    expect(caret("adr")).toHaveAttribute("aria-expanded", "false");
+    expect(screen.getByRole("link", { name: "design" })).toHaveAttribute("aria-current", "page");
+
+    await user.click(caret("design"));
+    await user.click(caret("adr"));
+    expect(caret("design")).toHaveAttribute("aria-expanded", "false");
+    expect(caret("adr")).toHaveAttribute("aria-expanded", "true");
+    expect(screen.getByRole("link", { name: "adr-0001" })).toBeInTheDocument();
+
+    rerender(<TypesNav current="adr" />);
+    expect(caret("adr")).toHaveAttribute("aria-expanded", "true");
+    rerender(<TypesNav current="design" />);
+    expect(caret("design")).toHaveAttribute("aria-expanded", "true");
+    expect(caret("adr")).toHaveAttribute("aria-expanded", "false");
+  });
+});
+
+describe("SidebarMenuBadge beside a SidebarMenuAction", () => {
+  test("moves left for an action on either side of it, and only in its own row", () => {
+    render(
+      <SidebarProvider>
+        <SidebarMenu>
+          <SidebarMenuItem>
+            <SidebarMenuButton>Workflows</SidebarMenuButton>
+            <SidebarMenuBadge>2</SidebarMenuBadge>
+            <SidebarMenuAction aria-label="Workflow actions">+</SidebarMenuAction>
+          </SidebarMenuItem>
+        </SidebarMenu>
+      </SidebarProvider>,
+    );
+    const badge = screen.getByText("2");
+    // Sibling selectors, so a nested row's badge does not move for its parent's action.
+    expect(badge.className).toContain("has-[~[data-sidebar=menu-action]]:right-7");
+    expect(badge.className).toContain("[[data-sidebar=menu-action]~&]:right-7");
+    expect(badge.className).not.toContain("group-has-data-[sidebar=menu-action]");
+    expect(badge.nextElementSibling).toHaveAttribute("data-sidebar", "menu-action");
   });
 });

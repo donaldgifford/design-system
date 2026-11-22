@@ -379,7 +379,7 @@ RFC-0003, with its seven questions already answered there. It needs
 - [x] Stories: each form; open, closed, loading, disabled and active;
       depth five; the icon rail; mobile; docz's shape (type rows with
       counts that load on open, and a pages tree)
-- [ ] Tests: the three forms, `aria-expanded`, `aria-current`, keyboard
+- [x] Tests: the three forms, `aria-expanded`, `aria-current`, keyboard
       use, the badge beside the caret, `useTreeOpen`, and axe
 - [ ] A test that a flat `ShellSidebarGroup` renders the markup it renders
       in 0.4.0
