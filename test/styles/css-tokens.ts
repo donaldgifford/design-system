@@ -100,3 +100,30 @@ export function contrast(a: string, b: string): number {
   const [hi, lo] = [luminance(a), luminance(b)].sort((x, y) => y - x) as [number, number];
   return (hi + 0.05) / (lo + 0.05);
 }
+
+/** A color as gamma-encoded sRGB, the space `color-mix(in srgb, ...)` mixes in. */
+export type Rgb = [number, number, number];
+
+const encode = (c: number) => (c <= 0.0031308 ? 12.92 * c : 1.055 * c ** (1 / 2.4) - 0.055);
+const decode = (c: number) => (c <= 0.04045 ? c / 12.92 : ((c + 0.055) / 1.055) ** 2.4);
+
+/** A resolved oklch() value, or `black` / `white`, as gamma-encoded sRGB. */
+export function srgb(color: string): Rgb {
+  if (color === "black") return [0, 0, 0];
+  if (color === "white") return [1, 1, 1];
+  const m = /^oklch\(\s*([\d.]+)\s+([\d.]+)\s+([\d.]+)\s*\)$/.exec(color);
+  if (!m) throw new Error(`not an opaque oklch() color: ${color}`);
+  const [r, g, b] = oklchToLinearSrgb(Number(m[1]), Number(m[2]), Number(m[3]));
+  return [encode(r), encode(g), encode(b)];
+}
+
+/** `color-mix(in srgb, a share, b)`, and so also `a` at `share` opacity over `b`. */
+export function mixSrgb(a: Rgb, b: Rgb, share: number): Rgb {
+  return a.map((v, i) => v * share + (b[i] as number) * (1 - share)) as Rgb;
+}
+
+export function contrastSrgb(a: Rgb, b: Rgb): number {
+  const lum = ([r, g, bl]: Rgb) => 0.2126 * decode(r) + 0.7152 * decode(g) + 0.0722 * decode(bl);
+  const [hi, lo] = [lum(a), lum(b)].sort((x, y) => y - x) as [number, number];
+  return (hi + 0.05) / (lo + 0.05);
+}

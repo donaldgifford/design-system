@@ -1,5 +1,16 @@
 import { describe, expect, test } from "bun:test";
-import { contrast, declared, merge, readStyle, resolve, rules, type Scope } from "./css-tokens";
+import {
+  contrast,
+  contrastSrgb,
+  declared,
+  merge,
+  mixSrgb,
+  readStyle,
+  resolve,
+  rules,
+  type Scope,
+  srgb,
+} from "./css-tokens";
 
 /*
  * The token schema and contrast pairs,
@@ -44,7 +55,10 @@ const schema = [
   "ring",
   "input",
   "border",
+  "border-strong",
+  "surface-pressed",
   ...range("chart-", 5),
+  ...range("category-", 8),
   "code-bg",
   "diff-add",
   "diff-remove",
@@ -74,7 +88,17 @@ const textPairs: Array<[string, string]> = [
   ["muted-foreground", "card"],
   ["muted-foreground", "background"],
   ["sidebar-foreground", "sidebar"],
+  ["foreground", "surface-pressed"],
+  ["muted-foreground", "surface-pressed"],
 ];
+
+/** Where a category's badge or dot sits: a page, a card, the navigation. */
+const categorySurfaces = ["background", "card", "sidebar"];
+
+/** Each category color as text on each of those surfaces. */
+const categoryPairs = range("category-", 8).flatMap((category) =>
+  categorySurfaces.map((surface): [string, string] => [category, surface]),
+);
 
 /** Non-text pairs at 3:1: the focus ring against the surfaces it draws on. */
 const ringPairs: Array<[string, string]> = [
@@ -95,6 +119,21 @@ describe.each(themes)("%s", (_, scope) => {
   test.each(ringPairs)("--%s on --%s is at least 3:1", (fg, bg) => {
     const ratio = contrast(resolve(scope, fg) ?? "", resolve(scope, bg) ?? "");
     expect(ratio).toBeGreaterThanOrEqual(3);
+  });
+
+  test.each(categoryPairs)("--%s on --%s is at least 4.5:1", (fg, bg) => {
+    const ratio = contrast(resolve(scope, fg) ?? "", resolve(scope, bg) ?? "");
+    expect(ratio).toBeGreaterThanOrEqual(4.5);
+  });
+
+  // The tinted badge (badge-tinted in core.css): the tone at --badge-tint
+  // over the surface, under the tone mixed --badge-tint-text with --badge-mix.
+  test.each(categoryPairs)("a tinted badge in --%s on --%s is at least 4.5:1", (tone, bg) => {
+    const share = (name: string) => Number.parseFloat(resolve(scope, name) ?? "") / 100;
+    const color = srgb(resolve(scope, tone) ?? "");
+    const fill = mixSrgb(color, srgb(resolve(scope, bg) ?? ""), share("badge-tint"));
+    const text = mixSrgb(color, srgb(resolve(scope, "badge-mix") ?? ""), share("badge-tint-text"));
+    expect(contrastSrgb(text, fill)).toBeGreaterThanOrEqual(4.5);
   });
 });
 

@@ -42,12 +42,43 @@ export const AllVariants: Story = {
       {(["tinted", "filled"] as const).map((fill) => (
         <div key={fill} className="flex flex-wrap gap-2">
           {variants.map((variant) => (
-            <Badge key={variant} {...args} variant={variant} fill={fill}>
+            <Badge key={variant} {...args} tone={undefined} variant={variant} fill={fill}>
               {variant}
             </Badge>
           ))}
         </div>
       ))}
+    </div>
+  ),
+};
+
+const categories = Array.from({ length: 8 }, (_, index) => `var(--category-${index + 1})`);
+
+/**
+ * A tone from the app, for a category the package has no name for: a
+ * document type, a team. Any CSS color works; `--category-1` to
+ * `--category-8` are checked for contrast in both themes. Tinted only.
+ */
+export const Categories: Story = {
+  render: () => (
+    <div className="grid gap-3">
+      <div className="flex flex-wrap gap-2">
+        {categories.map((tone, index) => (
+          <Badge key={tone} tone={tone}>
+            category-{index + 1}
+          </Badge>
+        ))}
+      </div>
+      <div className="flex flex-wrap gap-2 rounded-lg border bg-card p-3">
+        {categories.map((tone, index) => (
+          <Badge key={tone} tone={tone}>
+            category-{index + 1}
+          </Badge>
+        ))}
+      </div>
+      <div className="flex flex-wrap gap-2">
+        <Badge tone="rebeccapurple">any CSS color</Badge>
+      </div>
     </div>
   ),
 };

@@ -56,14 +56,16 @@ export function useTimeZone(): TimeZoneContextValue {
 interface TimeProps {
   /** An RFC 3339 time; one with no zone designator is read as UTC. */
   iso: string | undefined;
-  style?: TimeStyle | undefined;
+  /** One of `formatTime`'s styles, or `stacked`: the date over the time, for a narrow column. */
+  style?: TimeStyle | "stacked" | undefined;
   className?: string | undefined;
 }
 
 /**
  * A timestamp in the chosen zone, with the other zone in its title, so
  * hovering answers "and in UTC?" without the toggle. A relative time's
- * title is the absolute one.
+ * title is the absolute one. `stacked` is still one `<time>`, on two
+ * lines.
  */
 export function Time({ iso, style = "datetime", className }: TimeProps) {
   const { zone } = useTimeZone();
@@ -79,6 +81,23 @@ export function Time({ iso, style = "datetime", className }: TimeProps) {
     style === "relative"
       ? formatTime(iso, { zone })
       : `${formatTime(iso, { zone: other })} ${other === "utc" ? "UTC" : "local"}`;
+  if (style === "stacked") {
+    return (
+      <time
+        data-slot="time"
+        data-style="stacked"
+        dateTime={iso}
+        title={title}
+        className={cn(
+          "inline-flex flex-col items-end font-mono text-xs leading-dense tabular-nums",
+          className,
+        )}
+      >
+        <span>{formatTime(iso, { zone, style: "date" })}</span>
+        <span className="text-muted-foreground">{formatTime(iso, { zone, style: "time" })}</span>
+      </time>
+    );
+  }
   return (
     <time
       data-slot="time"

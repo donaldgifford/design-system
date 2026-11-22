@@ -5,7 +5,12 @@ const meta = {
   title: "Blocks/Time",
   component: Time,
   args: { iso: "2026-03-14T09:26:53Z", style: "datetime" },
-  argTypes: { style: { control: "inline-radio", options: ["datetime", "date", "relative"] } },
+  argTypes: {
+    style: {
+      control: "inline-radio",
+      options: ["datetime", "date", "time", "relative", "stacked"],
+    },
+  },
 } satisfies Meta<typeof Time>;
 
 export default meta;

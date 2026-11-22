@@ -4,7 +4,7 @@
  */
 
 export type Zone = "local" | "utc";
-export type TimeStyle = "datetime" | "date" | "relative";
+export type TimeStyle = "datetime" | "date" | "time" | "relative";
 
 /** The localStorage key the zone choice is kept under, unless the app names its own. */
 export const ZONE_STORAGE_KEY = "design-system.tz";
@@ -87,9 +87,9 @@ export interface FormatTimeOptions {
 }
 
 /**
- * Renders iso as `YYYY-MM-DD HH:mm` (datetime), `YYYY-MM-DD` (date), or
- * "3 hours ago" (relative, the same in either zone). A missing or
- * unparsable value renders as "—", never "Invalid Date".
+ * Renders iso as `YYYY-MM-DD HH:mm` (datetime), `YYYY-MM-DD` (date),
+ * `HH:mm` (time), or "3 hours ago" (relative, the same in either zone).
+ * A missing or unparsable value renders as "—", never "Invalid Date".
  */
 export function formatTime(
   iso: string | undefined,
@@ -101,7 +101,9 @@ export function formatTime(
   if (style === "relative") return relativeTime(d, now);
   const p = zone === "utc" ? utcParts(d) : localParts(d);
   const date = `${p.year}-${p.month}-${p.day}`;
-  return style === "date" ? date : `${date} ${p.hour}:${p.minute}`;
+  const time = `${p.hour}:${p.minute}`;
+  if (style === "date") return date;
+  return style === "time" ? time : `${date} ${time}`;
 }
 
 interface Parts {

@@ -1,5 +1,7 @@
+import { FilterBar } from "@donaldgifford/design-system/blocks/filter-bar";
 import { FilterChip } from "@donaldgifford/design-system/blocks/filter-chip";
 import type { Meta, StoryObj } from "@storybook/react-vite";
+import { useState } from "react";
 import { fn } from "storybook/test";
 
 const meta = {
@@ -29,4 +31,38 @@ export const Bar: Story = {
       <FilterChip {...args} name={undefined} />
     </div>
   ),
+};
+
+const types = ["adr", "design", "impl", "rfc"] as const;
+
+/**
+ * The toggle form: with `pressed`, one click turns a filter on or off
+ * and nothing opens. A document directory's type filter, in a `FilterBar`.
+ */
+export const Toggles: Story = {
+  render: function Render() {
+    const [on, setOn] = useState<ReadonlySet<string>>(new Set(["design"]));
+    return (
+      <FilterBar
+        label="Document type"
+        count={`${on.size === 0 ? 94 : on.size * 23} of 94`}
+        {...(on.size > 0 ? { onClear: () => setOn(new Set()) } : {})}
+      >
+        {types.map((type) => (
+          <FilterChip
+            key={type}
+            pressed={on.has(type)}
+            onPressedChange={(pressed) => {
+              const next = new Set(on);
+              if (pressed) next.add(type);
+              else next.delete(type);
+              setOn(next);
+            }}
+          >
+            {type}
+          </FilterChip>
+        ))}
+      </FilterBar>
+    );
+  },
 };

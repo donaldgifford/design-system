@@ -43,9 +43,31 @@ const badgeVariants = cva(
   },
 );
 
-type BadgeProps = useRender.ComponentProps<"span"> & VariantProps<typeof badgeVariants>;
+type BadgeVariantProps = VariantProps<typeof badgeVariants>;
 
-function Badge({ className, variant = "default", fill = "tinted", render, ...props }: BadgeProps) {
+/**
+ * A badge's color comes from its variant, or from the app. A `tone` is
+ * for a category the package has no name for, such as a document type or
+ * a team; it is any CSS color, usually one of `var(--category-1)` to
+ * `var(--category-8)`. It applies to the tinted form only: a filled
+ * badge needs a foreground the package cannot know for an app's color.
+ */
+type BadgeToneProps =
+  | { tone?: undefined; fill?: BadgeVariantProps["fill"] }
+  | { tone: string; fill?: "tinted" | undefined };
+
+type BadgeProps = useRender.ComponentProps<"span"> &
+  Omit<BadgeVariantProps, "fill"> &
+  BadgeToneProps;
+
+function Badge({
+  className,
+  variant = "default",
+  fill = "tinted",
+  tone,
+  render,
+  ...props
+}: BadgeProps) {
   return useRender({
     defaultTagName: "span",
     props: mergeProps<"span">(
@@ -53,6 +75,9 @@ function Badge({ className, variant = "default", fill = "tinted", render, ...pro
         "data-slot": "badge",
         "data-variant": variant ?? "default",
         "data-fill": variant === "outline" ? undefined : (fill ?? "tinted"),
+        "data-tone": tone === undefined ? undefined : "custom",
+        // Inline, so it outranks the --tone the variant's class sets.
+        style: tone === undefined ? undefined : ({ "--tone": tone } as React.CSSProperties),
         // An outline badge has one form: no tint, no fill.
         className: cn(
           badgeVariants({ variant, fill: variant === "outline" ? null : fill }),

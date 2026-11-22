@@ -1,3 +1,4 @@
+import { TimeZoneToggle } from "@donaldgifford/design-system/blocks/time";
 import { Badge } from "@donaldgifford/design-system/components/badge";
 import {
   Breadcrumb,
@@ -15,9 +16,12 @@ import {
   TooltipContent,
   TooltipTrigger,
 } from "@donaldgifford/design-system/components/tooltip";
-import { Kbd, TopBarLayout } from "@donaldgifford/design-system/shell/top-bar";
+import { ModeToggle } from "@donaldgifford/design-system/shell/mode-toggle";
+import { SearchTrigger } from "@donaldgifford/design-system/shell/search-trigger";
+import { TopBarLayout } from "@donaldgifford/design-system/shell/top-bar";
 import type { Meta, StoryObj } from "@storybook/react-vite";
-import { IconBell, IconSearch, IconSun } from "@tabler/icons-react";
+import { IconBell } from "@tabler/icons-react";
+import { fn } from "storybook/test";
 
 const start = (
   <>
@@ -43,19 +47,14 @@ function end(environment: string) {
       <Badge variant={environment === "prod" ? "outline" : "warning"} className="mr-1 font-mono">
         {environment}
       </Badge>
-      <Button variant="ghost" size="sm" aria-keyshortcuts="Meta+K Control+K">
-        <IconSearch aria-hidden="true" />
-        <span className="sr-only">Go to</span>
-        <Kbd>⌘K</Kbd>
-      </Button>
-      <Tooltip>
-        <TooltipTrigger
-          render={<Button variant="ghost" size="icon-sm" aria-label="Switch to light mode" />}
-        >
-          <IconSun aria-hidden="true" />
-        </TooltipTrigger>
-        <TooltipContent>Switch to light mode</TooltipContent>
-      </Tooltip>
+      <SearchTrigger
+        shortcut="⌘K"
+        aria-keyshortcuts="Meta+K Control+K"
+        className="mr-1"
+        onClick={fn()}
+      />
+      <TimeZoneToggle className="mr-1" />
+      <ModeToggle mode="dark" onToggle={fn()} />
       <Tooltip>
         <TooltipTrigger
           render={<Button variant="ghost" size="icon-sm" aria-label="Notifications" disabled />}
@@ -91,7 +90,10 @@ const meta = {
 export default meta;
 type Story = StoryObj<typeof meta>;
 
-/** The content's bar: trigger and breadcrumbs, then environment, search, theme, and notifications. */
+/**
+ * The content's bar: trigger and breadcrumbs, then the environment, `SearchTrigger`,
+ * `TimeZoneToggle`, `ModeToggle`, and notifications.
+ */
 export const Default: Story = {};
 
 /** In production the environment badge is quiet. */

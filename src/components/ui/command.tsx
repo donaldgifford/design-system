@@ -23,6 +23,17 @@ function Command({ className, ...props }: React.ComponentProps<typeof CommandPri
   );
 }
 
+/**
+ * cmdk reads Enter, Space and the arrow keys anywhere inside the
+ * palette, to move through the list and pick from it. A control in the
+ * filters, the preview or the footer needs Enter and Space for itself,
+ * so those two stop here; the arrows still reach the list.
+ */
+function keepActivationKeys(event: React.KeyboardEvent) {
+  if (event.target === event.currentTarget) return;
+  if (event.key === "Enter" || event.key === " ") event.stopPropagation();
+}
+
 function CommandDialog({
   title = "Command Palette",
   description = "Search for a command to run...",
@@ -30,10 +41,21 @@ function CommandDialog({
   className,
   showCloseButton = true,
   commandProps,
+  preview,
+  previewLabel = "Preview",
   ...props
 }: Omit<React.ComponentProps<typeof Dialog>, "children"> & {
   /** Props for the inner Command: `shouldFilter`, `loop`, `filter`, `label`. */
   commandProps?: Omit<React.ComponentProps<typeof CommandPrimitive>, "children"> | undefined;
+  /**
+   * A pane beside the list for the highlighted item: with it the dialog
+   * is wider and its body splits in two. Below `sm` it is hidden and the
+   * list takes the width. Which item is highlighted is the Command's
+   * `value`; read it with `commandProps={{ value, onValueChange }}`.
+   */
+  preview?: React.ReactNode | undefined;
+  /** The preview pane's accessible name. */
+  previewLabel?: string | undefined;
   children?: React.ReactNode | undefined;
   title?: string | undefined;
   description?: string | undefined;
@@ -46,7 +68,7 @@ function CommandDialog({
           where it stays in the DOM while the dialog is closed, outside any
           landmark, and detached from the dialog it labels. */}
       <DialogContent
-        className={cn("overflow-hidden p-0", className)}
+        className={cn("overflow-hidden p-0", preview !== undefined && "sm:max-w-3xl", className)}
         showCloseButton={showCloseButton}
       >
         <DialogHeader className="sr-only">
@@ -57,10 +79,26 @@ function CommandDialog({
           {...commandProps}
           className={cn(
             "**:data-[slot=command-input-wrapper]:h-12 [&_[cmdk-group-heading]]:px-2 [&_[cmdk-group-heading]]:font-medium [&_[cmdk-group-heading]]:text-muted-foreground [&_[cmdk-group]]:px-2 [&_[cmdk-group]:not([hidden])_~[cmdk-group]]:pt-0 [&_[cmdk-input-wrapper]_svg]:h-5 [&_[cmdk-input-wrapper]_svg]:w-5 [&_[cmdk-input]]:h-12 [&_[cmdk-item]]:px-2 [&_[cmdk-item]]:py-3 [&_[cmdk-item]_svg]:h-5 [&_[cmdk-item]_svg]:w-5",
+            // With a preview the body is two columns: the input, the filters
+            // and the footer span both, and the list and the preview share a row.
+            preview !== undefined &&
+              "sm:grid sm:grid-cols-2 sm:[&>[data-slot=command-input-wrapper]]:col-span-full",
             commandProps?.className,
           )}
         >
           {children}
+          {preview === undefined ? null : (
+            // biome-ignore lint/a11y/useSemanticElements: a section would be a second landmark inside the dialog; this names one pane of it
+            <div
+              role="group"
+              aria-label={previewLabel}
+              data-slot="command-preview"
+              onKeyDown={keepActivationKeys}
+              className="hidden max-h-75 overflow-y-auto border-l p-3 text-sm sm:block"
+            >
+              {preview}
+            </div>
+          )}
         </Command>
       </DialogContent>
     </Dialog>
@@ -151,6 +189,58 @@ function CommandItem({ className, ...props }: React.ComponentProps<typeof Comman
   );
 }
 
+/**
+ * A row of filters under the input: `FilterChip`s that narrow what the
+ * list searches. Place it after `CommandInput`. Its controls keep Enter
+ * and Space, and the arrow keys still move through the list.
+ */
+function CommandFilters({
+  className,
+  onKeyDown,
+  "aria-label": label = "Filters",
+  ...props
+}: React.ComponentProps<"div">) {
+  return (
+    // biome-ignore lint/a11y/useSemanticElements: a fieldset brings a legend and form semantics a row of buttons does not want
+    <div
+      role="group"
+      aria-label={label}
+      data-slot="command-filters"
+      onKeyDown={(event) => {
+        onKeyDown?.(event);
+        keepActivationKeys(event);
+      }}
+      className={cn(
+        "col-span-full flex flex-wrap items-center gap-1.5 border-b px-3 py-2",
+        className,
+      )}
+      {...props}
+    />
+  );
+}
+
+/**
+ * A row along the palette's foot for key hints: "↵ open", "esc close".
+ * It is last whatever its place among the children.
+ */
+function CommandFooter({ className, onKeyDown, ...props }: React.ComponentProps<"div">) {
+  return (
+    // biome-ignore lint/a11y/noStaticElementInteractions: the handler only keeps Enter and Space for a control inside
+    <div
+      data-slot="command-footer"
+      onKeyDown={(event) => {
+        onKeyDown?.(event);
+        keepActivationKeys(event);
+      }}
+      className={cn(
+        "order-last col-span-full flex flex-wrap items-center gap-x-4 gap-y-1 border-t px-3 py-2 text-muted-foreground text-xs",
+        className,
+      )}
+      {...props}
+    />
+  );
+}
+
 function CommandShortcut({ className, ...props }: React.ComponentProps<"span">) {
   return (
     <span
@@ -165,6 +255,8 @@ export {
   Command,
   CommandDialog,
   CommandEmpty,
+  CommandFilters,
+  CommandFooter,
   CommandGroup,
   CommandInput,
   CommandItem,
