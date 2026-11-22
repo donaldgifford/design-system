@@ -210,7 +210,7 @@ tree in phase 5 opens and closes with it.
       form only; `fill="filled"` with an app's tone is a type error, since
       the package cannot know a foreground for it. (A8)
 - [x] `Dot`: `tone` widens to the five names or any CSS colour (A8)
-- [ ] `Stepper`: `orientation="vertical"` with a line joining the markers,
+- [x] `Stepper`: `orientation="vertical"` with a line joining the markers,
       and `size="sm"`, whose marker is a dot with no number. The two props
       are independent. The default stays horizontal and numbered. (A6)
 - [ ] `FilterChip`: `pressed` and `onPressedChange`. A pressed chip is a
