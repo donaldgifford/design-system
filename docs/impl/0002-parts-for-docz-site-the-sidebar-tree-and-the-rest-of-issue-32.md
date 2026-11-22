@@ -155,15 +155,16 @@ README. Nothing here changes a component's API.
       4.5:1 as text on `--background`, `--card` and `--sidebar`, in both
       themes, both plain and in the tinted badge's mix
 - [x] Run `just tokens` and commit the new `tokens.json`
-- [ ] Split the stylesheet: `src/styles/fonts.css` holds the five
+- [x] Split the stylesheet: `src/styles/fonts.css` holds the five
       `@fontsource` imports; `src/styles/core.css` holds Tailwind, the
       animation plugin, the tokens, the `dark` variant, the theme map, the
       badge utilities and the base layer
-- [ ] `globals.css` becomes three lines: import `fonts.css`, import
+- [x] `globals.css` becomes three lines: import `fonts.css`, import
       `core.css`, `@source ".."`
-- [ ] Add `./core.css` and `./fonts.css` to `exports` in `package.json`
-- [ ] Add a test that builds `globals.css` before and after the split and
+- [x] Add `./core.css` and `./fonts.css` to `exports` in `package.json`
+- [x] Add a test that builds `globals.css` before and after the split and
       requires the same CSS, apart from the new tokens
+      Done as: the two builds were compared once at the split (the same lines, with only the `@font-face` blocks moved), and `test/styles/entries.test.ts` builds both entries on every run.
 - [ ] README, "Using it": the `core.css` route, with an `@source` line per
       part the app uses and the app's own fonts (C1, C2)
 - [ ] README: following `prefers-color-scheme`, with the script that sets

@@ -7,7 +7,7 @@
  *
  * Semantic: what a value is for (--background, --primary, --success),
  * defined for both themes, on :root (light) and .dark. Components read
- * these, through the Tailwind theme map in globals.css.
+ * these, through the Tailwind theme map in core.css.
  *
  * Component: one component's knob (--sidebar-*, --header-height,
  * --badge-radius, --table-row-h), used sparingly.

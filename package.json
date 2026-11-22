@@ -22,6 +22,8 @@
   ],
   "exports": {
     "./globals.css": "./src/styles/globals.css",
+    "./core.css": "./src/styles/core.css",
+    "./fonts.css": "./src/styles/fonts.css",
     "./tokens.css": "./src/styles/tokens.css",
     "./tokens.json": "./tokens.json",
     "./components/*": "./src/components/ui/*.tsx",
