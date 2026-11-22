@@ -363,6 +363,7 @@ RFC-0003, with its seven questions already answered there. It needs
       children; `disabled` makes it inert
 - [x] Children in a `Collapsible` panel as a nested list, not in the DOM
       while closed; `open`, `defaultOpen` and `onOpenChange`
+      Done as: also exports `ShellSidebarTreeNote`, the list item for a line that is not a row. RFC-0003's example passes `InlineLoading` as a child, and a `p` straight inside the list is not valid markup.
 - [x] Depth tracked by the component: each level indents one step on the
       hairline
 - [x] A leaf is one line, cut with an ellipsis, its label as `title`; the
@@ -373,6 +374,7 @@ RFC-0003, with its seven questions already answered there. It needs
 - [x] On the icon rail: a top-level row with children opens a `Popover`
       with its subtree fully expanded, under a height cap in a
       `ScrollArea`. Opening it calls the row's `onOpenChange(true)`.
+      Done as: only the top-level row is told. A nested branch that loads on open has nothing in the popover until the app has loaded it; the component's doc comment says so.
 - [x] `hooks/use-tree-open`: `useTreeOpen(activeKey)`. The active branch is
       open, a manual toggle overrides it, and overrides reset when
       `activeKey` changes.
@@ -383,7 +385,8 @@ RFC-0003, with its seven questions already answered there. It needs
       use, the badge beside the caret, `useTreeOpen`, and axe
 - [x] A test that a flat `ShellSidebarGroup` renders the markup it renders
       in 0.4.0
-- [ ] Changeset
+      Done as: compared with markup recorded at the `v0.4.0` tag, after undoing the two class changes this plan made to `components/sidebar` on purpose (the pressed fill of phase 1 and the badge of this phase).
+- [x] Changeset
 
 <!--docz:tasks:end-->
 
