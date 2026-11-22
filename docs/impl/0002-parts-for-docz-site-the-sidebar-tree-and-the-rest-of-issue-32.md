@@ -356,16 +356,16 @@ RFC-0003, with its seven questions already answered there. It needs
 - [x] `components/sidebar`: a row with both a badge and an action shows
       the badge left of the action. Record the edit in the README's
       local-edits table.
-- [ ] `shell/sidebar-tree`: `ShellSidebarTreeItem` in its three forms: a
+- [x] `shell/sidebar-tree`: `ShellSidebarTreeItem` in its three forms: a
       leaf link, a link with a separate caret, and a row that toggles
-- [ ] The caret: a button with `aria-expanded` and `aria-controls`, named
+- [x] The caret: a button with `aria-expanded` and `aria-controls`, named
       from the row's label; `expandable` shows it before there are
       children; `disabled` makes it inert
-- [ ] Children in a `Collapsible` panel as a nested list, not in the DOM
+- [x] Children in a `Collapsible` panel as a nested list, not in the DOM
       while closed; `open`, `defaultOpen` and `onOpenChange`
-- [ ] Depth tracked by the component: each level indents one step on the
+- [x] Depth tracked by the component: each level indents one step on the
       hairline
-- [ ] A leaf is one line, cut with an ellipsis, its label as `title`; the
+- [x] A leaf is one line, cut with an ellipsis, its label as `title`; the
       active leaf colours its 2px segment in `--sidebar-primary` and sets
       `aria-current="page"`
 - [ ] On the icon rail: a top-level row shows its `leading` with the label
