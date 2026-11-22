@@ -139,22 +139,22 @@ README. Nothing here changes a component's API.
 <!--docz:tasks:start-->
 #### Tasks
 
-- [ ] Add `--category-1` to `--category-8` to `tokens.css` for both themes,
+- [x] Add `--category-1` to `--category-8` to `tokens.css` for both themes,
       starting from docz's `--color-hash-0` to `-7`, converted to oklch
       and adjusted until the contrast tests pass
-- [ ] Add `--border-strong` and `--surface-pressed` to `tokens.css` for both
+- [x] Add `--border-strong` and `--surface-pressed` to `tokens.css` for both
       themes
-- [ ] Map all ten in the `@theme inline` block (`--color-category-1`,
+- [x] Map all ten in the `@theme inline` block (`--color-category-1`,
       `--color-border-strong`, ...)
 - [ ] Use `--border-strong` on the hover border of `Input`, `Textarea`
       and the `Select` trigger, and on the edge of `Popover` and
       `DropdownMenu`
 - [ ] Use `--surface-pressed` on the pressed state of sidebar rows,
       `OptionItem` and the clickable `ListRow`
-- [ ] Extend `test/styles/tokens.test.ts`: each category colour is at least
+- [x] Extend `test/styles/tokens.test.ts`: each category colour is at least
       4.5:1 as text on `--background`, `--card` and `--sidebar`, in both
       themes, both plain and in the tinted badge's mix
-- [ ] Run `just tokens` and commit the new `tokens.json`
+- [x] Run `just tokens` and commit the new `tokens.json`
 - [ ] Split the stylesheet: `src/styles/fonts.css` holds the five
       `@fontsource` imports; `src/styles/core.css` holds Tailwind, the
       animation plugin, the tokens, the `dark` variant, the theme map, the

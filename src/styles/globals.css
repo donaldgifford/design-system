@@ -64,6 +64,8 @@
   --color-diff-add: var(--diff-add);
   --color-diff-remove: var(--diff-remove);
   --color-border: var(--border);
+  --color-border-strong: var(--border-strong);
+  --color-surface-pressed: var(--surface-pressed);
   --color-input: var(--input);
   --color-ring: var(--ring);
   --color-chart-1: var(--chart-1);
@@ -71,6 +73,14 @@
   --color-chart-3: var(--chart-3);
   --color-chart-4: var(--chart-4);
   --color-chart-5: var(--chart-5);
+  --color-category-1: var(--category-1);
+  --color-category-2: var(--category-2);
+  --color-category-3: var(--category-3);
+  --color-category-4: var(--category-4);
+  --color-category-5: var(--category-5);
+  --color-category-6: var(--category-6);
+  --color-category-7: var(--category-7);
+  --color-category-8: var(--category-8);
   --color-avatar: var(--avatar);
   --color-avatar-foreground: var(--avatar-foreground);
   --color-sidebar: var(--sidebar);
