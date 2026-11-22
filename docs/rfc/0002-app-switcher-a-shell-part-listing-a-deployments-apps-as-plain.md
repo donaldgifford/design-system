@@ -1,7 +1,7 @@
 ---
 id: RFC-0002
 title: "App switcher: a shell part listing a deployment's apps as plain links"
-status: Draft
+status: Accepted
 author: Donald Gifford
 created: 2026-11-21
 ---
@@ -166,6 +166,9 @@ is a small map in each app (question 1).
 - No shared navigation, search or notifications across apps.
 
 ### Rollout
+
+Steps 1 and 2 are done: `AppSwitcher` shipped in 0.4.0 and boop's mockup
+uses it.
 
 1. `AppSwitcher` lands in the package with stories and tests, from boop's
    draft. The menu-item icon tint is fixed in `AppMark` or `DropdownMenuItem`
