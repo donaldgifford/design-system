@@ -11,8 +11,17 @@ const dotClass: Record<DotTone, string> = {
   bad: "bg-destructive",
 };
 
+/** Whether a tone is one of the package's names, not a color from the app. */
+function isDotTone(tone: string): tone is DotTone {
+  return Object.hasOwn(dotClass, tone);
+}
+
 interface DotProps {
-  tone: DotTone;
+  /**
+   * One of the five states, or any CSS color for a category the package
+   * has no name for: `var(--category-3)`, a document type's color.
+   */
+  tone: DotTone | (string & Record<never, never>);
   /** Pulses, for something happening right now. */
   live?: boolean | undefined;
   className?: string | undefined;
@@ -20,17 +29,19 @@ interface DotProps {
 
 /** An 8px status dot. */
 export function Dot({ tone, live = false, className }: DotProps) {
+  const named = isDotTone(tone);
   return (
     <span
       data-slot="dot"
-      data-tone={tone}
+      data-tone={named ? tone : "custom"}
       aria-hidden="true"
       className={cn(
         "inline-block size-2 shrink-0 rounded-pill",
-        dotClass[tone],
+        named && dotClass[tone],
         live && "animate-pulse",
         className,
       )}
+      style={named ? undefined : { backgroundColor: tone }}
     />
   );
 }

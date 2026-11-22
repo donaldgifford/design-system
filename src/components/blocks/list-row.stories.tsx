@@ -68,3 +68,21 @@ export const AllTones: Story = {
     </List>
   ),
 };
+
+const categories = Array.from({ length: 8 }, (_, index) => `var(--category-${index + 1})`);
+
+/** A Dot in a tone the app supplies: the eight category colors, one per document type here. */
+export const CategoryDots: Story = {
+  render: () => (
+    <List>
+      {categories.map((tone, index) => (
+        <ListRow
+          key={tone}
+          leading={<Dot tone={tone} />}
+          title={`category-${index + 1}`}
+          subtitle={tone}
+        />
+      ))}
+    </List>
+  ),
+};

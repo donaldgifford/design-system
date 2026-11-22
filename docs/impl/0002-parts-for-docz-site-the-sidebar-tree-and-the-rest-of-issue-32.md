@@ -205,11 +205,11 @@ tree in phase 5 opens and closes with it.
 - [x] `blocks/disclosure`: `Disclosure`, a bordered block over
       `Collapsible` with a `label`, a `value` shown while closed, and
       `open` / `defaultOpen` / `onOpenChange` (A7)
-- [ ] `Badge`: a `tone` prop that takes a CSS colour and overrides the
+- [x] `Badge`: a `tone` prop that takes a CSS colour and overrides the
       variant's colour. It sets `--tone` and keeps the tinted form's mix. It applies to the tinted
       form only; `fill="filled"` with an app's tone is a type error, since
       the package cannot know a foreground for it. (A8)
-- [ ] `Dot`: `tone` widens to the five names or any CSS colour (A8)
+- [x] `Dot`: `tone` widens to the five names or any CSS colour (A8)
 - [ ] `Stepper`: `orientation="vertical"` with a line joining the markers,
       and `size="sm"`, whose marker is a dot with no number. The two props
       are independent. The default stays horizontal and numbered. (A6)
