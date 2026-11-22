@@ -1,5 +1,103 @@
 # @donaldgifford/design-system
 
+## 0.5.0
+
+### Minor Changes
+
+- [#33](https://github.com/donaldgifford/design-system/pull/33) [`bd858fc`](https://github.com/donaldgifford/design-system/commit/bd858fc6f2b18a46956fc65e235a899a79fa86fa) Thanks [@donaldgifford](https://github.com/donaldgifford)! - The command palette's optional parts, and the top bar's two controls.
+  
+  - `components/command`: `CommandFilters`, a row of filters under the
+    input, and `CommandFooter`, a row of key hints along the foot. Both are
+    placed among `CommandDialog`'s children like `CommandInput` and
+    `CommandList`. `CommandDialog` takes `preview`, a pane beside the list
+    for the highlighted item: with it the dialog is wider, and below `sm`
+    the pane is hidden. A control in any of the three keeps Enter and Space
+    while the arrow keys still move through the list. A palette that uses
+    none of them is unchanged.
+  - `shell/search-trigger`: `SearchTrigger`, the button shaped like a field
+    that opens the palette, with a `label` and a `shortcut` hint. Below `md`
+    it is the icon alone.
+  - `shell/mode-toggle`: `ModeToggle`, the light and dark switch. It is
+    controlled (`mode`, `onToggle`) and stores nothing.
+
+- [#33](https://github.com/donaldgifford/design-system/pull/33) [`b8daa61`](https://github.com/donaldgifford/design-system/commit/b8daa616600480c7fa34a57108d97fb262f1dce4) Thanks [@donaldgifford](https://github.com/donaldgifford)! - What a search result and a long document need.
+  
+  - `ListRow` takes `eyebrow`, a mono line over the title; `detail`, text
+    under it that wraps to two lines; and `render`, which makes the title
+    the app's link stretched over the row, as `onClick` makes it a button.
+  - `Time` takes `style="stacked"`, the date over the time in one `<time>`.
+    `formatTime` takes `style: "time"` for `HH:mm`.
+  - `lib/mark`: `markSegments(text)` splits a search snippet on literal
+    `<em>` and `</em>` into marked and unmarked runs. `blocks/marked`:
+    `Marked` draws them, the matches as `<mark>` on a primary tint. Nothing
+    else in the string becomes an element, so an API's snippet is safe to
+    pass as it came.
+  - `blocks/outline`: `Outline`, "On this page": a document's headings as
+    links on a hairline, the one being read marked. `hooks/use-active-heading`:
+    `useActiveHeading(ids)`, the scroll spy that picks it.
+
+- [#33](https://github.com/donaldgifford/design-system/pull/33) [`42b6173`](https://github.com/donaldgifford/design-system/commit/42b6173201194be507daca3426bd9b787094d865) Thanks [@donaldgifford](https://github.com/donaldgifford)! - The sidebar tree: rows in the shell sidebar that hold more rows (RFC-0003).
+  
+  - `shell/sidebar-tree`: `ShellSidebarTreeItem`, used inside a
+    `ShellSidebarGroup` and inside itself. Its props decide its form: with
+    `render` it is a link; with `render` and children (or `expandable`) it
+    is a link and a caret button that only toggles; with children and no
+    `render` the whole row toggles. It takes `label`, `leading`, `badge`,
+    `active`, `disabled`, and `open`, `defaultOpen` and `onOpenChange`.
+    Children are a nested list that is not in the DOM while closed, and
+    depth is tracked by the component. A nested row is one line with its
+    label as `title`; the active one sets `aria-current="page"` and colors
+    its stretch of the hairline.
+  - On the icon rail a top-level row shows its `leading`, or a mark with
+    the label's first letter, with the label as its tooltip. A row with
+    children opens a popover holding its subtree with every branch open,
+    and opening it calls `onOpenChange(true)`. On mobile the tree is drawn
+    as it is expanded.
+  - `ShellSidebarTreeNote`: the list item for a line in a branch that is
+    not a row, such as `InlineLoading` while the children load.
+  - `hooks/use-tree-open`: `useTreeOpen(activeKey)`. The branch that holds
+    the current page is open, a toggle by hand overrides that, and the
+    overrides are dropped when the page moves to another branch.
+    `item(key)` returns `open` and `onOpenChange` to spread on a row.
+  - `components/sidebar`: a `SidebarMenuBadge` in a row that also has a
+    `SidebarMenuAction` now sits left of the action instead of under it.
+  
+  A navigation of flat `SidebarMenuItem`s renders the markup it did in
+  0.4.0.
+
+- [#33](https://github.com/donaldgifford/design-system/pull/33) [`a1b32d3`](https://github.com/donaldgifford/design-system/commit/a1b32d3a5e1aecedde47daf8757a4d4a15c1a0cb) Thanks [@donaldgifford](https://github.com/donaldgifford)! - Small parts an app with documents and categories needs.
+  
+  - `components/collapsible`: `Collapsible`, `CollapsibleTrigger` and
+    `CollapsiblePanel`, on Base UI. A closed panel is not in the DOM.
+  - `blocks/disclosure`: `Disclosure`, a bordered block that opens under its
+    label, with a `value` shown while it is closed.
+  - `Badge` takes `tone`, any CSS color, for a category the package has no
+    variant for: `<Badge tone="var(--category-3)">`. Tinted form only.
+    `Dot`'s `tone` takes the five names or any CSS color.
+  - `Stepper` takes `orientation="vertical"`, the steps stacked on a line,
+    and `size="sm"`, a dot with no number. The two are independent, and the
+    default is unchanged.
+  - `FilterChip` takes `pressed` and `onPressedChange`: a toggle labelled by
+    its children, one click to change, with no editor. It sits in a
+    `FilterBar` like the `key = value` form.
+
+- [#33](https://github.com/donaldgifford/design-system/pull/33) [`688cb86`](https://github.com/donaldgifford/design-system/commit/688cb86b7d9bcb6cf1795f9cc1f843c03444206e) Thanks [@donaldgifford](https://github.com/donaldgifford)! - Tokens and stylesheet entries for apps that take part of the package.
+  
+  - `core.css`: Tailwind, the tokens, the theme map and the base layer, with
+    no `@source` and no fonts. An app that imports it with `source(none)`
+    names its own directory and the parts it uses in `@source` lines, and
+    gets no classes for the rest. The README has the lines.
+    `fonts.css` is the five font imports on their own. `globals.css` is the
+    two plus the package's sources and compiles to the CSS it did.
+  - `--category-1` to `--category-8`: eight hues for a tone the app
+    supplies, each at least 4.5:1 as text and in a tinted badge on the page,
+    a card and the sidebar, in both themes.
+  - `--border-strong` and `--surface-pressed`. A field's border darkens on
+    hover, a popover and a menu take the stronger edge, and sidebar rows,
+    option rows and a clickable `ListRow` show the pressed surface.
+  - README: taking only the parts an app uses, following
+    `prefers-color-scheme` before first paint, and what `accent` means here.
+
 ## 0.4.0
 
 ### Minor Changes
