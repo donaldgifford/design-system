@@ -36,6 +36,8 @@ created: 2026-11-22
   - [Phase 6: Release 0.5.0 and report back](#phase-6-release-050-and-report-back)
     - [Tasks](#tasks-5)
     - [Success Criteria](#success-criteria-5)
+    - [Dry run, 2026-11-22](#dry-run-2026-11-22)
+    - [Runbook](#runbook)
 - [Resolved Questions](#resolved-questions)
   - [1. How is the work split into branches and pull requests?](#1-how-is-the-work-split-into-branches-and-pull-requests)
   - [2. When does the release happen?](#2-when-does-the-release-happen)
@@ -167,6 +169,7 @@ README. Nothing here changes a component's API.
       Done as: the two builds were compared once at the split (the same lines, with only the `@font-face` blocks moved), and `test/styles/entries.test.ts` builds both entries on every run.
 - [x] README, "Using it": the `core.css` route, with an `@source` line per
       part the app uses and the app's own fonts (C1, C2)
+      Corrected by phase 6's dry run: the import takes `source(none)` and the app names its own directory. Without it, Tailwind 4.3.3 takes the whole directory of a file named under the app's `node_modules`. `test/styles/entries.test.ts` now builds from a copy of the package under a scratch app's `node_modules`, which the first version of that test did not.
 - [x] README: following `prefers-color-scheme`, with the script that sets
       `.dark` before first paint (C3)
 - [x] README: a note that `accent` is a hover surface here and the brand
@@ -417,16 +420,23 @@ Publish, prove it installs outside this repository, and answer issue #32.
 
 - [ ] Merge the "version packages" pull request; confirm the package and
       the GitHub Release exist
+      `deferred - human required`: the branch is not pushed. Steps 1 to 3 of the runbook below.
 - [ ] Install 0.5.0 from the registry in the scratch consumer (TypeScript
       5.9, `exactOptionalPropertyTypes`): every module typechecks and a
       Vite build succeeds, once through `globals.css` and once through
       `core.css` with `@source` lines
+      `deferred - human required`: needs the published package. Dry run on 2026-11-22 against `bun pm pack` of this branch: TypeScript 5.9.3 typechecks all 95 modules, and Vite builds by both routes.
 - [ ] Record the scratch app's stylesheet size by each route, to answer
       C1's numbers
+      `deferred - human required` for the registry's numbers. The dry run's are in the table below.
 - [ ] Publish the Storybook
+      `deferred - human required`: `storybook.yml` publishes on a push to `main`, so the merge does it.
 - [ ] Comment on issue #32 with what landed, item by item, as on issue #11
+      `deferred - human required`: after the release, so the comment can name the version.
 - [ ] Fix what docz finds when it takes the release, as patch releases
+      `deferred - human required`: waits on docz.
 - [ ] Close issue #32 when docz confirms; set this plan to Completed
+      `deferred - human required`: waits on docz.
 
 <!--docz:tasks:end-->
 
@@ -440,6 +450,44 @@ Publish, prove it installs outside this repository, and answer issue #32.
 - docz reports no item it still has to build around
 
 <!--docz:criteria:end-->
+
+#### Dry run, 2026-11-22
+
+A scratch Vite app outside this repository, installed from the tarball
+`bun pm pack` makes of this branch. TypeScript 5.9.3, `strict`,
+`exactOptionalPropertyTypes`, `noUncheckedIndexedAccess`. One file imports
+all 95 exported modules and typechecks. The page renders `Badge` and
+`Button`; sizes are the minified stylesheet.
+
+| Route | CSS | Gzipped | Font files |
+| ----- | --- | ------- | ---------- |
+| `globals.css` | 106,743 bytes | 18,300 | 10 |
+| `core.css` with `source(none)` and the two parts named | 25,852 bytes | 5,707 | 0 |
+| `core.css` and the `ui` directory | 86,307 bytes | 15,094 | 0 |
+
+It found one defect, in the README and not in the package. The lines the
+README gave for `core.css` named files under `node_modules` without
+`source(none)`, and Tailwind 4.3.3 then takes each file's whole directory:
+the third row, not the second. The README, the changeset and the test are
+corrected.
+
+#### Runbook
+
+1. Push `feat/docz-site-parts` and open one pull request to `main`
+   (question 1b). `ci.yml` runs `just check`.
+2. Merge it. `release.yml` opens the "version packages" pull request from
+   the five changesets; it should read 0.5.0.
+3. Merge that. Confirm `@donaldgifford/design-system@0.5.0` on GitHub
+   Packages and the `v0.5.0` GitHub Release. `storybook.yml` publishes the
+   Storybook on the same push.
+4. In a scratch Vite app with TypeScript 5.9, install 0.5.0 from the
+   registry and repeat the dry run: typecheck a file that imports every
+   module, then build once through `globals.css` and once through
+   `core.css` with the README's lines. Put the sizes in the table above.
+5. Comment on issue #32, one line per item, with the sizes for C1.
+6. When docz has taken the release, fix what it finds as patches, close
+   issue #32 and run `docz status set impl IMPL-0002 Completed`.
+
 <!--docz:phase:end-->
 
 ---
@@ -642,22 +690,23 @@ Each new part also gets `<name>.stories.tsx` beside it and a test under
 <!--docz:testing:start-->
 ## Testing Plan
 
-- [ ] Every new part and every new form of an existing part renders under
+- [x] Every new part and every new form of an existing part renders under
       axe in `test/components`
-- [ ] Keyboard tests for `Collapsible`, `Disclosure`, the pressed
+- [x] Keyboard tests for `Collapsible`, `Disclosure`, the pressed
       `FilterChip`, the palette with filters, and the sidebar tree
-- [ ] Unit tests for `markSegments`, the `"time"` style, `useActiveHeading`
+- [x] Unit tests for `markSegments`, the `"time"` style, `useActiveHeading`
       and `useTreeOpen`
-- [ ] Contrast tests for the eight category colours on three surfaces in
+- [x] Contrast tests for the eight category colours on three surfaces in
       both themes
-- [ ] "Unchanged" tests where an existing part gained props: a call with
+- [x] "Unchanged" tests where an existing part gained props: a call with
       none of the new props renders the markup it rendered in 0.4.0
-- [ ] `test/bundle.test.ts` still passes: nothing new imports zod or a
+- [x] `test/bundle.test.ts` still passes: nothing new imports zod or a
       schema module
-- [ ] `test/stories.test.ts` and `test/discipline.test.ts` pass with the
+- [x] `test/stories.test.ts` and `test/discipline.test.ts` pass with the
       new files
 - [ ] The scratch consumer builds from the registry by both stylesheet
       routes
+      `deferred - human required`: it builds from the packed tarball by both; see phase 6's dry run.
 
 <!--docz:testing:end-->
 
