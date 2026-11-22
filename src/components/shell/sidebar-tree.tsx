@@ -4,6 +4,12 @@ import {
   CollapsibleTrigger,
 } from "@donaldgifford/design-system/components/collapsible";
 import {
+  Popover,
+  PopoverContent,
+  PopoverTrigger,
+} from "@donaldgifford/design-system/components/popover";
+import { ScrollArea } from "@donaldgifford/design-system/components/scroll-area";
+import {
   SidebarMenuAction,
   SidebarMenuBadge,
   SidebarMenuButton,
@@ -11,6 +17,7 @@ import {
   SidebarMenuSub,
   SidebarMenuSubButton,
   SidebarMenuSubItem,
+  useSidebar,
 } from "@donaldgifford/design-system/components/sidebar";
 import { cn } from "@donaldgifford/design-system/lib/utils";
 import { IconChevronRight } from "@tabler/icons-react";
@@ -26,6 +33,9 @@ import {
 
 /** How deep a row sits: 0 is a row in the group, 1 is one of its children. */
 const DepthContext = createContext(0);
+
+/** True inside the popover a row opens on the icon rail, where every branch is open. */
+const FlyoutContext = createContext(false);
 
 export interface ShellSidebarTreeItemProps {
   label: string;
@@ -61,6 +71,15 @@ export interface ShellSidebarTreeItemProps {
  * app decides what is open, through `open` and `onOpenChange` or
  * `defaultOpen`; `useTreeOpen` holds the usual rule. Depth is tracked
  * here: each level indents one step on the list's hairline.
+ *
+ * On the icon rail a top-level row shows its `leading` (a mark with the
+ * label's first letter when it has none) with the label as its tooltip,
+ * and nested rows are not drawn. A top-level row with children opens a
+ * popover holding its subtree with every branch open, so each link stays
+ * in reach; opening it calls `onOpenChange(true)`, so a row that loads
+ * on open loads then. A nested branch that loads on open has nothing to
+ * show there until the app has loaded it. On mobile the sidebar is a
+ * sheet and the tree is drawn as it is expanded.
  */
 export function ShellSidebarTreeItem({
   label,
@@ -76,6 +95,9 @@ export function ShellSidebarTreeItem({
   children,
 }: ShellSidebarTreeItemProps) {
   const depth = useContext(DepthContext);
+  const flyout = useContext(FlyoutContext);
+  const { state, isMobile } = useSidebar();
+  const rail = state === "collapsed" && !isMobile;
   const [ownOpen, setOwnOpen] = useState(defaultOpen);
   const isOpen = open ?? ownOpen;
   const setOpen = (next: boolean) => {
@@ -85,25 +107,32 @@ export function ShellSidebarTreeItem({
 
   const nested = depth > 0;
   const branch = expandable || Children.toArray(children).length > 0;
-  const hasCaret = branch;
+  // In the rail's popover every branch is open, so none has a caret.
+  const hasCaret = branch && !flyout;
   const hasBadge = badge !== undefined && badge !== null && badge !== false;
 
   const content = (
     <>
       {leading === undefined ? null : <Leading>{leading}</Leading>}
+      {leading === undefined && rail && !nested ? <LetterMark label={label} /> : null}
       <span className="truncate">{label}</span>
     </>
   );
   const current = render && active ? ({ "aria-current": "page" } as const) : {};
   // Without a link the row is the toggle; with one, the caret is.
-  const control = render ?? (branch ? <CollapsibleTrigger /> : <div />);
+  const control = render ?? (hasCaret ? <CollapsibleTrigger /> : <div />);
+  // A row that is neither a link nor a toggle is a heading: it takes no hover.
+  const inert = !render && !hasCaret;
 
   const row = nested ? (
     <SidebarMenuSubButton
       render={control}
       isActive={active}
       title={label}
-      className={cn(hasBadge && hasCaret ? "pr-14" : (hasBadge || hasCaret) && "pr-8")}
+      className={cn(
+        hasBadge && hasCaret ? "pr-14" : (hasBadge || hasCaret) && "pr-8",
+        inert && "pointer-events-none",
+      )}
       {...current}
     >
       {content}
@@ -112,8 +141,10 @@ export function ShellSidebarTreeItem({
     <SidebarMenuButton
       render={control}
       isActive={active}
+      tooltip={label}
       className={cn(
         hasBadge && (hasCaret ? "group-has-data-[sidebar=menu-action]/menu-item:pr-14" : "pr-8"),
+        inert && "pointer-events-none",
       )}
       {...current}
     >
@@ -121,16 +152,18 @@ export function ShellSidebarTreeItem({
     </SidebarMenuButton>
   );
 
+  // The popover's own list has no hairline; the lists inside it do.
+  const onHairline = nested && !(flyout && depth === 1);
   const item = {
     "data-slot": "sidebar-tree-item",
     "data-depth": depth,
     "data-active": active ? true : undefined,
     // The active row colors its own stretch of the list's hairline.
     className: cn(
-      nested &&
+      onHairline &&
         active &&
         "before:absolute before:top-0 before:h-7 before:w-0.5 before:rounded-pill before:bg-sidebar-primary",
-      nested && active && (depth === 1 ? "before:-left-3" : "before:-left-2.5"),
+      onHairline && active && (depth === 1 ? "before:-left-3" : "before:-left-2.5"),
     ),
   };
   const badgeNode = hasBadge ? (
@@ -144,6 +177,44 @@ export function ShellSidebarTreeItem({
         {row}
         {badgeNode}
       </Item>
+    );
+  }
+
+  const list = (
+    <DepthContext.Provider value={depth + 1}>
+      <SidebarMenuSub
+        data-depth={depth + 1}
+        // Past the first level a list gives up its right margin and steps in less.
+        className={cn(nested && "mr-0 ml-2 pr-0 pl-2")}
+      >
+        {children}
+      </SidebarMenuSub>
+    </DepthContext.Provider>
+  );
+
+  if (flyout) {
+    return (
+      <SidebarMenuSubItem {...item}>
+        {row}
+        {badgeNode}
+        {list}
+      </SidebarMenuSubItem>
+    );
+  }
+
+  if (rail && !nested) {
+    return (
+      <SidebarMenuItem {...item}>
+        <RailBranch
+          label={label}
+          active={active}
+          render={render}
+          content={content}
+          onOpen={() => setOpen(true)}
+        >
+          {children}
+        </RailBranch>
+      </SidebarMenuItem>
     );
   }
 
@@ -184,18 +255,85 @@ export function ShellSidebarTreeItem({
           {chevron}
         </SidebarMenuAction>
       )}
-      <CollapsiblePanel>
-        <DepthContext.Provider value={depth + 1}>
-          <SidebarMenuSub
-            data-depth={depth + 1}
-            // Past the first level a list gives up its right margin and steps in less.
-            className={cn(nested && "mr-0 ml-2 pr-0 pl-2")}
-          >
-            {children}
-          </SidebarMenuSub>
-        </DepthContext.Provider>
-      </CollapsiblePanel>
+      <CollapsiblePanel>{list}</CollapsiblePanel>
     </Collapsible>
+  );
+}
+
+interface RailBranchProps {
+  label: string;
+  active: boolean;
+  render: ReactElement | undefined;
+  /** The row's leading and label, as the rail's button shows them. */
+  content: ReactNode;
+  onOpen: () => void;
+  children: ReactNode;
+}
+
+/**
+ * A top-level branch on the icon rail: its button opens a popover beside
+ * the rail that holds the subtree, every branch open, under a height cap.
+ */
+function RailBranch({ label, active, render, content, onOpen, children }: RailBranchProps) {
+  const [open, setOpen] = useState(false);
+  return (
+    <Popover
+      open={open}
+      onOpenChange={(next) => {
+        setOpen(next);
+        if (next) onOpen();
+      }}
+    >
+      <SidebarMenuButton
+        render={<PopoverTrigger />}
+        isActive={active}
+        // The popover says what the tooltip would.
+        tooltip={{ children: label, hidden: open }}
+      >
+        {content}
+      </SidebarMenuButton>
+      <PopoverContent side="right" align="start" aria-label={label} className="w-64 gap-1 p-2">
+        {render ? (
+          <SidebarMenuSubButton
+            render={render}
+            isActive={active}
+            className="font-medium"
+            {...(active ? { "aria-current": "page" as const } : {})}
+          >
+            <span className="truncate">{label}</span>
+          </SidebarMenuSubButton>
+        ) : (
+          <div
+            data-slot="sidebar-tree-heading"
+            className="flex h-7 items-center px-2 font-medium text-sm"
+          >
+            <span className="truncate">{label}</span>
+          </div>
+        )}
+        <ScrollArea className="*:data-[slot=scroll-area-viewport]:max-h-80">
+          <FlyoutContext.Provider value={true}>
+            <DepthContext.Provider value={1}>
+              <ul data-slot="sidebar-tree-flyout" className="flex flex-col gap-1">
+                {children}
+              </ul>
+            </DepthContext.Provider>
+          </FlyoutContext.Provider>
+        </ScrollArea>
+      </PopoverContent>
+    </Popover>
+  );
+}
+
+/** A neutral mark for a row with no `leading`: the label's first letter. */
+function LetterMark({ label }: { label: string }) {
+  return (
+    <span
+      data-slot="sidebar-tree-mark"
+      aria-hidden="true"
+      className="flex size-4 shrink-0 items-center justify-center rounded-sm bg-sidebar-accent font-medium text-label text-sidebar-accent-foreground uppercase"
+    >
+      {[...label.trim()][0] ?? ""}
+    </span>
   );
 }
 

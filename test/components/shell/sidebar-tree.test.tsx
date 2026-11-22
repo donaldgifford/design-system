@@ -7,7 +7,7 @@ import {
   ShellSidebarTreeNote,
 } from "@donaldgifford/design-system/shell/sidebar-tree";
 import { expectNoA11yViolations } from "@test/axe";
-import { render, screen, within } from "@testing-library/react";
+import { act, render, screen, within } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import type { ReactNode } from "react";
 
@@ -282,7 +282,7 @@ describe("ShellSidebarTreeItem, the keyboard", () => {
     );
     const design = screen.getByRole("link", { name: "design" });
     const caret = screen.getByRole("button", { name: "design, show contents" });
-    design.focus();
+    act(() => design.focus());
     await user.tab();
     expect(caret).toHaveFocus();
     await user.tab();
@@ -295,11 +295,124 @@ describe("ShellSidebarTreeItem, the keyboard", () => {
     await user.tab();
     expect(screen.getByRole("link", { name: "Install" })).toHaveFocus();
 
-    caret.focus();
+    act(() => caret.focus());
     await user.keyboard(" ");
     expect(caret).toHaveAttribute("aria-expanded", "false");
     expect(screen.queryByRole("link", { name: "DESIGN-0026" })).toBeNull();
     await user.keyboard("{Enter}");
     expect(caret).toHaveAttribute("aria-expanded", "true");
+  });
+});
+
+describe("ShellSidebarTreeItem, on the icon rail", () => {
+  test("a top-level row shows its leading, or a mark with the label's first letter", async () => {
+    const { container } = render(
+      <Nav open={false}>
+        <ShellSidebarTreeItem
+          label="design"
+          leading={<Dot tone="var(--category-2)" />}
+          render={<a href="#design" />}
+        />
+        <ShellSidebarTreeItem label="rfc" render={<a href="#rfc" />} />
+      </Nav>,
+    );
+    const design = screen.getByRole("link", { name: "design" });
+    expect(design.querySelector("[data-slot=dot]")).toBeInTheDocument();
+    expect(design.querySelector("[data-slot=sidebar-tree-mark]")).toBeNull();
+    const mark = screen
+      .getByRole("link", { name: "rfc" })
+      .querySelector("[data-slot=sidebar-tree-mark]");
+    expect(mark).toHaveTextContent("r");
+    expect(mark).toHaveAttribute("aria-hidden", "true");
+    await expectNoA11yViolations(container);
+  });
+
+  test("the label is the row's tooltip", async () => {
+    const user = userEvent.setup();
+    render(
+      <Nav open={false}>
+        <ShellSidebarTreeItem label="design" render={<a href="#design" />} />
+      </Nav>,
+    );
+    await user.tab();
+    expect(screen.getByRole("link", { name: "design" })).toHaveFocus();
+    expect(await screen.findByRole("tooltip")).toHaveTextContent("design");
+  });
+
+  test("expanded, there is no mark", () => {
+    render(
+      <Nav>
+        <ShellSidebarTreeItem label="rfc" render={<a href="#rfc" />} />
+      </Nav>,
+    );
+    expect(document.querySelector("[data-slot=sidebar-tree-mark]")).toBeNull();
+  });
+
+  test("a row with children opens a popover with its subtree fully open", async () => {
+    const user = userEvent.setup();
+    const onOpenChange = mock((_: boolean) => {});
+    render(
+      <Nav open={false}>
+        <ShellSidebarTreeItem
+          label="design"
+          render={<a href="#design" />}
+          active
+          onOpenChange={onOpenChange}
+        >
+          <ShellSidebarTreeItem label="DESIGN-0026" render={<a href="#design-0026" />} />
+          <ShellSidebarTreeItem label="Archive">
+            <ShellSidebarTreeItem label="DESIGN-0001" render={<a href="#design-0001" />} />
+          </ShellSidebarTreeItem>
+          <ShellSidebarTreeNote>No more documents</ShellSidebarTreeNote>
+        </ShellSidebarTreeItem>
+      </Nav>,
+    );
+    // Nested rows are not on the rail, and the row is a button, not the link.
+    expect(screen.queryByRole("link")).toBeNull();
+    const row = screen.getByRole("button", { name: "design" });
+    expect(row).toHaveAttribute("aria-haspopup", "dialog");
+    expect(onOpenChange).not.toHaveBeenCalled();
+
+    await user.tab();
+    expect(row).toHaveFocus();
+    await user.keyboard("{Enter}");
+    expect(onOpenChange).toHaveBeenCalledTimes(1);
+    expect(onOpenChange).toHaveBeenLastCalledWith(true);
+
+    const popover = await screen.findByRole("dialog", { name: "design" });
+    // The popover's heading is the row's link.
+    const heading = within(popover).getByRole("link", { name: "design" });
+    expect(heading).toHaveAttribute("href", "#design");
+    expect(heading).toHaveAttribute("aria-current", "page");
+    // Every branch is open and none has a caret.
+    expect(within(popover).getByRole("link", { name: "DESIGN-0026" })).toBeInTheDocument();
+    expect(within(popover).getByRole("link", { name: "DESIGN-0001" })).toBeInTheDocument();
+    expect(within(popover).queryByRole("button")).toBeNull();
+    expect(within(popover).getByText("Archive").closest("a, button")).toBeNull();
+    // Under a height cap, in a ScrollArea.
+    const area = popover.querySelector("[data-slot=scroll-area]");
+    expect(area?.className).toContain("max-h-80");
+    expect(area?.querySelector("[data-slot=sidebar-tree-flyout]")?.tagName).toBe("UL");
+    await expectNoA11yViolations(popover);
+
+    // Every link in the popover is a tab stop.
+    const links = within(popover).getAllByRole("link");
+    expect(links.map((link) => link.textContent)).toEqual(["design", "DESIGN-0026", "DESIGN-0001"]);
+    for (const link of links) expect(link.tabIndex).toBe(0);
+  });
+
+  test("a row that toggles gets a plain heading in the popover", async () => {
+    const user = userEvent.setup();
+    render(
+      <Nav open={false}>
+        <ShellSidebarTreeItem label="Guides">
+          <ShellSidebarTreeItem label="Install" render={<a href="#install" />} />
+        </ShellSidebarTreeItem>
+      </Nav>,
+    );
+    await user.click(screen.getByRole("button", { name: "Guides" }));
+    const popover = await screen.findByRole("dialog", { name: "Guides" });
+    expect(popover.querySelector("[data-slot=sidebar-tree-heading]")).toHaveTextContent("Guides");
+    expect(within(popover).getAllByRole("link")).toHaveLength(1);
   });
 });

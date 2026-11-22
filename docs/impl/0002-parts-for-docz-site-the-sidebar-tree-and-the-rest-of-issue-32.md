@@ -368,9 +368,9 @@ RFC-0003, with its seven questions already answered there. It needs
 - [x] A leaf is one line, cut with an ellipsis, its label as `title`; the
       active leaf colours its 2px segment in `--sidebar-primary` and sets
       `aria-current="page"`
-- [ ] On the icon rail: a top-level row shows its `leading` with the label
+- [x] On the icon rail: a top-level row shows its `leading` with the label
       as tooltip, and a neutral letter mark when it has none
-- [ ] On the icon rail: a top-level row with children opens a `Popover`
+- [x] On the icon rail: a top-level row with children opens a `Popover`
       with its subtree fully expanded, under a height cap in a
       `ScrollArea`. Opening it calls the row's `onOpenChange(true)`.
 - [ ] `hooks/use-tree-open`: `useTreeOpen(activeKey)`. The active branch is
