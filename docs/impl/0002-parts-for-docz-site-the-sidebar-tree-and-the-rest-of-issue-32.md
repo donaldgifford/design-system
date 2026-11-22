@@ -199,7 +199,7 @@ tree in phase 5 opens and closes with it.
 <!--docz:tasks:start-->
 #### Tasks
 
-- [ ] `components/collapsible`: `Collapsible`, `CollapsibleTrigger` and
+- [x] `components/collapsible`: `Collapsible`, `CollapsibleTrigger` and
       `CollapsiblePanel` on Base UI's `Collapsible`, restyled with tokens.
       A closed panel is not in the DOM. (A7)
 - [ ] `blocks/disclosure`: `Disclosure`, a bordered block over
