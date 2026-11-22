@@ -37,5 +37,6 @@ docz create rfc "Your RFC Title"
 | --- | --- | --- | --- | --- | --- |
 | RFC-0001 | Shared design system and component library for repo-guardian and docz | Accepted | 2026-11-15 | Donald Gifford | [0001-shared-design-system-and-component-library-for-repo-guardian.md](0001-shared-design-system-and-component-library-for-repo-guardian.md) |
 | RFC-0002 | App switcher: a shell part listing a deployment's apps as plain links | Accepted | 2026-11-21 | Donald Gifford | [0002-app-switcher-a-shell-part-listing-a-deployments-apps-as-plain.md](0002-app-switcher-a-shell-part-listing-a-deployments-apps-as-plain.md) |
+| RFC-0003 | Sidebar tree: nested rows in the shell sidebar that open and close | Accepted | 2026-11-22 | Donald Gifford | [0003-sidebar-tree-nested-rows-in-the-shell-sidebar-that-open-and.md](0003-sidebar-tree-nested-rows-in-the-shell-sidebar-that-open-and.md) |
 <!-- markdownlint-restore -->
 <!-- END DOCZ AUTO-GENERATED -->
