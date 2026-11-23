@@ -1,5 +1,30 @@
 # @donaldgifford/design-system
 
+## 0.6.0
+
+### Minor Changes
+
+- [#36](https://github.com/donaldgifford/design-system/pull/36) [`661b454`](https://github.com/donaldgifford/design-system/commit/661b454a8f56ebad2e278bb944c378c6dd5a8da6) Thanks [@donaldgifford](https://github.com/donaldgifford)! - A stylesheet per part, for apps on `core.css`.
+  
+  `@donaldgifford/design-system/parts/<kind>/<name>.css` exists for every
+  component, block and shell part: `parts/components/button.css`,
+  `parts/blocks/list-row.css`, `parts/shell/sidebar-tree.css`. Each is the
+  `@source` lines for that part's file and every package file it imports,
+  however far down, so one `@import` per part an app uses is enough and a
+  part's dependencies cannot be missed. They are generated from the
+  imports and held to them by a test.
+  
+  This replaces writing `@source` lines into `node_modules` by hand, which
+  still works. Keep `source(none)` on the `core.css` import and the
+  `@source` line for the app's own directory; the README has the lines.
+
+### Patch Changes
+
+- [#36](https://github.com/donaldgifford/design-system/pull/36) [`99e1dbf`](https://github.com/donaldgifford/design-system/commit/99e1dbf1303f5ce79cc46e29974a55a7c758f2a3) Thanks [@donaldgifford](https://github.com/donaldgifford)! - `ListRow` with both `render` and `onClick` now runs `onClick` when the
+  link is followed, as well as the link's own handler. In 0.5.0 it was
+  dropped without a word, which left a row that is a link unable to close
+  the palette it sits in.
+
 ## 0.5.0
 
 ### Minor Changes
