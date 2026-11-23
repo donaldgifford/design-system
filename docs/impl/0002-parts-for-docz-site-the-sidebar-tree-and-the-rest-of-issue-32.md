@@ -1,7 +1,7 @@
 ---
 id: IMPL-0002
 title: "Parts for docz-site: the sidebar tree and the rest of issue 32"
-status: Draft
+status: Completed
 author: Donald Gifford
 created: 2026-11-22
 ---
@@ -433,10 +433,10 @@ Publish, prove it installs outside this repository, and answer issue #32.
       Done: `storybook.yml` succeeded on the release commit.
 - [x] Comment on issue #32 with what landed, item by item, as on issue #11
       Done 2026-11-23: <https://github.com/donaldgifford/design-system/issues/32#issuecomment-7097870354>.
-- [ ] Fix what docz finds when it takes the release, as patch releases
-      `deferred - human required`: waits on docz.
-- [ ] Close issue #32 when docz confirms; set this plan to Completed
-      `deferred - human required`: waits on docz.
+- [x] Fix what docz finds when it takes the release, as patch releases
+      Done 2026-11-23: nothing needed a patch. Two things docz would have had to build around went out as 0.6.0 (pull request #36): a stylesheet per part under `parts/`, and `ListRow` running `onClick` on a link row.
+- [x] Close issue #32 when docz confirms; set this plan to Completed
+      Done 2026-11-23: docz checked 0.6.0 and [confirmed](https://github.com/donaldgifford/design-system/issues/32#issuecomment-7098590484) on the issue, which is closed. It was a probe of a button, a badge and the sidebar frame; what docz's migration turns up comes as a new issue.
 
 <!--docz:tasks:end-->
 
