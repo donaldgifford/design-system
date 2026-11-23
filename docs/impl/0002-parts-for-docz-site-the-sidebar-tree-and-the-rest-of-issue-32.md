@@ -431,8 +431,8 @@ Publish, prove it installs outside this repository, and answer issue #32.
       Done: the registry's numbers are the dry run's, byte for byte; see the table below.
 - [x] Publish the Storybook
       Done: `storybook.yml` succeeded on the release commit.
-- [ ] Comment on issue #32 with what landed, item by item, as on issue #11
-      `deferred - human required`: after the release, so the comment can name the version.
+- [x] Comment on issue #32 with what landed, item by item, as on issue #11
+      Done 2026-11-23: <https://github.com/donaldgifford/design-system/issues/32#issuecomment-7097870354>.
 - [ ] Fix what docz finds when it takes the release, as patch releases
       `deferred - human required`: waits on docz.
 - [ ] Close issue #32 when docz confirms; set this plan to Completed
