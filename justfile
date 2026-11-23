@@ -55,6 +55,10 @@ storybook-build:
 tokens:
     bun run tokens
 
+# Regenerate src/styles/parts from each part's imports
+parts:
+    bun run parts
+
 # Copy a shadcn primitive into src/components/ui: just add button
 add component:
     bunx --bun shadcn@4.22.1 add {{ component }}
