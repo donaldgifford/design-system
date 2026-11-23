@@ -36,7 +36,7 @@ created: 2026-11-22
   - [Phase 6: Release 0.5.0 and report back](#phase-6-release-050-and-report-back)
     - [Tasks](#tasks-5)
     - [Success Criteria](#success-criteria-5)
-    - [Dry run, 2026-11-22](#dry-run-2026-11-22)
+    - [Dry run, 2026-11-22, repeated from the registry after the release](#dry-run-2026-11-22-repeated-from-the-registry-after-the-release)
     - [Runbook](#runbook)
 - [Resolved Questions](#resolved-questions)
   - [1. How is the work split into branches and pull requests?](#1-how-is-the-work-split-into-branches-and-pull-requests)
@@ -418,21 +418,21 @@ Publish, prove it installs outside this repository, and answer issue #32.
 <!--docz:tasks:start-->
 #### Tasks
 
-- [ ] Merge the "version packages" pull request; confirm the package and
+- [x] Merge the "version packages" pull request; confirm the package and
       the GitHub Release exist
-      `deferred - human required`: the branch is not pushed. Steps 1 to 3 of the runbook below.
-- [ ] Install 0.5.0 from the registry in the scratch consumer (TypeScript
+      Done 2026-11-22: pull requests #33 and #34 merged; `0.5.0` is on GitHub Packages and the `v0.5.0` Release exists.
+- [x] Install 0.5.0 from the registry in the scratch consumer (TypeScript
       5.9, `exactOptionalPropertyTypes`): every module typechecks and a
       Vite build succeeds, once through `globals.css` and once through
       `core.css` with `@source` lines
-      `deferred - human required`: needs the published package. Dry run on 2026-11-22 against `bun pm pack` of this branch: TypeScript 5.9.3 typechecks all 95 modules, and Vite builds by both routes.
-- [ ] Record the scratch app's stylesheet size by each route, to answer
+      Done 2026-11-22 from the registry: TypeScript 5.9.3 typechecks all 95 modules, and Vite builds by both routes.
+- [x] Record the scratch app's stylesheet size by each route, to answer
       C1's numbers
-      `deferred - human required` for the registry's numbers. The dry run's are in the table below.
-- [ ] Publish the Storybook
-      `deferred - human required`: `storybook.yml` publishes on a push to `main`, so the merge does it.
-- [ ] Comment on issue #32 with what landed, item by item, as on issue #11
-      `deferred - human required`: after the release, so the comment can name the version.
+      Done: the registry's numbers are the dry run's, byte for byte; see the table below.
+- [x] Publish the Storybook
+      Done: `storybook.yml` succeeded on the release commit.
+- [x] Comment on issue #32 with what landed, item by item, as on issue #11
+      Done 2026-11-23: <https://github.com/donaldgifford/design-system/issues/32#issuecomment-7097870354>.
 - [ ] Fix what docz finds when it takes the release, as patch releases
       `deferred - human required`: waits on docz.
 - [ ] Close issue #32 when docz confirms; set this plan to Completed
@@ -451,10 +451,11 @@ Publish, prove it installs outside this repository, and answer issue #32.
 
 <!--docz:criteria:end-->
 
-#### Dry run, 2026-11-22
+#### Dry run, 2026-11-22, repeated from the registry after the release
 
 A scratch Vite app outside this repository, installed from the tarball
-`bun pm pack` makes of this branch. TypeScript 5.9.3, `strict`,
+`bun pm pack` makes of this branch, and again from `0.5.0` on GitHub
+Packages with the same results. TypeScript 5.9.3, `strict`,
 `exactOptionalPropertyTypes`, `noUncheckedIndexedAccess`. One file imports
 all 95 exported modules and typechecks. The page renders `Badge` and
 `Button`; sizes are the minified stylesheet.
@@ -463,7 +464,7 @@ all 95 exported modules and typechecks. The page renders `Badge` and
 | ----- | --- | ------- | ---------- |
 | `globals.css` | 106,743 bytes | 18,300 | 10 |
 | `core.css` with `source(none)` and the two parts named | 25,852 bytes | 5,707 | 0 |
-| `core.css` and the `ui` directory | 86,307 bytes | 15,094 | 0 |
+| `core.css` with the `ui` files named but no `source(none)` | 86,307 bytes | 15,094 | 0 |
 
 It found one defect, in the README and not in the package. The lines the
 README gave for `core.css` named files under `node_modules` without
@@ -704,9 +705,9 @@ Each new part also gets `<name>.stories.tsx` beside it and a test under
       schema module
 - [x] `test/stories.test.ts` and `test/discipline.test.ts` pass with the
       new files
-- [ ] The scratch consumer builds from the registry by both stylesheet
+- [x] The scratch consumer builds from the registry by both stylesheet
       routes
-      `deferred - human required`: it builds from the packed tarball by both; see phase 6's dry run.
+      Done 2026-11-22; see phase 6.
 
 <!--docz:testing:end-->
 
