@@ -149,3 +149,36 @@ describe("an app that imports core.css and names two components", () => {
     expect(built.assets).toEqual([]);
   });
 });
+
+describe("an app that imports core.css and a part's stylesheet", () => {
+  let app: string;
+  let built: BuiltCss;
+  beforeAll(async () => {
+    app = scratchApp([
+      '@import "@donaldgifford/design-system/core.css" source(none);',
+      '@source "./";',
+      '@import "@donaldgifford/design-system/parts/shell/sidebar-tree.css";',
+    ]);
+    built = await buildCss(join(app, "src/app.css"), app);
+  });
+  afterAll(() => {
+    rmSync(app, { recursive: true, force: true });
+  });
+
+  test("gets the part's classes and those of every part it renders", () => {
+    // sidebar-tree's own, then the sidebar's, the collapsible's and the popover's.
+    expect(built.css).toContain("before\\:bg-sidebar-primary");
+    expect(built.css).toContain(sidebarOnly);
+    expect(built.css).toContain("collapsible-panel-height");
+    expect(built.css).toContain("border-border-strong");
+  });
+
+  test("gets its own classes", () => {
+    expect(built.css).toContain(".underline-offset-8");
+  });
+
+  test("gets no classes for parts it does not render", () => {
+    expect(built.css).not.toContain(".badge-tinted");
+    expect(built.css).not.toContain("@font-face");
+  });
+});

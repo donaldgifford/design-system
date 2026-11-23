@@ -1,5 +1,5 @@
 /** What a search result needs from `ListRow` and `Time`. */
-import { describe, expect, mock, test } from "bun:test";
+import { describe, expect, test } from "bun:test";
 import { List, ListRow } from "@donaldgifford/design-system/blocks/list-row";
 import { Time, TimeZoneProvider } from "@donaldgifford/design-system/blocks/time";
 import { expectNoA11yViolations } from "@test/axe";
@@ -51,12 +51,27 @@ describe("ListRow as a search result", () => {
     await expectNoA11yViolations(container);
   });
 
-  test("with render, onClick is not used", async () => {
+  test("with render and onClick, following the link runs both handlers", async () => {
     const user = userEvent.setup();
-    const onClick = mock(() => {});
-    render(<ListRow title="DESIGN-0026" onClick={onClick} render={<a href="#design-0026" />} />);
-    await user.click(screen.getByRole("link", { name: "DESIGN-0026" }));
-    expect(onClick).not.toHaveBeenCalled();
+    const calls: string[] = [];
+    render(
+      <ListRow
+        title="DESIGN-0026"
+        onClick={() => calls.push("row")}
+        render={
+          // biome-ignore lint/a11y/useValidAnchor: the link's own handler, as a router link has
+          <a href="#design-0026" onClick={() => calls.push("link")} />
+        }
+      />,
+    );
+    const link = screen.getByRole("link", { name: "DESIGN-0026" });
+    await user.click(link);
+    expect([...calls].sort()).toEqual(["link", "row"]);
+    // Still one control: the link, with no button beside it.
+    expect(screen.queryByRole("button")).toBeNull();
+    link.focus();
+    await user.keyboard("{Enter}");
+    expect(calls).toHaveLength(4);
   });
 
   test("a row with none of the new props renders as it did", () => {

@@ -28,6 +28,7 @@ Import subpaths, never a barrel:
 | `@donaldgifford/design-system/globals.css` | everything: `fonts.css`, `core.css`, and an `@source` over the package |
 | `@donaldgifford/design-system/core.css` | Tailwind, the tokens and both themes, the `@theme inline` map and the base layer; no fonts and no `@source` |
 | `@donaldgifford/design-system/fonts.css` | IBM Plex Sans and JetBrains Mono, self-hosted (latin, five static files) |
+| `@donaldgifford/design-system/parts/<kind>/<name>.css` | one part's `@source` lines, its own file and what it imports, for an app on `core.css` |
 | `@donaldgifford/design-system/components/<name>` | a primitive (`button`, `dialog`, `sidebar`, ...) |
 | `@donaldgifford/design-system/blocks/<name>` | a block (`data-table`, `kpi`, `page-header`, `trend-chart`, `group-grid`, ...) |
 | `@donaldgifford/design-system/shell/<name>` | presentational chrome (`top-bar`, `search-trigger`, `mode-toggle`, `sidebar`, `sidebar-tree`, `detail-sheet`, `detail-panel`, `route-error`, `page-skeleton`) |
@@ -43,28 +44,30 @@ user's choice is the app's job.
 
 `globals.css` scans the whole package, so an app gets the classes of every
 component, used or not, and the package's font files. An app that wants
-neither imports `core.css` and names the parts it uses:
+neither imports `core.css` and the stylesheet of each part it uses:
 
 ```css
 @import "@donaldgifford/design-system/core.css" source(none);
 /* The app's own files, relative to this file. */
 @source "./";
-/* One line per part the app imports. */
-@source "../node_modules/@donaldgifford/design-system/src/components/ui/button.tsx";
-@source "../node_modules/@donaldgifford/design-system/src/components/blocks/list-row.tsx";
+/* One line per part the app imports: its import path, under parts/, with .css. */
+@import "@donaldgifford/design-system/parts/components/button.css";
+@import "@donaldgifford/design-system/parts/blocks/list-row.css";
+@import "@donaldgifford/design-system/parts/shell/sidebar-tree.css";
 ```
 
-`source(none)` is what makes a line mean the file it names. Without it
-Tailwind scans the app's root by itself, and a line that names one file
-under `node_modules` then takes that file's whole directory (seen on
-Tailwind 4.3.3): the build still works and gets every primitive. With
-it nothing is scanned unasked, which is why the app's own directory
-needs its line.
+A part's stylesheet is a list of `@source` lines: the part's file and
+every package file it imports, however far down. So the line for
+`shell/sidebar-tree` brings the sidebar, the collapsible, the popover and
+the rest of what the tree renders, and nothing else. They are generated
+from the imports (`just parts`), and a test fails if they fall behind.
+A part with no line shows as an unstyled component, not an error.
 
-A part that renders another part needs that one's line too (`data-table`
-uses `table`); a missing line shows as an unstyled component, not an
-error. A directory is a valid `@source`, so
-`.../src/components/ui` takes every primitive.
+`source(none)` is what keeps this exact. Without it Tailwind scans the
+app's root by itself, and a line that names one file under
+`node_modules` then takes that file's whole directory (seen on Tailwind
+4.3.3): the build still works and gets every primitive. With it nothing
+is scanned unasked, which is why the app's own directory needs its line.
 
 For scale, an app that uses `Badge` and `Button` compiles to about 26 kB
 of CSS this way (6 kB gzipped) and no font files, against 107 kB (18 kB
@@ -156,7 +159,7 @@ package.json        # the exports map, peer dependencies
 components.json     # where the shadcn CLI lands a new primitive
 .storybook/         # Storybook config; docs/ renders sections of this README
 tokens.json         # the DTCG export of tokens.css (just tokens)
-scripts/            # tokens-export.ts
+scripts/            # tokens-export.ts, parts-export.ts
 src/
   styles/           # tokens.css, core.css, fonts.css and globals.css
   components/       # each <name>.tsx with its <name>.stories.tsx beside it

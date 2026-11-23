@@ -62,8 +62,8 @@ interface ListRowProps {
   onClick?: (() => void) | undefined;
   /**
    * Makes the row the app's link, stretched over the row:
-   * `render={<Link to="/docs/1" />}`. A row is a link or a button, not
-   * both: with `render`, `onClick` is not used.
+   * `render={<Link to="/docs/1" />}`. With `onClick` too, the link runs
+   * it when followed, as well as its own handler: closing a palette, say.
    */
   render?: ReactElement | undefined;
   className?: string | undefined;
@@ -74,14 +74,25 @@ const controlClass =
   "block w-full truncate text-left font-medium text-sm outline-none after:absolute after:inset-0 after:rounded-md after:content-[''] focus-visible:after:ring-2 focus-visible:after:ring-ring";
 
 /** The title as the app's link. Its own component, so `useRender` runs only for a link row. */
-function ListRowLink({ render, children }: { render: ReactElement; children: ReactNode }) {
+function ListRowLink({
+  render,
+  onClick,
+  children,
+}: {
+  render: ReactElement;
+  onClick: (() => void) | undefined;
+  children: ReactNode;
+}) {
   return useRender({
     defaultTagName: "a",
     render,
-    props: { "data-slot": "list-row-control", className: controlClass, children } as Record<
-      string,
-      unknown
-    >,
+    // `useRender` merges handlers, so the row's `onClick` and the link's own both run.
+    props: {
+      "data-slot": "list-row-control",
+      className: controlClass,
+      ...(onClick ? { onClick: () => onClick() } : {}),
+      children,
+    } as Record<string, unknown>,
   });
 }
 
@@ -127,7 +138,9 @@ export function ListRow({
           </div>
         )}
         {render ? (
-          <ListRowLink render={render}>{title}</ListRowLink>
+          <ListRowLink render={render} onClick={onClick}>
+            {title}
+          </ListRowLink>
         ) : onClick ? (
           <button
             type="button"
