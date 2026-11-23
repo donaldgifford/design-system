@@ -35,6 +35,6 @@ docz create impl "Your Implementation Title"
 | ID | Title | Status | Date | Author | Link |
 | --- | --- | --- | --- | --- | --- |
 | IMPL-0001 | First release of the design system | In Progress | 2026-11-15 | Donald Gifford | [0001-first-release-of-the-design-system.md](0001-first-release-of-the-design-system.md) |
-| IMPL-0002 | Parts for docz-site: the sidebar tree and the rest of issue 32 | Draft | 2026-11-22 | Donald Gifford | [0002-parts-for-docz-site-the-sidebar-tree-and-the-rest-of-issue-32.md](0002-parts-for-docz-site-the-sidebar-tree-and-the-rest-of-issue-32.md) |
+| IMPL-0002 | Parts for docz-site: the sidebar tree and the rest of issue 32 | Completed | 2026-11-22 | Donald Gifford | [0002-parts-for-docz-site-the-sidebar-tree-and-the-rest-of-issue-32.md](0002-parts-for-docz-site-the-sidebar-tree-and-the-rest-of-issue-32.md) |
 <!-- markdownlint-restore -->
 <!-- END DOCZ AUTO-GENERATED -->
